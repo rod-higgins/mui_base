@@ -1,0 +1,87 @@
+{#
+/**
+ * @file
+ * Fixed MUI Card component template with proper string value handling.
+ */
+#}
+
+{% set card_classes = [
+  'MuiCard-root',
+  'MuiPaper-root',
+  variant == 'outlined' ? 'MuiPaper-outlined' : 'MuiPaper-elevation' ~ elevation,
+  square ? 'MuiPaper-square' : 'MuiPaper-rounded',
+  'mui-card'
+] %}
+
+<div{{ attributes.addClass(card_classes) }}>
+  
+  {# Card Media/Image #}
+  {% if image %}
+    <div class="MuiCardMedia-root">
+      {% if image is iterable %}
+        {% for media_item in image %}
+          {{ media_item }}
+        {% endfor %}
+      {% else %}
+        {{ image }}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {# Card Header #}
+  {% if title or subtitle %}
+    <div class="MuiCardHeader-root">
+      <div class="MuiCardHeader-content">
+        {% if title %}
+          <h5 class="MuiCardHeader-title">{{ title }}</h5>
+        {% endif %}
+        
+        {% if subtitle %}
+          <div class="MuiCardHeader-subheader">{{ subtitle }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+  {# Card Content #}
+  {% if content %}
+    <div class="MuiCardContent-root">
+      {{ content|raw }}
+    </div>
+  {% endif %}
+
+  {# Custom HTML Content #}
+  {% if custom_html %}
+    <div class="MuiCardContent-custom">
+      {{ custom_html|raw }}
+    </div>
+  {% endif %}
+
+  {# Card Actions #}
+  {% if actions and actions is iterable %}
+    <div class="MuiCardActions-root MuiCardActions-spacing">
+      {% for action in actions %}
+        {% if action.label %}
+          {% set action_classes = [
+            'MuiButton-root',
+            'MuiButtonBase-root',
+            'MuiButton-' ~ (action.variant ?: 'text'),
+            'MuiButton-' ~ (action.variant ?: 'text') ~ 'Primary'
+          ] %}
+          
+          <a href="{{ action.url ?: '#' }}" class="{{ action_classes|join(' ') }}">
+            <span class="MuiButton-label">{{ action.label }}</span>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    <div class="MuiCard-children">
+      {{ children }}
+    </div>
+  {% endif %}
+  
+</div>

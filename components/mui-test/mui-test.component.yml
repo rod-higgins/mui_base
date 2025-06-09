@@ -1,0 +1,50 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Test'
+description: 'A test component for demonstrating MUI Components functionality'
+props:
+  type: object
+  properties:
+    variant:
+      type: string
+      title: 'Component variant'
+      description: 'The visual style variant'
+      enum: ['primary', 'secondary', 'success', 'warning', 'error']
+      default: 'primary'
+    size:
+      type: string
+      title: 'Component size'
+      description: 'The size of the component'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    disabled:
+      type: boolean
+      title: 'Disabled state'
+      description: 'Whether the component is disabled'
+      default: false
+    title:
+      type: string
+      title: 'Component title'
+      description: 'The main title text'
+      default: 'Test Component'
+    content:
+      type: string
+      title: 'Content'
+      description: 'The main content text'
+      default: 'This is a test of the MUI Components system.'
+    counter:
+      type: integer
+      title: 'Counter value'
+      description: 'A numeric counter'
+      default: 0
+      minimum: 0
+      maximum: 100
+    tags:
+      type: array
+      title: 'Tags'
+      description: 'List of tags (JSON array)'
+    metadata:
+      type: object
+      title: 'Metadata'
+      description: 'Additional metadata (JSON object)'
+libraryDependencies:
+  - mui_base/mui-test

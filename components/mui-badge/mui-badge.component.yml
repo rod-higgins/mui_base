@@ -1,0 +1,182 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Badge'
+description: 'Enhanced Material UI Badge component for notifications, status indicators, and overlays'
+props:
+  type: object
+  properties:
+    # Badge content
+    content:
+      type: string
+      title: 'Badge content'
+      description: 'The content rendered within the badge (text, number, icon)'
+      default: ''
+    
+    max:
+      type: integer
+      title: 'Maximum value'
+      description: 'Max count to show (e.g., "99+" for values over 99)'
+      default: 99
+      minimum: 1
+    
+    show_zero:
+      type: boolean
+      title: 'Show zero'
+      description: 'Controls whether the badge is hidden when content is zero'
+      default: false
+    
+    # Visual styling
+    color:
+      type: string
+      title: 'Badge color'
+      description: 'The color theme of the badge'
+      enum: ['default', 'primary', 'secondary', 'error', 'warning', 'info', 'success']
+      default: 'default'
+    
+    variant:
+      type: string
+      title: 'Badge variant'
+      description: 'The variant to use'
+      enum: ['standard', 'dot']
+      default: 'standard'
+    
+    size:
+      type: string
+      title: 'Badge size'
+      description: 'The size of the badge'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    # Positioning (when used as overlay)
+    anchor_origin:
+      type: object
+      title: 'Anchor origin'
+      description: 'Position of the badge relative to its anchor'
+      properties:
+        vertical:
+          type: string
+          enum: ['top', 'bottom']
+          default: 'top'
+        horizontal:
+          type: string
+          enum: ['left', 'right']
+          default: 'right'
+    
+    overlap:
+      type: string
+      title: 'Overlap mode'
+      description: 'How the badge overlaps with its anchor'
+      enum: ['rectangular', 'circular']
+      default: 'rectangular'
+    
+    # Badge behavior
+    invisible:
+      type: boolean
+      title: 'Invisible'
+      description: 'If true, the badge will be invisible'
+      default: false
+    
+    # Animation
+    animate_appearance:
+      type: boolean
+      title: 'Animate appearance'
+      description: 'Animate badge when it appears/disappears'
+      default: true
+    
+    # Interactive features
+    clickable:
+      type: boolean
+      title: 'Clickable'
+      description: 'Makes the badge clickable'
+      default: false
+    
+    link_url:
+      type: string
+      title: 'Link URL'
+      description: 'URL to navigate to when badge is clicked'
+      default: ''
+    
+    link_target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    tooltip:
+      type: string
+      title: 'Tooltip text'
+      description: 'Tooltip text on hover'
+      default: ''
+    
+    # Accessibility
+    aria_label:
+      type: string
+      title: 'ARIA label'
+      description: 'Accessible label for the badge'
+      default: ''
+    
+    # Advanced features
+    pulse:
+      type: boolean
+      title: 'Pulse animation'
+      description: 'Add pulsing animation to draw attention'
+      default: false
+    
+    blink:
+      type: boolean
+      title: 'Blink animation'
+      description: 'Add blinking animation (use sparingly)'
+      default: false
+    
+    # Custom styling
+    custom_background_color:
+      type: string
+      title: 'Custom background color'
+      description: 'Custom background color (hex value)'
+      default: ''
+    
+    custom_text_color:
+      type: string
+      title: 'Custom text color'
+      description: 'Custom text color (hex value)'
+      default: ''
+    
+    # Icon support
+    icon:
+      type: text
+      title: 'Badge icon'
+      description: 'Icon to display in badge (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    # Status indicators
+    status:
+      type: string
+      title: 'Status indicator'
+      description: 'Predefined status with appropriate styling'
+      enum: ['none', 'online', 'offline', 'away', 'busy', 'new', 'updated', 'urgent']
+      default: 'none'
+    
+    # Nested badges
+    sub_badge:
+      type: object
+      title: 'Sub-badge'
+      description: 'Smaller badge positioned within the main badge'
+      properties:
+        content:
+          type: string
+        color:
+          type: string
+          enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+        position:
+          type: string
+          enum: ['top-right', 'top-left', 'bottom-right', 'bottom-left']
+    
+    # Data attributes
+    data_attributes:
+      type: object
+      title: 'Data attributes'
+      description: 'Custom data attributes as key-value pairs'
+
+libraryDependencies:
+  - mui_base/mui-badge

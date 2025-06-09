@@ -1,0 +1,157 @@
+{#
+/**
+ * @file
+ * MUI Badge component template with comprehensive styling and positioning.
+ */
+#}
+
+{# Process content - handle numeric values and max display #}
+{% set processed_content = content %}
+{% if content is number and content > max %}
+  {% set processed_content = max ~ '+' %}
+{% elseif content is number and content == 0 and not show_zero %}
+  {% set processed_content = '' %}
+{% endif %}
+
+{# Determine if badge should be invisible #}
+{% set is_invisible = invisible or (not processed_content and not icon and variant != 'dot') %}
+
+{# Status-based content and color overrides #}
+{% if status != 'none' %}
+  {% if status == 'online' %}
+    {% set processed_content = '' %}
+    {% set variant = 'dot' %}
+    {% set color = 'success' %}
+  {% elseif status == 'offline' %}
+    {% set processed_content = '' %}
+    {% set variant = 'dot' %}
+    {% set color = 'default' %}
+  {% elseif status == 'away' %}
+    {% set processed_content = '' %}
+    {% set variant = 'dot' %}
+    {% set color = 'warning' %}
+  {% elseif status == 'busy' %}
+    {% set processed_content = '' %}
+    {% set variant = 'dot' %}
+    {% set color = 'error' %}
+  {% elseif status == 'new' %}
+    {% set processed_content = processed_content ?: 'NEW' %}
+    {% set color = 'primary' %}
+  {% elseif status == 'updated' %}
+    {% set processed_content = processed_content ?: '!' %}
+    {% set color = 'info' %}
+  {% elseif status == 'urgent' %}
+    {% set processed_content = processed_content ?: '!!' %}
+    {% set color = 'error' %}
+    {% set pulse = true %}
+  {% endif %}
+{% endif %}
+
+{% set badge_classes = [
+  'MuiBadge-root',
+  'MuiBadge-' ~ variant,
+  'MuiBadge-' ~ color,
+  'MuiBadge-size' ~ (size|title),
+  'MuiBadge-anchor' ~ (anchor_origin.vertical|default('top')|title) ~ (anchor_origin.horizontal|default('right')|title),
+  'MuiBadge-overlap' ~ (overlap|title),
+  is_invisible ? 'MuiBadge-invisible' : '',
+  clickable or link_url ? 'MuiBadge-clickable' : '',
+  animate_appearance ? 'MuiBadge-animate' : '',
+  pulse ? 'MuiBadge-pulse' : '',
+  blink ? 'MuiBadge-blink' : '',
+  status != 'none' ? 'MuiBadge-status' ~ (status|title) : '',
+  sub_badge ? 'MuiBadge-hasSubBadge' : '',
+  'mui-badge'
+] %}
+
+{# Determine wrapper element #}
+{% set wrapper_tag = link_url ? 'a' : (clickable ? 'button' : 'span') %}
+
+{# Set up attributes #}
+{% set badge_attributes = {} %}
+{% if link_url %}
+  {% set badge_attributes = badge_attributes|merge({
+    href: link_url,
+    target: link_target != '_self' ? link_target : null,
+    rel: link_target == '_blank' ? 'noopener noreferrer' : null
+  }) %}
+{% elseif clickable %}
+  {% set badge_attributes = badge_attributes|merge({
+    type: 'button'
+  }) %}
+{% endif %}
+
+{# Accessibility attributes #}
+{% if aria_label %}
+  {% set badge_attributes = badge_attributes|merge({'aria-label': aria_label}) %}
+{% endif %}
+
+{# Tooltip attributes #}
+{% if tooltip %}
+  {% set badge_attributes = badge_attributes|merge({
+    'data-tooltip': tooltip,
+    'title': tooltip
+  }) %}
+{% endif %}
+
+{# Data attributes #}
+{% if data_attributes and data_attributes is iterable %}
+  {% for key, value in data_attributes %}
+    {% set badge_attributes = badge_attributes|merge({('data-' ~ key): value}) %}
+  {% endfor %}
+{% endif %}
+
+{# Custom styling #}
+{% set custom_styles = [] %}
+{% if custom_background_color %}
+  {% set custom_styles = custom_styles|merge(['--badge-bg-color: ' ~ custom_background_color]) %}
+{% endif %}
+{% if custom_text_color %}
+  {% set custom_styles = custom_styles|merge(['--badge-text-color: ' ~ custom_text_color]) %}
+{% endif %}
+
+<{{ wrapper_tag }}{{ attributes.addClass(badge_classes).addAttributes(badge_attributes) }}{% if custom_styles %} style="{{ custom_styles|join('; ') }}"{% endif %}>
+  
+  {# Badge content container #}
+  <span class="MuiBadge-badge">
+    
+    {# Icon content #}
+    {% if icon and variant != 'dot' %}
+      <span class="MuiBadge-icon">
+        {% if icon starts with '<' %}
+          {{ icon|raw }}
+        {% else %}
+          <i class="{{ icon }}" aria-hidden="true"></i>
+        {% endif %}
+      </span>
+    {% endif %}
+    
+    {# Text content #}
+    {% if processed_content and variant != 'dot' %}
+      <span class="MuiBadge-content">
+        {{ processed_content }}
+      </span>
+    {% endif %}
+    
+    {# Sub-badge #}
+    {% if sub_badge and sub_badge.content %}
+      <span class="MuiBadge-subBadge MuiBadge-{{ sub_badge.color|default('primary') }} MuiBadge-{{ sub_badge.position|default('top-right')|replace('-', '')|title }}">
+        {{ sub_badge.content }}
+      </span>
+    {% endif %}
+    
+  </span>
+
+  {# Children content (for wrapping other elements) #}
+  {% if children %}
+    <span class="MuiBadge-children">
+      {{ children }}
+    </span>
+  {% endif %}
+
+  {# Touch ripple for interactive badges #}
+  {% if clickable or link_url %}
+    <span class="MuiTouchRipple-root"></span>
+  {% endif %}
+
+</{{ wrapper_tag }}>

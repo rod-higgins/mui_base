@@ -1,0 +1,179 @@
+{#
+/**
+ * @file
+ * MUI Alert Drupal integration component template.
+ * 
+ * This component handles Drupal message loading and transformation,
+ * then renders them as MUI alerts with queue management and auto-dismiss.
+ */
+#}
+
+{% set alert_container_classes = [
+  'mui-alert-drupal',
+  'mui-alert-container',
+  'mui-alert-position-' ~ position|replace({'_': '-'}),
+  handle_messenger ? 'handles-messenger' : '',
+  handle_form_errors ? 'handles-form-errors' : '',
+  handle_system_messages ? 'handles-system-messages' : '',
+  replace_drupal_messages ? 'replaces-drupal-messages' : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  container_classes ? container_classes|join(' ') : ''
+] %}
+
+{% set container_attributes = {
+  'class': alert_container_classes|join(' ')|trim,
+  'data-max-alerts': max_alerts,
+  'data-queue-behavior': queue_behavior,
+  'data-position': position,
+  'data-ajax-support': ajax_support ? 'true' : 'false',
+  'data-announce-messages': announce_messages ? 'true' : 'false',
+  'aria-live': announce_messages ? aria_live_region : 'off',
+  'aria-atomic': 'false',
+  'role': 'region',
+  'aria-label': 'System messages'
+} %}
+
+<div{{ attributes.addClass(alert_container_classes) }}
+    {% for attr, value in container_attributes %} {{ attr }}="{{ value }}"{% endfor %}>
+  
+  {# Process and render Drupal messages as alerts #}
+  {% if drupal_messages and drupal_messages is iterable %}
+    {% for drupal_message in drupal_messages %}
+      {% if drupal_message.type in message_types %}
+        {% set alert_severity = severity_mapping[drupal_message.type] ?: drupal_message.type %}
+        {% set timeout = dismiss_timeout[alert_severity] ?: 5000 %}
+        
+        {% include 'mui_base:mui-alert' with {
+          severity: alert_severity,
+          variant: variant,
+          color: color,
+          message: drupal_message.message,
+          title: drupal_message.title ?: null,
+          closable: show_close_button,
+          close_text: 'Dismiss message'|t,
+          show_icon: show_icons,
+          auto_dismiss: auto_dismiss and timeout > 0,
+          dismiss_timeout: timeout,
+          progress_bar: show_progress_bar and auto_dismiss,
+          slide_in: true,
+          slide_direction: slide_direction,
+          allow_html: allow_html,
+          link_detection: link_detection,
+          custom_classes: alert_classes,
+          on_close: on_message_dismiss,
+          data_attributes: {
+            'drupal-message-type': drupal_message.type,
+            'drupal-message-id': drupal_message.id ?: null,
+            'timestamp': drupal_message.timestamp ?: 'now'|date('U')
+          }
+        } %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  
+  {# Render custom alerts #}
+  {% if custom_alerts and custom_alerts is iterable %}
+    {% for custom_alert in custom_alerts %}
+      {% set timeout = custom_alert.dismiss_timeout ?: dismiss_timeout[custom_alert.severity] ?: 5000 %}
+      
+      {% include 'mui_base:mui-alert' with {
+        severity: custom_alert.severity,
+        variant: variant,
+        color: color,
+        title: custom_alert.title ?: null,
+        message: custom_alert.message,
+        closable: show_close_button,
+        close_text: 'Dismiss message'|t,
+        show_icon: show_icons,
+        auto_dismiss: custom_alert.auto_dismiss ?: (auto_dismiss and timeout > 0),
+        dismiss_timeout: timeout,
+        progress_bar: show_progress_bar and auto_dismiss,
+        slide_in: true,
+        slide_direction: slide_direction,
+        allow_html: allow_html,
+        custom_classes: alert_classes,
+        on_close: on_message_dismiss,
+        data_attributes: {
+          'custom-alert': 'true',
+          'alert-id': custom_alert.id ?: null
+        }
+      } %}
+    {% endfor %}
+  {% endif %}
+  
+  {# Loading indicator for AJAX operations #}
+  <div class="mui-alert-loading" style="display: none;">
+    <div class="mui-alert-loading-spinner" role="status" aria-label="{{ 'Loading messages'|t }}">
+      <svg class="mui-alert-spinner" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="32" stroke-dashoffset="32">
+          <animate attributeName="stroke-dasharray" dur="2s" values="0 32;16 16;0 32;0 32" repeatCount="indefinite"/>
+          <animate attributeName="stroke-dashoffset" dur="2s" values="0;-16;-32;-32" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+  </div>
+  
+</div>
+
+{# Hidden template for dynamic alert creation #}
+<template id="mui-alert-template" style="display: none;">
+  {% include 'mui_base:mui-alert' with {
+    severity: 'info',
+    variant: variant,
+    color: color,
+    message: '{{message}}',
+    title: '{{title}}',
+    closable: show_close_button,
+    close_text: 'Dismiss message'|t,
+    show_icon: show_icons,
+    auto_dismiss: auto_dismiss,
+    dismiss_timeout: 5000,
+    progress_bar: show_progress_bar and auto_dismiss,
+    slide_in: true,
+    slide_direction: slide_direction,
+    allow_html: allow_html,
+    custom_classes: alert_classes,
+    on_close: on_message_dismiss,
+    data_attributes: {
+      'dynamic-alert': 'true'
+    }
+  } %}
+</template>
+
+{# JSON configuration for JavaScript #}
+<script type="application/json" class="mui-alert-drupal-config">
+{
+  "maxAlerts": {{ max_alerts }},
+  "queueBehavior": "{{ queue_behavior }}",
+  "position": "{{ position }}",
+  "slideDirection": "{{ slide_direction }}",
+  "autoDismiss": {{ auto_dismiss ? 'true' : 'false' }},
+  "dismissTimeout": {{ dismiss_timeout|json_encode|raw }},
+  "severityMapping": {{ severity_mapping|json_encode|raw }},
+  "messageTypes": {{ message_types|json_encode|raw }},
+  "showCloseButton": {{ show_close_button ? 'true' : 'false' }},
+  "showIcons": {{ show_icons ? 'true' : 'false' }},
+  "showProgressBar": {{ show_progress_bar ? 'true' : 'false' }},
+  "allowHtml": {{ allow_html ? 'true' : 'false' }},
+  "sanitizeHtml": {{ sanitize_html ? 'true' : 'false' }},
+  "linkDetection": {{ link_detection ? 'true' : 'false' }},
+  "handleMessenger": {{ handle_messenger ? 'true' : 'false' }},
+  "handleFormErrors": {{ handle_form_errors ? 'true' : 'false' }},
+  "handleSystemMessages": {{ handle_system_messages ? 'true' : 'false' }},
+  "replaceDrupalMessages": {{ replace_drupal_messages ? 'true' : 'false' }},
+  "preserveMessageRegion": {{ preserve_message_region ? 'true' : 'false' }},
+  "ajaxSupport": {{ ajax_support ? 'true' : 'false' }},
+  "ajaxMessageSelector": "{{ ajax_message_selector }}",
+  "formErrorSelector": "{{ form_error_selector }}",
+  "clearFormErrors": {{ clear_form_errors ? 'true' : 'false' }},
+  "announceMessages": {{ announce_messages ? 'true' : 'false' }},
+  "ariaLiveRegion": "{{ aria_live_region }}",
+  "groupSimilar": {{ group_similar ? 'true' : 'false' }},
+  "onMessageAdd": "{{ on_message_add }}",
+  "onMessageDismiss": "{{ on_message_dismiss }}",
+  "variant": "{{ variant }}",
+  "color": "{{ color }}",
+  "messageTransformCallback": "{{ message_transform_callback }}",
+  "severityTransformCallback": "{{ severity_transform_callback }}"
+}
+</script>

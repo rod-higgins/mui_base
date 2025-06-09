@@ -1,0 +1,318 @@
+{#
+/**
+ * @file
+ * MUI Dialog component template with comprehensive dialog types and features.
+ */
+#}
+
+{# Configure dialog based on type #}
+{% if dialog_type == 'confirmation' %}
+  {% set title = title ?: 'Confirm Action' %}
+  {% set content = content ?: confirmation_message %}
+  {% set actions = actions|length > 0 ? actions : [
+    {label: 'Cancel', variant: 'text', color: 'inherit'},
+    {label: 'Confirm', variant: 'contained', color: confirmation_danger ? 'error' : 'primary', type: 'submit'}
+  ] %}
+{% elseif dialog_type == 'alert' %}
+  {% set title = title ?: (alert_severity|title ~ ' Alert') %}
+  {% set title_icon = title_icon ?: _self.get_alert_icon(alert_severity) %}
+  {% set actions = actions|length > 0 ? actions : [
+    {label: 'OK', variant: 'contained', color: 'primary', autofocus: true}
+  ] %}
+{% elseif dialog_type == 'loading' %}
+  {% set title = title ?: 'Loading' %}
+  {% set content = content ?: loading_message %}
+  {% set close_button = false %}
+  {% set disable_backdrop_click = true %}
+  {% set disable_escape_key = true %}
+  {% set actions = [] %}
+{% elseif dialog_type == 'image' %}
+  {% set max_width = 'lg' %}
+  {% set full_width = true %}
+  {% set close_button = true %}
+  {% set actions = [] %}
+{% elseif dialog_type == 'video' %}
+  {% set max_width = 'lg' %}
+  {% set full_width = true %}
+  {% set close_button = true %}
+  {% set actions = [] %}
+{% endif %}
+
+{% set dialog_classes = [
+  'MuiDialog-root',
+  'MuiDialog-scroll' ~ (scroll|title),
+  full_screen ? 'MuiDialog-fullScreen' : '',
+  'MuiDialog-' ~ dialog_type,
+  draggable ? 'MuiDialog-draggable' : '',
+  resizable ? 'MuiDialog-resizable' : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  'mui-dialog'
+] %}
+
+{% set paper_classes = [
+  'MuiDialog-paper',
+  'MuiPaper-root',
+  'MuiPaper-elevation24',
+  'MuiPaper-rounded',
+  max_width != 'false' ? 'MuiDialog-paperWidth' ~ (max_width|title) : '',
+  full_width ? 'MuiDialog-paperFullWidth' : '',
+  full_screen ? 'MuiDialog-paperFullScreen' : '',
+  scroll == 'body' ? 'MuiDialog-paperScrollBody' : 'MuiDialog-paperScrollPaper'
+] %}
+
+{# Generate unique IDs for accessibility #}
+{% set dialog_id = 'mui-dialog-' ~ random() %}
+{% set title_id = title ? dialog_id ~ '-title' : '' %}
+{% set content_id = content ? dialog_id ~ '-content' : '' %}
+
+<div{{ attributes.addClass(dialog_classes) }} 
+     style="z-index: 1300; {{ open ? '' : 'visibility: hidden; opacity: 0;' }}"
+     data-transition-duration="{{ transition_duration }}"
+     data-disable-backdrop-click="{{ disable_backdrop_click ? 'true' : 'false' }}"
+     data-disable-escape-key="{{ disable_escape_key ? 'true' : 'false' }}"
+     data-auto-focus="{{ auto_focus ? 'true' : 'false' }}"
+     data-keep-mounted="{{ keep_mounted ? 'true' : 'false' }}"
+     aria-hidden="{{ open ? 'false' : 'true' }}"
+     role="presentation">
+  
+  {# Backdrop #}
+  <div class="MuiBackdrop-root MuiDialog-backdrop" 
+       style="opacity: {{ open ? '1' : '0' }}; transition: opacity {{ transition_duration }}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
+  </div>
+  
+  {# Dialog container #}
+  <div class="MuiDialog-container" tabindex="-1">
+    
+    {# Form wrapper (conditional) #}
+    {% if form_action %}
+      <form action="{{ form_action }}" method="{{ form_method }}" {% if form_id %}id="{{ form_id }}"{% endif %} class="MuiDialog-form">
+    {% endif %}
+    
+    {# Dialog paper #}
+    <div class="{{ paper_classes|join(' ')|trim }}"
+         role="dialog"
+         aria-modal="true"
+         {% if aria_labelledby %}aria-labelledby="{{ aria_labelledby }}"{% elseif title_id %}aria-labelledby="{{ title_id }}"{% endif %}
+         {% if aria_describedby %}aria-describedby="{{ aria_describedby }}"{% elseif content_id %}aria-describedby="{{ content_id }}"{% endif %}
+         style="opacity: {{ open ? '1' : '0' }}; transform: {{ open ? 'none' : 'scale(0.75)' }}; transition: opacity {{ transition_duration }}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform {{ transition_duration }}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;">
+      
+      {# Dialog Header #}
+      {% if title or subtitle or title_icon or close_button %}
+        <div class="MuiDialogTitle-root {{ draggable ? 'MuiDialog-draggableHandle' : '' }}">
+          
+          <div class="MuiDialogTitle-content">
+            {% if title_icon %}
+              <div class="MuiDialogTitle-icon">
+                {% if title_icon starts with '<' %}
+                  {{ title_icon|raw }}
+                {% else %}
+                  <i class="{{ title_icon }}" aria-hidden="true"></i>
+                {% endif %}
+              </div>
+            {% endif %}
+            
+            {% if title %}
+              <h2 class="MuiTypography-h6 MuiDialogTitle-title" id="{{ title_id }}">
+                {{ title }}
+              </h2>
+            {% endif %}
+            
+            {% if subtitle %}
+              <div class="MuiTypography-body2 MuiDialogTitle-subtitle">
+                {{ subtitle }}
+              </div>
+            {% endif %}
+          </div>
+          
+          {% if close_button %}
+            <button 
+              type="button" 
+              class="MuiIconButton-root MuiDialogTitle-closeButton"
+              aria-label="Close dialog"
+              data-action="close"
+            >
+              <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+              </svg>
+            </button>
+          {% endif %}
+          
+        </div>
+      {% endif %}
+      
+      {# Dialog Content #}
+      {% if content or image_url or video_url or dialog_type == 'loading' %}
+        <div class="MuiDialogContent-root {{ scroll == 'body' ? 'MuiDialogContent-dividers' : '' }}" id="{{ content_id }}">
+          
+          {# Loading dialog special content #}
+          {% if dialog_type == 'loading' %}
+            <div class="MuiDialog-loadingContent">
+              <div class="MuiCircularProgress-root MuiCircularProgress-indeterminate">
+                <svg class="MuiCircularProgress-svg" viewBox="22 22 44 44">
+                  <circle class="MuiCircularProgress-circle" cx="44" cy="44" r="20.2" fill="none" stroke="currentColor" stroke-width="3.6" stroke-dasharray="125.664" stroke-dashoffset="125.664"></circle>
+                </svg>
+              </div>
+              {% if content %}
+                <div class="MuiDialog-loadingText MuiTypography-body1">
+                  {{ content|raw }}
+                </div>
+              {% endif %}
+            </div>
+            
+          {# Image dialog special content #}
+          {% elseif dialog_type == 'image' and image_url %}
+            <div class="MuiDialog-imageContent">
+              <img src="{{ image_url }}" alt="{{ image_alt ?: 'Dialog image' }}" class="MuiDialog-image" />
+              {% if content %}
+                <div class="MuiDialog-imageCaption MuiTypography-body2">
+                  {{ content|raw }}
+                </div>
+              {% endif %}
+            </div>
+            
+          {# Video dialog special content #}
+          {% elseif dialog_type == 'video' and video_url %}
+            <div class="MuiDialog-videoContent">
+              <div class="MuiDialog-videoWrapper">
+                {% if video_url contains 'youtube.com' or video_url contains 'youtu.be' %}
+                  <iframe 
+                    src="{{ video_url }}" 
+                    class="MuiDialog-videoFrame"
+                    frameborder="0" 
+                    allowfullscreen
+                    title="Video content">
+                  </iframe>
+                {% else %}
+                  <video controls class="MuiDialog-video">
+                    <source src="{{ video_url }}" />
+                    Your browser does not support the video tag.
+                  </video>
+                {% endif %}
+              </div>
+              {% if content %}
+                <div class="MuiDialog-videoCaption MuiTypography-body2">
+                  {{ content|raw }}
+                </div>
+              {% endif %}
+            </div>
+            
+          {# Regular content #}
+          {% else %}
+            <div class="MuiDialogContentText-root MuiTypography-body1">
+              {{ content|raw }}
+            </div>
+          {% endif %}
+          
+          {# Children content #}
+          {% if children %}
+            <div class="MuiDialog-children">
+              {{ children }}
+            </div>
+          {% endif %}
+          
+        </div>
+      {% endif %}
+      
+      {# Dialog Actions #}
+      {% if actions and actions is iterable and actions|length > 0 %}
+        <div class="MuiDialogActions-root MuiDialogActions-spacing">
+          {% for action in actions %}
+            {% set button_classes = [
+              'MuiButton-root',
+              'MuiButtonBase-root',
+              'MuiButton-' ~ (action.variant ?: 'text'),
+              'MuiButton-' ~ (action.variant ?: 'text') ~ (action.color ?: 'primary')|title,
+              'MuiButton-size' ~ (action.size ?: 'medium')|title,
+              action.disabled ? 'Mui-disabled' : ''
+            ] %}
+            
+            {% if action.href %}
+              <a 
+                href="{{ action.href }}" 
+                class="{{ button_classes|join(' ') }}"
+                {% if action.target == '_blank' %}target="_blank" rel="noopener noreferrer"{% endif %}
+                {% if action.disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+                {% if action.click_handler %}data-click="{{ action.click_handler }}"{% endif %}
+              >
+                {% if action.icon %}
+                  <span class="MuiButton-startIcon">
+                    {% if action.icon starts with '<' %}
+                      {{ action.icon|raw }}
+                    {% else %}
+                      <i class="{{ action.icon }}" aria-hidden="true"></i>
+                    {% endif %}
+                  </span>
+                {% endif %}
+                <span class="MuiButton-label">{{ action.label }}</span>
+              </a>
+            {% else %}
+              <button 
+                type="{{ action.type ?: 'button' }}" 
+                class="{{ button_classes|join(' ') }}"
+                {% if action.disabled %}disabled="disabled"{% endif %}
+                {% if action.autofocus %}autofocus="autofocus"{% endif %}
+                {% if action.click_handler %}data-click="{{ action.click_handler }}"{% endif %}
+                data-action="{{ action.type == 'submit' ? 'submit' : 'close' }}"
+              >
+                {% if action.icon %}
+                  <span class="MuiButton-startIcon">
+                    {% if action.icon starts with '<' %}
+                      {{ action.icon|raw }}
+                    {% else %}
+                      <i class="{{ action.icon }}" aria-hidden="true"></i>
+                    {% endif %}
+                  </span>
+                {% endif %}
+                <span class="MuiButton-label">{{ action.label }}</span>
+                <span class="MuiTouchRipple-root"></span>
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      {# Resize handles (if resizable) #}
+      {% if resizable %}
+        <div class="MuiDialog-resizeHandles">
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-n"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-s"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-e"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-w"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-ne"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-nw"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-se"></div>
+          <div class="MuiDialog-resizeHandle MuiDialog-resizeHandle-sw"></div>
+        </div>
+      {% endif %}
+      
+    </div>
+    
+    {# Close form wrapper #}
+    {% if form_action %}
+      </form>
+    {% endif %}
+    
+  </div>
+  
+</div>
+
+{# Macro for getting alert icons #}
+{% macro get_alert_icon(severity) %}
+  {% if severity == 'error' %}
+    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #f44336;">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+    </svg>
+  {% elseif severity == 'warning' %}
+    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #ff9800;">
+      <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+    </svg>
+  {% elseif severity == 'success' %}
+    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #4caf50;">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+    </svg>
+  {% else %}
+    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #2196f3;">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+    </svg>
+  {% endif %}
+{% endmacro %}

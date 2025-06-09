@@ -1,0 +1,69 @@
+{#
+/**
+ * @file
+ * web/themes/custom/mui_base/templates/block/block.html.twig
+ * 
+ * Theme override to display a block with MUI styling.
+ */
+#}
+
+{%
+  set block_classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    id ? 'block-' ~ id|clean_class,
+    configuration.region ? 'block--region-' ~ configuration.region|clean_class : '',
+  ]
+%}
+
+{# Add MUI classes based on region and block type #}
+{% set sidebar_regions = ['sidebar_first', 'sidebar_second', 'sidebar_third', 'sidebar_fourth'] %}
+{% set is_sidebar_block = configuration.region in sidebar_regions %}
+{% set is_menu_block = plugin_id starts with 'system_menu_block:' or plugin_id starts with 'menu_block:' %}
+
+{# Add appropriate MUI classes #}
+{% if is_sidebar_block %}
+  {% set block_classes = block_classes|merge(['MuiPaper-root', 'MuiPaper-elevation1', 'mui-sidebar-block']) %}
+{% endif %}
+
+{% if is_menu_block %}
+  {% set block_classes = block_classes|merge(['mui-menu-block']) %}
+  {% if is_sidebar_block %}
+    {% set block_classes = block_classes|merge(['MuiSidebarMenu-container']) %}
+  {% endif %}
+{% endif %}
+
+{# Add region-specific classes #}
+{% if configuration.region == 'header' %}
+  {% set block_classes = block_classes|merge(['mui-header-block']) %}
+{% elseif configuration.region == 'footer_first' or configuration.region == 'footer_second' or configuration.region == 'footer_third' or configuration.region == 'footer_fourth' %}
+  {% set block_classes = block_classes|merge(['mui-footer-block']) %}
+{% endif %}
+
+<div{{ attributes.addClass(block_classes) }}>
+  
+  {% if label %}
+    {% if is_sidebar_block %}
+      <h3 class="block__label MuiTypography-root MuiTypography-h6 mui-block-title">{{ label }}</h3>
+    {% elseif configuration.region starts with 'footer' %}
+      <h4 class="block__label MuiTypography-root MuiTypography-h6 mui-block-title">{{ label }}</h4>
+    {% else %}
+      <h2 class="block__label MuiTypography-root MuiTypography-h5 mui-block-title">{{ label }}</h2>
+    {% endif %}
+  {% endif %}
+
+  {% block content %}
+    <div class="block__content {{ is_menu_block and is_sidebar_block ? 'MuiSidebarMenu-wrapper' : 'mui-block-content' }}">
+      {% if is_menu_block and is_sidebar_block %}
+        {# Apply sidebar menu wrapper for menu blocks in sidebars #}
+        <div class="MuiSidebarMenu-root MuiSidebarMenu-collapsible mui-sidebar-menu">
+          {{ content }}
+        </div>
+      {% else %}
+        {{ content }}
+      {% endif %}
+    </div>
+  {% endblock %}
+  
+</div>

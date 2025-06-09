@@ -1,0 +1,692 @@
+/* MUI Table Component Styles */
+
+.MuiTable-root {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--mui-background-paper);
+  border-radius: var(--mui-border-radius);
+  overflow: hidden;
+  box-shadow: var(--mui-shadow-1);
+}
+
+/* Table variants */
+.MuiTable-standard {
+  border: none;
+}
+
+.MuiTable-outlined {
+  border: 1px solid var(--mui-divider);
+}
+
+.MuiTable-dense {
+  font-size: 0.75rem;
+}
+
+/* Table header */
+.MuiTable-header {
+  padding: var(--mui-spacing-3);
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: var(--mui-grey-50);
+}
+
+.MuiTable-headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mui-spacing-2);
+}
+
+.MuiTable-headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.MuiTable-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--mui-text-primary);
+}
+
+.MuiTable-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 0.875rem;
+  color: var(--mui-text-secondary);
+}
+
+.MuiTable-headerActions {
+  display: flex;
+  gap: var(--mui-spacing-1);
+  align-items: center;
+}
+
+/* Toolbar */
+.MuiTable-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: var(--mui-background-paper);
+  gap: var(--mui-spacing-2);
+}
+
+.MuiTable-toolbarLeft,
+.MuiTable-toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-1);
+}
+
+.MuiTable-toolbarRight {
+  margin-left: auto;
+}
+
+/* Search */
+.MuiTable-search {
+  position: relative;
+  max-width: 300px;
+  flex: 1;
+}
+
+.MuiTable-searchInput {
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  border: 1px solid var(--mui-divider);
+  border-radius: var(--mui-border-radius);
+  background-color: var(--mui-background-paper);
+  font-size: 0.875rem;
+  transition: border-color var(--mui-transition-duration-short) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiTable-searchInput:focus {
+  outline: none;
+  border-color: var(--mui-primary-main);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+.MuiTable-searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--mui-text-secondary);
+}
+
+/* Table container */
+.MuiTable-container {
+  overflow: auto;
+  flex: 1;
+  position: relative;
+}
+
+.MuiTable-container.horizontal-scroll {
+  overflow-x: auto;
+}
+
+/* Actual table */
+.MuiTable-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.MuiTable-table.auto-layout {
+  table-layout: auto;
+}
+
+/* Table head */
+.MuiTable-head {
+  background-color: var(--mui-grey-50);
+}
+
+.MuiTable-head.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Table header cells */
+.MuiTable-headCell {
+  padding: 16px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--mui-text-primary);
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: inherit;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.MuiTable-headCell.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiTable-headCell.sortable:hover {
+  background-color: var(--mui-grey-100);
+}
+
+.MuiTable-headCell.align-center {
+  text-align: center;
+}
+
+.MuiTable-headCell.align-right {
+  text-align: right;
+}
+
+/* Sort indicators */
+.MuiTable-sortLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.MuiTable-sortIcon {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiTable-headCell.sortable:hover .MuiTable-sortIcon,
+.MuiTable-headCell.sorted .MuiTable-sortIcon {
+  opacity: 1;
+}
+
+.MuiTable-headCell.sorted.desc .MuiTable-sortIcon {
+  transform: rotate(180deg);
+}
+
+/* Selection column */
+.MuiTable-selectColumn {
+  width: 48px;
+  text-align: center;
+}
+
+.MuiTable-selectColumn .MuiCheckbox-root {
+  margin: 0;
+}
+
+/* Table body */
+.MuiTable-body {
+  background-color: var(--mui-background-paper);
+}
+
+/* Table rows */
+.MuiTable-row {
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiTable-row:last-child {
+  border-bottom: none;
+}
+
+.MuiTable-row.hover:hover {
+  background-color: var(--mui-grey-50);
+}
+
+.MuiTable-row.selected {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+.MuiTable-row.clickable {
+  cursor: pointer;
+}
+
+.MuiTable-row.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Striped rows */
+.MuiTable-root.striped .MuiTable-row:nth-child(even) {
+  background-color: var(--mui-grey-25);
+}
+
+.MuiTable-root.striped .MuiTable-row:nth-child(even):hover {
+  background-color: var(--mui-grey-75);
+}
+
+/* Table cells */
+.MuiTable-cell {
+  padding: 16px;
+  border-bottom: 1px solid var(--mui-divider);
+  vertical-align: middle;
+  color: var(--mui-text-primary);
+  font-size: 0.875rem;
+  line-height: 1.43;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.MuiTable-cell.align-center {
+  text-align: center;
+}
+
+.MuiTable-cell.align-right {
+  text-align: right;
+}
+
+.MuiTable-cell.wrap {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Size variants */
+.MuiTable-sizeSmall .MuiTable-headCell,
+.MuiTable-sizeSmall .MuiTable-cell {
+  padding: 8px 16px;
+  font-size: 0.8125rem;
+}
+
+.MuiTable-sizeLarge .MuiTable-headCell,
+.MuiTable-sizeLarge .MuiTable-cell {
+  padding: 20px 16px;
+  font-size: 1rem;
+}
+
+/* Cell types */
+.MuiTable-cell.type-number {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.MuiTable-cell.type-boolean {
+  text-align: center;
+}
+
+.MuiTable-cell.type-actions {
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Cell actions */
+.MuiTable-cellActions {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.MuiTable-cellActions .MuiIconButton-root {
+  padding: 4px;
+}
+
+/* Expandable rows */
+.MuiTable-expandCell {
+  width: 48px;
+  text-align: center;
+}
+
+.MuiTable-expandButton {
+  background: transparent;
+  border: none;
+  color: var(--mui-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiTable-expandButton:hover {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-text-primary);
+}
+
+.MuiTable-expandIcon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiTable-expandButton[aria-expanded="true"] .MuiTable-expandIcon {
+  transform: rotate(180deg);
+}
+
+.MuiTable-expandedRow {
+  background-color: var(--mui-grey-25);
+}
+
+.MuiTable-expandedContent {
+  padding: var(--mui-spacing-3);
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+/* Loading states */
+.MuiTable-loading {
+  position: relative;
+}
+
+.MuiTable-loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.MuiTable-loadingSkeleton .MuiTable-cell {
+  padding: 16px;
+}
+
+.MuiTable-skeleton {
+  height: 20px;
+  background: linear-gradient(90deg, var(--mui-grey-200) 25%, var(--mui-grey-100) 50%, var(--mui-grey-200) 75%);
+  background-size: 200% 100%;
+  animation: mui-skeleton 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes mui-skeleton {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Empty state */
+.MuiTable-empty {
+  text-align: center;
+  padding: var(--mui-spacing-6) var(--mui-spacing-3);
+  color: var(--mui-text-secondary);
+}
+
+.MuiTable-emptyIcon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--mui-spacing-2);
+  opacity: 0.5;
+}
+
+.MuiTable-emptyMessage {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Pagination */
+.MuiTable-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  border-top: 1px solid var(--mui-divider);
+  background-color: var(--mui-background-paper);
+  flex-wrap: wrap;
+  gap: var(--mui-spacing-2);
+}
+
+.MuiTable-paginationInfo {
+  color: var(--mui-text-secondary);
+  font-size: 0.875rem;
+}
+
+.MuiTable-paginationControls {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-2);
+}
+
+.MuiTable-pageSize {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-1);
+}
+
+.MuiTable-pageSizeSelect {
+  padding: 4px 8px;
+  border: 1px solid var(--mui-divider);
+  border-radius: var(--mui-border-radius);
+  background-color: var(--mui-background-paper);
+  font-size: 0.875rem;
+}
+
+.MuiTable-paginationButtons {
+  display: flex;
+  gap: 4px;
+}
+
+/* Filters */
+.MuiTable-filters {
+  display: flex;
+  gap: var(--mui-spacing-2);
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: var(--mui-grey-25);
+  flex-wrap: wrap;
+}
+
+.MuiTable-filter {
+  min-width: 150px;
+}
+
+.MuiTable-filterSelect {
+  width: 100%;
+  padding: 6px 12px;
+  border: 1px solid var(--mui-divider);
+  border-radius: var(--mui-border-radius);
+  background-color: var(--mui-background-paper);
+  font-size: 0.875rem;
+}
+
+/* Checkbox styling */
+.MuiCheckbox-root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 9px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiCheckbox-root:hover {
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+.MuiCheckbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  cursor: inherit;
+}
+
+.MuiCheckbox-icon {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--mui-text-secondary);
+  border-radius: 2px;
+  background-color: transparent;
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  position: relative;
+}
+
+.MuiCheckbox-input:checked + .MuiCheckbox-icon {
+  background-color: var(--mui-primary-main);
+  border-color: var(--mui-primary-main);
+}
+
+.MuiCheckbox-input:checked + .MuiCheckbox-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 6px;
+  height: 10px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+}
+
+.MuiCheckbox-input:indeterminate + .MuiCheckbox-icon {
+  background-color: var(--mui-primary-main);
+  border-color: var(--mui-primary-main);
+}
+
+.MuiCheckbox-input:indeterminate + .MuiCheckbox-icon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 2px;
+  background-color: white;
+}
+
+/* Responsive behavior */
+@media (max-width: 900px) {
+  .MuiTable-container {
+    overflow-x: auto;
+  }
+  
+  .MuiTable-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--mui-spacing-2);
+  }
+  
+  .MuiTable-toolbarLeft,
+  .MuiTable-toolbarRight {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .MuiTable-search {
+    max-width: none;
+  }
+  
+  .MuiTable-pagination {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .MuiTable-paginationControls {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .MuiTable-headCell,
+  .MuiTable-cell {
+    padding: 8px 4px;
+    font-size: 0.75rem;
+  }
+  
+  .MuiTable-cellActions {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .MuiTable-filters {
+    flex-direction: column;
+  }
+}
+
+/* Virtual scrolling */
+.MuiTable-virtual {
+  height: 100%;
+  overflow: auto;
+}
+
+.MuiTable-virtualRow {
+  display: flex;
+  align-items: stretch;
+}
+
+.MuiTable-virtualCell {
+  flex: 1;
+  padding: 16px;
+  border-bottom: 1px solid var(--mui-divider);
+  border-right: 1px solid var(--mui-divider);
+  display: flex;
+  align-items: center;
+}
+
+.MuiTable-virtualCell:last-child {
+  border-right: none;
+}
+
+/* Print styles */
+@media print {
+  .MuiTable-toolbar,
+  .MuiTable-pagination,
+  .MuiTable-filters {
+    display: none;
+  }
+  
+  .MuiTable-container {
+    overflow: visible;
+  }
+  
+  .MuiTable-table {
+    page-break-inside: auto;
+  }
+  
+  .MuiTable-row {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiTable-headCell,
+  .MuiTable-cell {
+    border: 1px solid currentColor;
+  }
+  
+  .MuiTable-row.selected {
+    outline: 2px solid var(--mui-primary-main);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiTable-row,
+  .MuiTable-headCell,
+  .MuiTable-expandIcon,
+  .MuiTable-skeleton {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .MuiTable-loadingOverlay {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .MuiTable-skeleton {
+    background: linear-gradient(90deg, var(--mui-grey-800) 25%, var(--mui-grey-700) 50%, var(--mui-grey-800) 75%);
+  }
+}

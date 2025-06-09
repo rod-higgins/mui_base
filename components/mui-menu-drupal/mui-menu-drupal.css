@@ -1,0 +1,257 @@
+/* MUI Menu Drupal Integration Styles */
+
+.mui-menu-drupal {
+  position: relative;
+}
+
+/* Drupal-specific menu item states */
+.mui-menu-drupal .MuiMenuItem-root.is-active,
+.mui-menu-drupal .MuiMenuItem-root.active {
+  background-color: rgba(25, 118, 210, 0.08);
+  color: var(--mui-primary-main);
+  font-weight: 500;
+}
+
+.mui-menu-drupal .MuiMenuItem-root.is-active .MuiMenuItem-icon,
+.mui-menu-drupal .MuiMenuItem-root.active .MuiMenuItem-icon {
+  color: var(--mui-primary-main);
+}
+
+/* Active trail styling */
+.mui-menu-drupal .MuiMenuItem-root.in-active-trail {
+  background-color: rgba(25, 118, 210, 0.04);
+}
+
+.mui-menu-drupal .MuiMenuItem-root.in-active-trail > .MuiMenuItem-content .MuiMenuItem-primary {
+  font-weight: 500;
+}
+
+/* External link indicators */
+.mui-menu-drupal .MuiMenuItem-root[target="_blank"]::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3e%3cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3e%3cpolyline points='15,3 21,3 21,9'/%3e%3cline x1='10' y1='14' x2='21' y2='3'/%3e%3c/svg%3e");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  vertical-align: top;
+}
+
+/* Drupal contextual links integration */
+.mui-menu-drupal .contextual-region {
+  position: relative;
+}
+
+.mui-menu-drupal .contextual {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: var(--mui-zindex-tooltip);
+}
+
+/* Menu loading states */
+.mui-menu-drupal.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.mui-menu-drupal.is-loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--mui-primary-main);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: mui-menu-drupal-spin 1s linear infinite;
+  z-index: 1000;
+}
+
+@keyframes mui-menu-drupal-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error states */
+.mui-menu-drupal.has-error {
+  border-left: 4px solid var(--mui-error-main);
+  background-color: rgba(244, 67, 54, 0.04);
+}
+
+.mui-menu-drupal-error-message {
+  padding: 8px 16px;
+  color: var(--mui-error-main);
+  font-size: 0.875rem;
+  background-color: rgba(244, 67, 54, 0.08);
+  border-radius: var(--mui-border-radius);
+  margin: 8px;
+}
+
+/* Drupal menu item types */
+.mui-menu-drupal .MuiMenuItem-root[data-menu-type="menu_link_content"] {
+  /* Styling for content menu links */
+}
+
+.mui-menu-drupal .MuiMenuItem-root[data-menu-type="system"] {
+  /* Styling for system menu links */
+  opacity: 0.8;
+}
+
+.mui-menu-drupal .MuiMenuItem-root[data-menu-type="views"] {
+  /* Styling for Views menu links */
+}
+
+/* Drupal access denied styling */
+.mui-menu-drupal .MuiMenuItem-root.access-denied {
+  opacity: 0.5;
+  pointer-events: none;
+  text-decoration: line-through;
+}
+
+/* Drupal workflow states */
+.mui-menu-drupal .MuiMenuItem-root[data-workflow-state="draft"] {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.mui-menu-drupal .MuiMenuItem-root[data-workflow-state="published"] {
+  /* Normal styling for published content */
+}
+
+.mui-menu-drupal .MuiMenuItem-root[data-workflow-state="archived"] {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* Language switching integration */
+.mui-menu-drupal .language-switcher {
+  border-top: 1px solid var(--mui-divider);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.mui-menu-drupal .language-switcher .MuiMenuItem-root {
+  min-height: 40px;
+  font-size: 0.8125rem;
+}
+
+.mui-menu-drupal .language-switcher .MuiMenuItem-root.is-active {
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+}
+
+/* Drupal breadcrumb integration */
+.mui-menu-drupal .breadcrumb-trail {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: var(--mui-grey-50);
+  font-size: 0.75rem;
+  color: var(--mui-text-secondary);
+}
+
+.mui-menu-drupal .breadcrumb-trail a {
+  color: var(--mui-primary-main);
+  text-decoration: none;
+}
+
+.mui-menu-drupal .breadcrumb-trail a:hover {
+  text-decoration: underline;
+}
+
+/* User menu specific styling */
+.mui-menu-drupal.user-menu .MuiMenuItem-root[data-menu-item="user.logout"] {
+  border-top: 1px solid var(--mui-divider);
+  margin-top: 8px;
+  color: var(--mui-error-main);
+}
+
+.mui-menu-drupal.user-menu .MuiMenuItem-root[data-menu-item="user.logout"]:hover {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+/* Admin menu styling */
+.mui-menu-drupal.admin-menu {
+  font-size: 0.8125rem;
+}
+
+.mui-menu-drupal.admin-menu .MuiMenuItem-root {
+  min-height: 40px;
+  padding: 4px 12px;
+}
+
+.mui-menu-drupal.admin-menu .MuiMenuItem-icon {
+  min-width: 32px;
+}
+
+.mui-menu-drupal.admin-menu .MuiMenuItem-icon svg,
+.mui-menu-drupal.admin-menu .MuiMenuItem-icon i {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .mui-menu-drupal .MuiMenuItem-root[target="_blank"]::after {
+    display: none; /* Hide external link icons on mobile */
+  }
+  
+  .mui-menu-drupal .contextual {
+    display: none; /* Hide contextual links on mobile */
+  }
+  
+  .mui-menu-drupal .MuiMenuItem-shortcut {
+    display: none; /* Hide keyboard shortcuts on mobile */
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .mui-menu-drupal .MuiMenuItem-root.is-active,
+  .mui-menu-drupal .MuiMenuItem-root.active {
+    border: 2px solid var(--mui-primary-main);
+  }
+  
+  .mui-menu-drupal .MuiMenuItem-root.in-active-trail {
+    border-left: 4px solid var(--mui-primary-main);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mui-menu-drupal.is-loading::before {
+    animation: none;
+    border: 2px solid var(--mui-primary-main);
+    border-radius: 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .mui-menu-drupal .contextual,
+  .mui-menu-drupal .MuiMenuItem-root[target="_blank"]::after {
+    display: none;
+  }
+  
+  .mui-menu-drupal .MuiMenuItem-root {
+    background: none !important;
+    color: black !important;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .mui-menu-drupal .MuiMenuItem-root[target="_blank"]::after {
+    filter: invert(1);
+  }
+  
+  .mui-menu-drupal .breadcrumb-trail {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+}

@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * MUI Menu Drupal integration component template.
+ * 
+ * This component handles Drupal menu loading and transformation,
+ * then passes the resulting items to the base MUI menu component.
+ */
+#}
+
+{# Use transformed menu items if available, otherwise use provided items #}
+{% set menu_items = mui_menu_items ?: items ?: [] %}
+
+{# Use the base MUI menu component #}
+{% include 'mui_base:mui-menu' with {
+  items: menu_items,
+  variant: variant,
+  elevation: elevation,
+  dense: dense,
+  searchable: searchable,
+  search_placeholder: search_placeholder,
+  max_height: max_height,
+  min_width: min_width,
+  context_menu: context_menu,
+  auto_focus: auto_focus,
+  open: open,
+  title: title,
+  header_content: header_content,
+  footer_content: footer_content,
+  on_select: on_select,
+  on_close: on_close,
+  menu_list_props: menu_list_props,
+  virtual_scrolling: virtual_scrolling,
+  disable_auto_focus_item: disable_auto_focus_item,
+  anchor_origin: anchor_origin,
+  transform_origin: transform_origin,
+  attributes: attributes
+} %}

@@ -1,0 +1,171 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Sidebar Menu Drupal'
+description: 'Drupal integration wrapper for MUI Sidebar Menu component with automatic menu loading and transformation'
+props:
+  type: object
+  properties:
+    # Drupal menu settings
+    menu_name:
+      type: string
+      title: 'Menu name'
+      description: 'Machine name of the Drupal menu'
+      default: 'main'
+    
+    level:
+      type: integer
+      title: 'Starting level'
+      description: 'Menu items below this level will not be displayed'
+      default: 1
+      minimum: 1
+      maximum: 9
+    
+    depth:
+      type: integer
+      title: 'Maximum depth'
+      description: 'Maximum depth of menu items to display'
+      default: 0
+      minimum: 0
+      maximum: 9
+    
+    expanded:
+      type: array
+      title: 'Expanded parents'
+      description: 'Array of expanded menu item IDs'
+      default: []
+    
+    # Access and display settings
+    check_access:
+      type: boolean
+      title: 'Check access'
+      description: 'Only show accessible menu items'
+      default: true
+    
+    show_active_trail:
+      type: boolean
+      title: 'Show active trail'
+      description: 'Highlight active menu items'
+      default: true
+    
+    active_trail_class:
+      type: string
+      title: 'Active trail CSS class'
+      description: 'CSS class for active trail items'
+      default: 'MuiSidebarMenu-activeTrail'
+    
+    absolute_urls:
+      type: boolean
+      title: 'Absolute URLs'
+      description: 'Generate absolute URLs'
+      default: false
+    
+    language_interface:
+      type: boolean
+      title: 'Language interface'
+      description: 'Use interface language for URLs'
+      default: true
+    
+    # Icon settings
+    icon_field:
+      type: string
+      title: 'Icon field'
+      description: 'Field machine name containing icon data'
+      default: ''
+    
+    icon_default:
+      type: string
+      title: 'Default icon'
+      description: 'Default icon for items without icons'
+      default: ''
+    
+    # MUI Sidebar Menu settings (inherited from base component)
+    collapsible:
+      type: boolean
+      title: 'Collapsible submenus'
+      description: 'Enable collapsible submenu functionality'
+      default: true
+    
+    compact:
+      type: boolean
+      title: 'Compact mode'
+      description: 'Use compact spacing'
+      default: false
+    
+    show_icons:
+      type: boolean
+      title: 'Show icons'
+      description: 'Show expand/collapse icons'
+      default: true
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      items:
+        type: string
+      default: []
+    
+    item_classes:
+      type: array
+      title: 'Item CSS classes'
+      items:
+        type: string
+      default: []
+    
+    # Data inputs
+    items:
+      type: array
+      title: 'Menu items'
+      description: 'Pre-generated menu items (fallback)'
+      default: []
+    
+    mui_sidebar_menu_items:
+      type: array
+      title: 'Transformed menu items'
+      description: 'Menu items transformed from Drupal menu tree'
+      default: []
+    
+    menu_tree:
+      type: object
+      title: 'Menu tree'
+      description: 'Drupal menu tree structure'
+      default: {}
+    
+    # Cache settings
+    cache_contexts:
+      type: array
+      title: 'Cache contexts'
+      items:
+        type: string
+      default: ['url.path', 'user.roles']
+    
+    cache_tags:
+      type: array
+      title: 'Cache tags'
+      items:
+        type: string
+      default: []
+    
+    # Processing callbacks
+    transform_callback:
+      type: string
+      title: 'Transform callback'
+      description: 'Function to transform menu items'
+      default: ''
+    
+    # Advanced settings
+    auto_expand_active_trail:
+      type: boolean
+      title: 'Auto expand active trail'
+      description: 'Automatically expand menu items in active trail'
+      default: true
+    
+    max_depth_display:
+      type: integer
+      title: 'Maximum depth to display'
+      description: 'Maximum depth of nested menus to show'
+      default: 0
+      minimum: 0
+      maximum: 10
+
+libraryDependencies:
+  - mui_base/mui-sidebar-menu

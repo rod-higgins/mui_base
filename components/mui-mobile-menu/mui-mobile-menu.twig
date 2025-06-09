@@ -1,0 +1,160 @@
+{#
+/**
+ * @file
+ * MUI Mobile Menu component template.
+ */
+#}
+
+<div{{ attributes.addClass('MuiMobileMenu-root') }} data-breakpoint="{{ breakpoint }}">
+  <!-- Mobile Header -->
+  <div class="MuiMobileMenu-header">
+    <div class="MuiMobileMenu-logo">
+      {% if logo %}
+        {% if logo starts with '<svg' %}
+          {{ logo|raw }}
+        {% else %}
+          <img src="{{ logo }}" alt="{{ site_name }}" class="MuiMobileMenu-logoImage" />
+        {% endif %}
+      {% endif %}
+      {% if site_name %}
+        <span class="MuiMobileMenu-siteName mui-typography-h6">{{ site_name }}</span>
+      {% endif %}
+    </div>
+    
+    <!-- Mobile Menu Toggle -->
+    <button 
+      class="MuiMobileMenu-toggle MuiIconButton-root"
+      aria-label="{{ 'Toggle navigation menu'|t }}"
+      aria-expanded="false"
+      aria-controls="mobile-menu-drawer"
+      type="button"
+    >
+      <span class="MuiMobileMenu-toggleIcon">
+        <span class="MuiMobileMenu-toggleLine"></span>
+        <span class="MuiMobileMenu-toggleLine"></span>
+        <span class="MuiMobileMenu-toggleLine"></span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div class="MuiMobileMenu-drawer" id="mobile-menu-drawer" role="navigation" aria-label="{{ 'Mobile navigation'|t }}">
+    <div class="MuiMobileMenu-backdrop"></div>
+    <div class="MuiMobileMenu-drawerPaper MuiPaper-root MuiPaper-elevation16">
+      
+      <!-- Drawer Header -->
+      <div class="MuiMobileMenu-drawerHeader">
+        <div class="MuiMobileMenu-drawerLogo">
+          {% if logo %}
+            {% if logo starts with '<svg' %}
+              {{ logo|raw }}
+            {% else %}
+              <img src="{{ logo }}" alt="{{ site_name }}" class="MuiMobileMenu-logoImage" />
+            {% endif %}
+          {% endif %}
+          {% if site_name %}
+            <span class="MuiMobileMenu-siteName mui-typography-h6">{{ site_name }}</span>
+          {% endif %}
+        </div>
+        
+        <button 
+          class="MuiMobileMenu-closeButton MuiIconButton-root"
+          aria-label="{{ 'Close navigation menu'|t }}"
+          type="button"
+        >
+          <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Items -->
+      <nav class="MuiMobileMenu-nav">
+        <ul class="MuiList-root MuiMobileMenu-list">
+          {% for item in menu_items %}
+            <li class="MuiListItem-root MuiMobileMenu-listItem {{ item.below ? 'MuiMobileMenu-hasSubmenu' : '' }}">
+              
+              {% if item.below %}
+                <!-- Parent item with submenu -->
+                <div class="MuiMobileMenu-parentItem">
+                  <a href="{{ item.url }}" class="MuiListItemButton-root MuiMobileMenu-link">
+                    <span class="MuiListItemText-root">
+                      <span class="MuiListItemText-primary">{{ item.title }}</span>
+                    </span>
+                  </a>
+                  <button 
+                    class="MuiMobileMenu-expandButton MuiIconButton-root"
+                    aria-label="{{ 'Toggle submenu for'|t }} {{ item.title }}"
+                    aria-expanded="false"
+                    type="button"
+                  >
+                    <svg class="MuiSvgIcon-root MuiMobileMenu-expandIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Submenu -->
+                <div class="MuiMobileMenu-submenu MuiCollapse-root">
+                  <ul class="MuiList-root MuiMobileMenu-submenuList">
+                    {% for subitem in item.below %}
+                      <li class="MuiListItem-root MuiMobileMenu-submenuItem">
+                        <a href="{{ subitem.url }}" class="MuiListItemButton-root MuiMobileMenu-submenuLink">
+                          <span class="MuiListItemText-root">
+                            <span class="MuiListItemText-primary">{{ subitem.title }}</span>
+                          </span>
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+
+              {% else %}
+                <!-- Regular menu item -->
+                <a href="{{ item.url }}" class="MuiListItemButton-root MuiMobileMenu-link">
+                  <span class="MuiListItemText-root">
+                    <span class="MuiListItemText-primary">{{ item.title }}</span>
+                  </span>
+                </a>
+              {% endif %}
+
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- Desktop Navigation -->
+  <nav class="MuiMobileMenu-desktopNav">
+    <ul class="MuiList-root MuiMobileMenu-desktopList">
+      {% for item in menu_items %}
+        <li class="MuiListItem-root MuiMobileMenu-desktopItem {{ item.below ? 'MuiMobileMenu-hasDesktopSubmenu' : '' }}">
+          
+          <a href="{{ item.url }}" class="MuiButton-root MuiButton-text MuiMobileMenu-desktopLink">
+            {{ item.title }}
+          </a>
+
+          {% if item.below %}
+            <!-- Desktop Submenu -->
+            <div class="MuiMobileMenu-desktopSubmenu MuiPaper-root MuiPaper-elevation8">
+              <ul class="MuiList-root">
+                {% for subitem in item.below %}
+                  <li class="MuiListItem-root">
+                    <a href="{{ subitem.url }}" class="MuiListItemButton-root">
+                      <span class="MuiListItemText-root">
+                        <span class="MuiListItemText-primary">{{ subitem.title }}</span>
+                      </span>
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</div>

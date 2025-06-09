@@ -1,0 +1,1101 @@
+/* 
+ * MUI Base Theme - Foundation & Layout System (CONSOLIDATED)
+ * File: web/themes/custom/mui_base/css/mui-foundation.css
+ * 
+ * All foundation variables, layout styles, and grid utilities in one file
+ */
+
+/* ========================================
+   CSS CUSTOM PROPERTIES & VARIABLES
+   ======================================== */
+
+:root {
+  /* Brand Colors - Deep Teal Primary */
+  --mui-primary-main: #00303c;
+  --mui-primary-light: #335963;
+  --mui-primary-dark: #00212A;
+  --mui-primary-contrast-text: #ffffff;
+  
+  /* Brand Colors - Green Secondary */
+  --mui-secondary-main: #76BD22;
+  --mui-secondary-light: #91CA4E;
+  --mui-secondary-dark: #528417;
+  --mui-secondary-contrast-text: #ffffff;
+  
+  /* Brand Colors - Light Grey Tertiary */
+  --mui-tertiary-main: #E7ECEB;
+  --mui-tertiary-light: #EBEFEF;
+  --mui-tertiary-dark: #A1A5A4;
+  --mui-tertiary-contrast-text: #000000;
+  
+  /* Status Colors */
+  --mui-error-main: #f44336;
+  --mui-error-light: #e57373;
+  --mui-error-dark: #d32f2f;
+  --mui-error-contrast-text: #ffffff;
+  
+  --mui-warning-main: #ff9800;
+  --mui-warning-light: #ffb74d;
+  --mui-warning-dark: #f57c00;
+  --mui-warning-contrast-text: #000000;
+  
+  --mui-info-main: #2196f3;
+  --mui-info-light: #64b5f6;
+  --mui-info-dark: #1976d2;
+  --mui-info-contrast-text: #ffffff;
+  
+  --mui-success-main: #76BD22; /* Uses secondary green */
+  --mui-success-light: #91CA4E;
+  --mui-success-dark: #528417;
+  --mui-success-contrast-text: #ffffff;
+  
+  /* Background & Surface */
+  --mui-background-default: #fafafa;
+  --mui-background-paper: #ffffff;
+  
+  /* Text Colors */
+  --mui-text-primary: rgba(0, 0, 0, 0.87);
+  --mui-text-secondary: rgba(0, 0, 0, 0.6);
+  --mui-text-disabled: rgba(0, 0, 0, 0.38);
+  
+  /* Dividers */
+  --mui-divider: rgba(0, 0, 0, 0.12);
+  
+  /* Grey Palette */
+  --mui-grey-50: #fafafa;
+  --mui-grey-100: #f5f5f5;
+  --mui-grey-200: #eeeeee;
+  --mui-grey-300: #e0e0e0;
+  --mui-grey-400: #bdbdbd;
+  --mui-grey-500: #9e9e9e;
+  --mui-grey-600: #757575;
+  --mui-grey-700: #616161;
+  --mui-grey-800: #424242;
+  --mui-grey-900: #212121;
+  
+  /* Typography */
+  --mui-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  --mui-font-size-base: 1rem;
+  --mui-font-weight-light: 300;
+  --mui-font-weight-regular: 400;
+  --mui-font-weight-medium: 500;
+  --mui-font-weight-bold: 700;
+  
+  /* Spacing System (8px base) */
+  --mui-spacing-1: 8px;
+  --mui-spacing-2: 16px;
+  --mui-spacing-3: 24px;
+  --mui-spacing-4: 32px;
+  --mui-spacing-5: 40px;
+  --mui-spacing-6: 48px;
+  
+  /* Border Radius */
+  --mui-border-radius: 4px;
+  --mui-border-radius-sm: 2px;
+  --mui-border-radius-lg: 8px;
+  
+  /* Shadows (Material Design) */
+  --mui-shadow-1: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  --mui-shadow-2: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+  --mui-shadow-3: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+  --mui-shadow-4: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  --mui-shadow-6: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+  --mui-shadow-8: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
+  
+  /* Z-Index Scale */
+  --mui-zindex-mobileStepper: 1000;
+  --mui-zindex-fab: 1050;
+  --mui-zindex-speedDial: 1050;
+  --mui-zindex-appBar: 1100;
+  --mui-zindex-drawer: 1200;
+  --mui-zindex-modal: 1300;
+  --mui-zindex-snackbar: 1400;
+  --mui-zindex-tooltip: 1500;
+  
+  /* Transitions */
+  --mui-transition-duration-shortest: 150ms;
+  --mui-transition-duration-shorter: 200ms;
+  --mui-transition-duration-short: 250ms;
+  --mui-transition-duration-standard: 300ms;
+  --mui-transition-duration-complex: 375ms;
+  --mui-transition-duration-entering-screen: 225ms;
+  --mui-transition-duration-leaving-screen: 195ms;
+  
+  /* Easing */
+  --mui-transition-easing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --mui-transition-easing-ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+  --mui-transition-easing-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --mui-transition-easing-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* ========================================
+   BASE STYLES & TYPOGRAPHY
+   ======================================== */
+
+html {
+  box-sizing: border-box;
+  font-size: var(--mui-font-size-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-family: var(--mui-font-family);
+  font-weight: var(--mui-font-weight-regular);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--mui-text-primary);
+  background-color: var(--mui-background-default);
+  overflow-x: hidden;
+}
+
+/* Typography Utility Classes */
+.mui-typography-h1 { font-size: 6rem; font-weight: var(--mui-font-weight-light); line-height: 1.167; }
+.mui-typography-h2 { font-size: 3.75rem; font-weight: var(--mui-font-weight-light); line-height: 1.2; }
+.mui-typography-h3 { font-size: 3rem; font-weight: var(--mui-font-weight-regular); line-height: 1.167; }
+.mui-typography-h4 { font-size: 2.125rem; font-weight: var(--mui-font-weight-regular); line-height: 1.235; }
+.mui-typography-h5 { font-size: 1.5rem; font-weight: var(--mui-font-weight-regular); line-height: 1.334; }
+.mui-typography-h6 { font-size: 1.25rem; font-weight: var(--mui-font-weight-medium); line-height: 1.6; }
+.mui-typography-body1 { font-size: 1rem; font-weight: var(--mui-font-weight-regular); line-height: 1.5; }
+.mui-typography-body2 { font-size: 0.875rem; font-weight: var(--mui-font-weight-regular); line-height: 1.43; }
+.mui-typography-caption { font-size: 0.75rem; font-weight: var(--mui-font-weight-regular); line-height: 1.66; }
+
+/* ========================================
+   LAYOUT FOUNDATION
+   ======================================== */
+
+.layout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   CONTAINER SYSTEM
+   ======================================== */
+
+.MuiContainer-root {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: var(--mui-spacing-2);
+  padding-right: var(--mui-spacing-2);
+}
+
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding-left: var(--mui-spacing-3);
+    padding-right: var(--mui-spacing-3);
+  }
+}
+
+@media (min-width: 900px) {
+  .MuiContainer-root { max-width: 900px; }
+}
+
+@media (min-width: 1200px) {
+  .MuiContainer-root { max-width: 1200px; }
+}
+
+@media (min-width: 1536px) {
+  .MuiContainer-root { max-width: 1400px; }
+}
+
+/* Container variants */
+.MuiContainer-fixed { max-width: 1200px; }
+.MuiContainer-fluid { max-width: none; }
+.MuiContainer-disableGutters { padding-left: 0; padding-right: 0; }
+
+/* Container size variants */
+.MuiContainer-maxWidthXs { max-width: 444px; }
+.MuiContainer-maxWidthSm { max-width: 600px; }
+.MuiContainer-maxWidthMd { max-width: 900px; }
+.MuiContainer-maxWidthLg { max-width: 1200px; }
+.MuiContainer-maxWidthXl { max-width: 1536px; }
+
+/* Container utilities */
+.MuiContainer-centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.MuiContainer-fullHeight {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiContainer-section {
+  padding-top: var(--mui-spacing-6);
+  padding-bottom: var(--mui-spacing-6);
+}
+
+/* ========================================
+   HEADER STRUCTURE
+   ======================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--mui-zindex-appBar);
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  box-shadow: var(--mui-shadow-4);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mui-spacing-2) 0;
+}
+
+.navigation-wrapper {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Header container adjustments */
+.header .MuiContainer-root {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+}
+
+/* ========================================
+   UTILITY REGIONS
+   ======================================== */
+
+.highlighted-wrapper,
+.messages-wrapper,
+.help-wrapper {
+  padding: var(--mui-spacing-2) 0;
+}
+
+.highlighted-wrapper {
+  background-color: var(--mui-warning-light);
+  color: var(--mui-warning-contrast-text);
+}
+
+.breadcrumb-wrapper {
+  background-color: var(--mui-grey-50);
+  border-bottom: 1px solid var(--mui-divider);
+  padding: var(--mui-spacing-1) 0;
+}
+
+.page-title-wrapper {
+  padding: var(--mui-spacing-3) 0 var(--mui-spacing-2);
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+/* ========================================
+   CONTENT TOP/BOTTOM REGIONS
+   ======================================== */
+
+.content-top-wrapper,
+.content-bottom-wrapper {
+  padding: var(--mui-spacing-3) 0;
+  background-color: var(--mui-grey-50);
+}
+
+.content-top-regions,
+.content-bottom-regions {
+  display: grid;
+  gap: var(--mui-spacing-2);
+  grid-template-columns: 1fr;
+  margin-top: var(--mui-spacing-2);
+}
+
+@media (min-width: 768px) {
+  .content-top-regions,
+  .content-bottom-regions {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+/* ========================================
+   MAIN CONTENT GRID SYSTEM
+   ======================================== */
+
+.main-wrapper {
+  flex: 1;
+  padding: var(--mui-spacing-3) 0;
+}
+
+.main-content-grid {
+  display: grid;
+  gap: var(--mui-spacing-3);
+  align-items: start;
+}
+
+.main-content {
+  grid-area: content;
+  min-width: 0;
+  background-color: var(--mui-background-paper);
+  border-radius: var(--mui-border-radius);
+  box-shadow: var(--mui-shadow-1);
+  padding: var(--mui-spacing-3);
+}
+
+.sidebar {
+  padding: var(--mui-spacing-2);
+  background-color: var(--mui-background-paper);
+  border-radius: var(--mui-border-radius);
+  box-shadow: var(--mui-shadow-1);
+  height: fit-content;
+  position: sticky;
+  top: calc(var(--mui-spacing-4) + 80px);
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.sidebar--first { grid-area: sidebar-first; }
+.sidebar--second { grid-area: sidebar-second; }
+.sidebar--third { grid-area: sidebar-third; }
+.sidebar--fourth { grid-area: sidebar-fourth; }
+
+/* ========================================
+   LAYOUT VARIANTS
+   ======================================== */
+
+/* 1 Column Layout */
+.layout-1-col .main-content-grid {
+  grid-template-areas: "content";
+  grid-template-columns: 1fr;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.layout-1-col .sidebar { display: none; }
+
+/* 2 Column Layouts */
+.layout-2-col-left .main-content-grid {
+  grid-template-areas: "sidebar-first content";
+  grid-template-columns: 280px 1fr;
+}
+
+.layout-2-col-right .main-content-grid {
+  grid-template-areas: "content sidebar-second";
+  grid-template-columns: 1fr 280px;
+}
+
+/* Hide unused sidebars for 2-column layouts */
+.layout-2-col-left .sidebar--second,
+.layout-2-col-left .sidebar--third,
+.layout-2-col-left .sidebar--fourth,
+.layout-2-col-right .sidebar--first,
+.layout-2-col-right .sidebar--third,
+.layout-2-col-right .sidebar--fourth {
+  display: none;
+}
+
+/* 3 Column Layouts */
+.layout-3-col-left .main-content-grid {
+  grid-template-areas: "sidebar-first sidebar-second content";
+  grid-template-columns: 240px 240px 1fr;
+}
+
+.layout-3-col-right .main-content-grid {
+  grid-template-areas: "content sidebar-second sidebar-third";
+  grid-template-columns: 1fr 240px 240px;
+}
+
+.layout-3-col-center .main-content-grid {
+  grid-template-areas: "sidebar-first content sidebar-second";
+  grid-template-columns: 240px 1fr 240px;
+}
+
+/* Hide unused sidebars for 3-column layouts */
+.layout-3-col-left .sidebar--third,
+.layout-3-col-left .sidebar--fourth,
+.layout-3-col-right .sidebar--first,
+.layout-3-col-right .sidebar--fourth,
+.layout-3-col-center .sidebar--third,
+.layout-3-col-center .sidebar--fourth {
+  display: none;
+}
+
+/* 4 Column Layouts */
+.layout-4-col .main-content-grid {
+  grid-template-areas: "sidebar-first sidebar-second content sidebar-third";
+  grid-template-columns: 200px 200px 1fr 200px;
+}
+
+.layout-4-col-equal .main-content-grid {
+  grid-template-areas: "sidebar-first content sidebar-second sidebar-third";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.layout-4-col .sidebar--fourth { display: none; }
+
+/* ========================================
+   CENTERED LAYOUT (Special Layout)
+   ======================================== */
+
+.layout-centered {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-centered .header {
+  width: 100%;
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+}
+
+.layout-centered .navigation-wrapper {
+  width: 100%;
+  background-color: var(--mui-primary-dark);
+  display: none; /* Hidden by default, shown on desktop */
+}
+
+.layout-centered .horizontal-navigation {
+  display: block;
+}
+
+.layout-centered .horizontal-navigation .MuiList-root {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-wrap: wrap;
+  min-height: 48px;
+}
+
+.layout-centered .horizontal-navigation .MuiListItem-root {
+  display: inline-flex;
+  margin: 0;
+  position: relative;
+}
+
+.layout-centered .horizontal-navigation .MuiListItemButton-root,
+.layout-centered .horizontal-navigation .MuiSidebarMenu-link {
+  color: var(--mui-primary-contrast-text);
+  text-decoration: none;
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  border-radius: 0;
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  font-weight: var(--mui-font-weight-medium);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02857em;
+}
+
+.layout-centered .horizontal-navigation .MuiListItemButton-root:hover,
+.layout-centered .horizontal-navigation .MuiSidebarMenu-link:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.layout-centered .horizontal-navigation .MuiSidebarMenu-activeTrail {
+  background-color: rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+}
+
+/* Dropdown menus for horizontal navigation */
+.layout-centered .horizontal-navigation .MuiSidebarMenu-submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: var(--mui-background-paper);
+  box-shadow: var(--mui-shadow-8);
+  border-radius: var(--mui-border-radius);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-out);
+  z-index: var(--mui-zindex-tooltip);
+  overflow: hidden;
+  max-height: 0;
+}
+
+.layout-centered .horizontal-navigation .MuiSidebarMenu-hasChildren:hover .MuiSidebarMenu-submenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  max-height: 400px;
+}
+
+.layout-centered .horizontal-navigation .MuiSidebarMenu-sublevelLink {
+  color: var(--mui-text-primary);
+  background: transparent;
+  padding: var(--mui-spacing-1) var(--mui-spacing-2);
+  border-left: none;
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  font-size: 0.875rem;
+  font-weight: var(--mui-font-weight-regular);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.layout-centered .horizontal-navigation .MuiSidebarMenu-sublevelLink:hover {
+  background-color: var(--mui-grey-100);
+}
+
+.layout-centered .horizontal-navigation .MuiSidebarMenu-expandButton {
+  display: none;
+}
+
+.layout-centered .main-content-grid {
+  grid-template-areas: "content";
+  grid-template-columns: 1fr;
+  max-width: 100%;
+}
+
+.layout-centered .sidebar { display: none; }
+
+/* ========================================
+   GRID COMPONENT UTILITIES
+   ======================================== */
+
+.MuiGrid-root {
+  display: grid;
+  gap: var(--mui-spacing-2);
+}
+
+.MuiGrid-item { min-width: 0; }
+.MuiGrid-container { display: grid; gap: var(--mui-spacing-2); width: 100%; }
+
+/* Grid spacing variants */
+.MuiGrid-spacing-0 { gap: 0; }
+.MuiGrid-spacing-1 { gap: var(--mui-spacing-1); }
+.MuiGrid-spacing-2 { gap: var(--mui-spacing-2); }
+.MuiGrid-spacing-3 { gap: var(--mui-spacing-3); }
+.MuiGrid-spacing-4 { gap: var(--mui-spacing-4); }
+.MuiGrid-spacing-5 { gap: var(--mui-spacing-5); }
+.MuiGrid-spacing-6 { gap: var(--mui-spacing-6); }
+
+/* Direction variants */
+.MuiGrid-direction-row { grid-auto-flow: column; }
+.MuiGrid-direction-row-reverse { grid-auto-flow: column; direction: rtl; }
+.MuiGrid-direction-column { grid-auto-flow: row; }
+.MuiGrid-direction-column-reverse { grid-auto-flow: row; transform: scaleY(-1); }
+
+/* Grid size classes - Extra Small */
+.MuiGrid-xs-auto { grid-column: auto; }
+.MuiGrid-xs-true { flex-grow: 1; flex-basis: 0; max-width: 100%; }
+.MuiGrid-xs-1 { grid-column: span 1; }
+.MuiGrid-xs-2 { grid-column: span 2; }
+.MuiGrid-xs-3 { grid-column: span 3; }
+.MuiGrid-xs-4 { grid-column: span 4; }
+.MuiGrid-xs-5 { grid-column: span 5; }
+.MuiGrid-xs-6 { grid-column: span 6; }
+.MuiGrid-xs-7 { grid-column: span 7; }
+.MuiGrid-xs-8 { grid-column: span 8; }
+.MuiGrid-xs-9 { grid-column: span 9; }
+.MuiGrid-xs-10 { grid-column: span 10; }
+.MuiGrid-xs-11 { grid-column: span 11; }
+.MuiGrid-xs-12 { grid-column: span 12; }
+
+/* Small screens (600px and up) */
+@media (min-width: 600px) {
+  .MuiGrid-sm-auto { grid-column: auto; }
+  .MuiGrid-sm-true { flex-grow: 1; flex-basis: 0; max-width: 100%; }
+  .MuiGrid-sm-1 { grid-column: span 1; }
+  .MuiGrid-sm-2 { grid-column: span 2; }
+  .MuiGrid-sm-3 { grid-column: span 3; }
+  .MuiGrid-sm-4 { grid-column: span 4; }
+  .MuiGrid-sm-5 { grid-column: span 5; }
+  .MuiGrid-sm-6 { grid-column: span 6; }
+  .MuiGrid-sm-7 { grid-column: span 7; }
+  .MuiGrid-sm-8 { grid-column: span 8; }
+  .MuiGrid-sm-9 { grid-column: span 9; }
+  .MuiGrid-sm-10 { grid-column: span 10; }
+  .MuiGrid-sm-11 { grid-column: span 11; }
+  .MuiGrid-sm-12 { grid-column: span 12; }
+}
+
+/* Medium screens (900px and up) */
+@media (min-width: 900px) {
+  .MuiGrid-md-auto { grid-column: auto; }
+  .MuiGrid-md-true { flex-grow: 1; flex-basis: 0; max-width: 100%; }
+  .MuiGrid-md-1 { grid-column: span 1; }
+  .MuiGrid-md-2 { grid-column: span 2; }
+  .MuiGrid-md-3 { grid-column: span 3; }
+  .MuiGrid-md-4 { grid-column: span 4; }
+  .MuiGrid-md-5 { grid-column: span 5; }
+  .MuiGrid-md-6 { grid-column: span 6; }
+  .MuiGrid-md-7 { grid-column: span 7; }
+  .MuiGrid-md-8 { grid-column: span 8; }
+  .MuiGrid-md-9 { grid-column: span 9; }
+  .MuiGrid-md-10 { grid-column: span 10; }
+  .MuiGrid-md-11 { grid-column: span 11; }
+  .MuiGrid-md-12 { grid-column: span 12; }
+}
+
+/* Large screens (1200px and up) */
+@media (min-width: 1200px) {
+  .MuiGrid-lg-auto { grid-column: auto; }
+  .MuiGrid-lg-true { flex-grow: 1; flex-basis: 0; max-width: 100%; }
+  .MuiGrid-lg-1 { grid-column: span 1; }
+  .MuiGrid-lg-2 { grid-column: span 2; }
+  .MuiGrid-lg-3 { grid-column: span 3; }
+  .MuiGrid-lg-4 { grid-column: span 4; }
+  .MuiGrid-lg-5 { grid-column: span 5; }
+  .MuiGrid-lg-6 { grid-column: span 6; }
+  .MuiGrid-lg-7 { grid-column: span 7; }
+  .MuiGrid-lg-8 { grid-column: span 8; }
+  .MuiGrid-lg-9 { grid-column: span 9; }
+  .MuiGrid-lg-10 { grid-column: span 10; }
+  .MuiGrid-lg-11 { grid-column: span 11; }
+  .MuiGrid-lg-12 { grid-column: span 12; }
+}
+
+/* Extra large screens (1536px and up) */
+@media (min-width: 1536px) {
+  .MuiGrid-xl-auto { grid-column: auto; }
+  .MuiGrid-xl-true { flex-grow: 1; flex-basis: 0; max-width: 100%; }
+  .MuiGrid-xl-1 { grid-column: span 1; }
+  .MuiGrid-xl-2 { grid-column: span 2; }
+  .MuiGrid-xl-3 { grid-column: span 3; }
+  .MuiGrid-xl-4 { grid-column: span 4; }
+  .MuiGrid-xl-5 { grid-column: span 5; }
+  .MuiGrid-xl-6 { grid-column: span 6; }
+  .MuiGrid-xl-7 { grid-column: span 7; }
+  .MuiGrid-xl-8 { grid-column: span 8; }
+  .MuiGrid-xl-9 { grid-column: span 9; }
+  .MuiGrid-xl-10 { grid-column: span 10; }
+  .MuiGrid-xl-11 { grid-column: span 11; }
+  .MuiGrid-xl-12 { grid-column: span 12; }
+}
+
+/* Grid patterns */
+.MuiGrid-equal-height { display: grid; grid-auto-rows: 1fr; }
+.MuiGrid-auto-fit { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.MuiGrid-auto-fill { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+
+/* ========================================
+   FOOTER LAYOUT
+   ======================================== */
+
+.footer-top-wrapper {
+  background-color: var(--mui-primary-dark);
+  color: var(--mui-primary-contrast-text);
+  padding: var(--mui-spacing-3) 0;
+  margin-top: auto;
+}
+
+.footer {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-text-secondary);
+  padding: var(--mui-spacing-4) 0;
+  margin-top: auto;
+}
+
+.footer-regions {
+  display: grid;
+  gap: var(--mui-spacing-3);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .footer-regions { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .footer-regions { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+}
+
+.footer-bottom-wrapper {
+  background-color: var(--mui-grey-200);
+  color: var(--mui-text-secondary);
+  padding: var(--mui-spacing-2) 0;
+  border-top: 1px solid var(--mui-divider);
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+/* Footer container adjustments */
+.footer .MuiContainer-root {
+  padding-top: var(--mui-spacing-3);
+  padding-bottom: var(--mui-spacing-3);
+}
+
+/* ========================================
+   REGION UTILITIES
+   ======================================== */
+
+.region {
+  margin-bottom: var(--mui-spacing-2);
+}
+
+.region:last-child {
+  margin-bottom: 0;
+}
+
+/* Layout Builder Support */
+.layout-builder-block {
+  margin-bottom: var(--mui-spacing-2);
+  position: relative;
+}
+
+.layout-builder-form .layout-builder-block {
+  border: 1px dashed var(--mui-grey-400);
+  padding: var(--mui-spacing-1);
+  min-height: 40px;
+}
+
+/* ========================================
+   RESPONSIVE LAYOUT ADJUSTMENTS
+   ======================================== */
+
+/* 4-column to 3-column on large screens */
+@media (max-width: 1400px) {
+  .layout-4-col .main-content-grid {
+    grid-template-areas: 
+      "sidebar-first content sidebar-second"
+      "sidebar-third content sidebar-third";
+    grid-template-columns: 240px 1fr 240px;
+  }
+  
+  .layout-4-col-equal .main-content-grid {
+    grid-template-areas: 
+      "sidebar-first content sidebar-second"
+      "sidebar-third content sidebar-third";
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
+
+/* 3-column to 2-column on medium screens */
+@media (max-width: 1200px) {
+  .layout-3-col-left .main-content-grid,
+  .layout-3-col-right .main-content-grid {
+    grid-template-areas:
+      "sidebar-first sidebar-second"
+      "content content";
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .layout-3-col-center .main-content-grid {
+    grid-template-areas:
+      "sidebar-first content"
+      "sidebar-second content";
+    grid-template-columns: 300px 1fr;
+  }
+  
+  .layout-4-col .main-content-grid,
+  .layout-4-col-equal .main-content-grid {
+    grid-template-areas: 
+      "sidebar-first sidebar-second"
+      "content content"
+      "sidebar-third sidebar-fourth";
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 2-column adjustments on tablets */
+@media (max-width: 1024px) {
+  .layout-2-col-left .main-content-grid,
+  .layout-2-col-right .main-content-grid {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+/* All layouts become single column on mobile */
+@media (max-width: 768px) {
+  .main-content-grid {
+    grid-template-areas: 
+      "content"
+      "sidebar-first"
+      "sidebar-second"
+      "sidebar-third"
+      "sidebar-fourth" !important;
+    grid-template-columns: 1fr !important;
+  }
+  
+  .sidebar {
+    position: static;
+    max-height: none;
+    margin-bottom: var(--mui-spacing-2);
+  }
+  
+  .main-content {
+    margin-bottom: var(--mui-spacing-2);
+    border-radius: 0;
+    box-shadow: none;
+    padding: var(--mui-spacing-2);
+  }
+  
+  .layout-centered .main-content {
+    margin: 0 calc(-1 * var(--mui-spacing-2));
+  }
+  
+  .MuiContainer-section {
+    padding-top: var(--mui-spacing-4);
+    padding-bottom: var(--mui-spacing-4);
+  }
+}
+
+/* Mobile breakpoints for centered layout */
+@media (max-width: 899px) {
+  .layout-centered .MuiMobileMenu-toggle { display: block; }
+  .layout-centered .navigation-wrapper { display: none !important; }
+}
+
+@media (min-width: 900px) {
+  .layout-centered .MuiMobileMenu-toggle { display: none; }
+  .layout-centered .navigation-wrapper { display: block; }
+}
+
+/* Compact mode adjustments */
+body.mui-compact-mode .MuiContainer-root {
+  padding-left: var(--mui-spacing-1);
+  padding-right: var(--mui-spacing-1);
+}
+
+@media (min-width: 600px) {
+  body.mui-compact-mode .MuiContainer-root {
+    padding-left: var(--mui-spacing-2);
+    padding-right: var(--mui-spacing-2);
+  }
+}
+
+body.mui-compact-mode .MuiGrid-container {
+  gap: var(--mui-spacing-1);
+}
+
+/* ========================================
+   ACCESSIBILITY & PREFERENCES
+   ======================================== */
+
+/* Screen reader only content */
+.sr-only,
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  z-index: var(--mui-zindex-tooltip);
+  padding: 8px 16px;
+  background: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: var(--mui-font-weight-medium);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .main-content,
+  .sidebar,
+  .footer,
+  .header {
+    border: 2px solid currentColor;
+  }
+  
+  body,
+  .MuiTypography-root {
+    color: #000 !important;
+    background-color: #fff !important;
+  }
+  
+  a {
+    color: #0000ee !important;
+    text-decoration: underline !important;
+  }
+  
+  a:visited { color: #551a8b !important; }
+  
+  a:focus,
+  a:hover {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+  }
+  
+  .layout-centered .horizontal-navigation .MuiSidebarMenu-submenu {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .sidebar { position: static; }
+  
+  .layout-centered .horizontal-navigation .MuiSidebarMenu-submenu { transition: none; }
+  
+  .layout-centered .horizontal-navigation .MuiListItemButton-root,
+  .layout-centered .horizontal-navigation .MuiSidebarMenu-link { transition: none; }
+}
+
+/* Focus management */
+*:focus {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+.using-keyboard *:focus {
+  outline: 3px solid var(--mui-primary-main);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 4px var(--mui-primary-main);
+}
+
+/* ========================================
+   PRINT LAYOUT
+   ======================================== */
+
+@media print {
+  .header,
+  .navigation-wrapper,
+  .skip-link,
+  .sidebar,
+  .footer-top-wrapper,
+  .footer-bottom-wrapper {
+    display: none !important;
+  }
+  
+  .main-content-grid {
+    display: block !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    gap: 0 !important;
+  }
+  
+  .main-content {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+  }
+  
+  .layout-container {
+    max-width: none;
+    padding: 0;
+  }
+  
+  .MuiContainer-root {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  body {
+    font-family: serif !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    color: black !important;
+    background: white !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: serif !important;
+    color: black !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  
+  .sr-only {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    clip: auto !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    font-size: 10pt;
+    color: #666;
+  }
+}
+
+/* ========================================
+   DARK MODE ADJUSTMENTS
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  body.mui-dark-mode-enabled,
+  .mui-dark-mode-enabled {
+    /* Background colors */
+    --mui-background-default: #121212;
+    --mui-background-paper: #1e1e1e;
+    
+    /* Text colors */
+    --mui-text-primary: rgba(255, 255, 255, 0.87);
+    --mui-text-secondary: rgba(255, 255, 255, 0.6);
+    --mui-text-disabled: rgba(255, 255, 255, 0.38);
+    
+    /* Divider */
+    --mui-divider: rgba(255, 255, 255, 0.12);
+    
+    /* Elevation shadows for dark mode */
+    --mui-shadow-1: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+    --mui-shadow-2: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
+    --mui-shadow-3: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12);
+    --mui-shadow-4: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+    --mui-shadow-6: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+    --mui-shadow-8: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
+  }
+  
+  body.mui-dark-mode-enabled .footer {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+  
+  body.mui-dark-mode-enabled .footer-bottom-wrapper {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+  
+  body.mui-dark-mode-enabled .layout-centered .horizontal-navigation .MuiSidebarMenu-submenu {
+    background-color: var(--mui-background-paper);
+  }
+  
+  body.mui-dark-mode-enabled .layout-centered .horizontal-navigation .MuiSidebarMenu-sublevelLink:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}
+
+/* Force dark mode class */
+body.mui-dark-mode,
+.mui-dark-mode {
+  /* Background colors */
+  --mui-background-default: #121212;
+  --mui-background-paper: #1e1e1e;
+  
+  /* Text colors */
+  --mui-text-primary: rgba(255, 255, 255, 0.87);
+  --mui-text-secondary: rgba(255, 255, 255, 0.6);
+  --mui-text-disabled: rgba(255, 255, 255, 0.38);
+  
+  /* Divider */
+  --mui-divider: rgba(255, 255, 255, 0.12);
+}

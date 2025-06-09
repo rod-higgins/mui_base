@@ -1,0 +1,362 @@
+/* MUI Alert Drupal Integration Styles */
+
+/* Alert container positioning */
+.mui-alert-drupal {
+  position: fixed;
+  z-index: var(--mui-zindex-snackbar, 1400);
+  pointer-events: none;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Position variants */
+.mui-alert-position-top-left {
+  top: 16px;
+  left: 16px;
+}
+
+.mui-alert-position-top-center {
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mui-alert-position-top-right {
+  top: 16px;
+  right: 16px;
+}
+
+.mui-alert-position-bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+
+.mui-alert-position-bottom-center {
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mui-alert-position-bottom-right {
+  bottom: 16px;
+  right: 16px;
+}
+
+/* Alert stacking */
+.mui-alert-drupal .MuiAlert-root {
+  margin-bottom: 8px;
+  pointer-events: auto;
+  max-width: 400px;
+  min-width: 300px;
+  box-shadow: var(--mui-shadow-6);
+}
+
+.mui-alert-drupal .MuiAlert-root:last-child {
+  margin-bottom: 0;
+}
+
+/* Drupal message type styling */
+.mui-alert-drupal .MuiAlert-root[data-drupal-message-type="status"] {
+  /* Status messages (usually success) */
+}
+
+.mui-alert-drupal .MuiAlert-root[data-drupal-message-type="warning"] {
+  /* Warning messages */
+}
+
+.mui-alert-drupal .MuiAlert-root[data-drupal-message-type="error"] {
+  /* Error messages */
+  animation: mui-alert-shake 0.5s ease-in-out;
+}
+
+.mui-alert-drupal .MuiAlert-root[data-drupal-message-type="info"] {
+  /* Informational messages */
+}
+
+/* Shake animation for error messages */
+@keyframes mui-alert-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Queue overflow indicator */
+.mui-alert-drupal::after {
+  content: '';
+  display: none;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--mui-primary-main), transparent);
+  border-radius: 2px;
+}
+
+.mui-alert-drupal.has-overflow::after {
+  display: block;
+}
+
+/* Form error integration */
+.mui-alert-drupal.handles-form-errors .form-item--error {
+  position: relative;
+}
+
+.mui-alert-drupal.handles-form-errors .form-item--error::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid var(--mui-error-main);
+  border-radius: var(--mui-border-radius);
+  pointer-events: none;
+  animation: mui-form-error-pulse 1s ease-in-out 3;
+}
+
+@keyframes mui-form-error-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+/* Hide original Drupal messages when replacing */
+.mui-alert-drupal.replaces-drupal-messages ~ .messages,
+.mui-alert-drupal.replaces-drupal-messages + .messages {
+  display: none;
+}
+
+/* Preserve compatibility mode */
+.mui-alert-drupal.preserves-message-region + .messages {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Loading state */
+.mui-alert-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.mui-alert-loading.is-visible {
+  opacity: 1;
+}
+
+.mui-alert-loading-spinner {
+  width: 24px;
+  height: 24px;
+  color: var(--mui-primary-main);
+}
+
+.mui-alert-spinner {
+  width: 100%;
+  height: 100%;
+  animation: mui-spinner-rotate 1.4s linear infinite;
+}
+
+@keyframes mui-spinner-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* AJAX integration indicators */
+.mui-alert-drupal[data-ajax-support="true"] {
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.mui-alert-drupal.ajax-loading {
+  opacity: 0.7;
+}
+
+/* Custom alert styling for different Drupal contexts */
+.mui-alert-drupal .MuiAlert-root[data-custom-alert="true"] {
+  border-left: 4px solid currentColor;
+}
+
+/* System message styling */
+.mui-alert-drupal.handles-system-messages .MuiAlert-root {
+  font-weight: 500;
+}
+
+.mui-alert-drupal.handles-system-messages .MuiAlert-filledError {
+  background: linear-gradient(135deg, var(--mui-error-main), var(--mui-error-dark));
+}
+
+.mui-alert-drupal.handles-system-messages .MuiAlert-filledWarning {
+  background: linear-gradient(135deg, var(--mui-warning-main), var(--mui-warning-dark));
+}
+
+.mui-alert-drupal.handles-system-messages .MuiAlert-filledSuccess {
+  background: linear-gradient(135deg, var(--mui-success-main), var(--mui-success-dark));
+}
+
+.mui-alert-drupal.handles-system-messages .MuiAlert-filledInfo {
+  background: linear-gradient(135deg, var(--mui-info-main), var(--mui-info-dark));
+}
+
+/* Link styling within alerts */
+.mui-alert-drupal .MuiAlert-message a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.mui-alert-drupal .MuiAlert-message a:hover {
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+/* Alert grouping */
+.mui-alert-drupal .MuiAlert-root.grouped {
+  margin-bottom: 2px;
+  border-radius: 0;
+}
+
+.mui-alert-drupal .MuiAlert-root.grouped:first-of-type {
+  border-top-left-radius: var(--mui-border-radius);
+  border-top-right-radius: var(--mui-border-radius);
+}
+
+.mui-alert-drupal .MuiAlert-root.grouped:last-of-type {
+  border-bottom-left-radius: var(--mui-border-radius);
+  border-bottom-right-radius: var(--mui-border-radius);
+  margin-bottom: 8px;
+}
+
+.mui-alert-drupal .MuiAlert-root.grouped:only-of-type {
+  border-radius: var(--mui-border-radius);
+}
+
+/* Group counter */
+.mui-alert-drupal .MuiAlert-root.grouped .mui-alert-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  padding: 0 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .mui-alert-drupal {
+    left: 8px !important;
+    right: 8px !important;
+    top: 8px !important;
+    bottom: auto !important;
+    transform: none !important;
+    max-width: none;
+  }
+  
+  .mui-alert-drupal .MuiAlert-root {
+    min-width: auto;
+    max-width: none;
+    width: 100%;
+  }
+  
+  /* Stack alerts vertically on mobile */
+  .mui-alert-position-top-center,
+  .mui-alert-position-bottom-center {
+    left: 8px;
+    right: 8px;
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .mui-alert-drupal .MuiAlert-root {
+    border: 2px solid currentColor;
+  }
+  
+  .mui-alert-drupal .MuiAlert-message a {
+    text-decoration: underline !important;
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mui-alert-drupal .MuiAlert-root {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .mui-alert-loading-spinner {
+    animation: none;
+  }
+  
+  .mui-alert-drupal .MuiAlert-progressBar {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .mui-alert-drupal {
+    position: static !important;
+    transform: none !important;
+    max-width: none !important;
+    z-index: auto !important;
+  }
+  
+  .mui-alert-drupal .MuiAlert-root {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    margin-bottom: 8px;
+  }
+  
+  .mui-alert-drupal .MuiAlert-closeButton,
+  .mui-alert-drupal .MuiAlert-progress,
+  .mui-alert-loading {
+    display: none !important;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .mui-alert-drupal .MuiAlert-root {
+    box-shadow: var(--mui-shadow-8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  }
+  
+  .mui-alert-drupal .MuiAlert-message a {
+    color: currentColor;
+  }
+}
+
+/* Focus management for accessibility */
+.mui-alert-drupal .MuiAlert-root:focus-within {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+/* Custom alert container themes */
+.mui-alert-drupal.theme-admin {
+  --mui-error-main: #d32f2f;
+  --mui-warning-main: #f57c00;
+  --mui-success-main: #388e3c;
+  --mui-info-main: #1976d2;
+}
+
+.mui-alert-drupal.theme-frontend {
+  --mui-border-radius: 8px;
+}
+
+.mui-alert-drupal.theme-minimal {
+  --mui-shadow-6: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

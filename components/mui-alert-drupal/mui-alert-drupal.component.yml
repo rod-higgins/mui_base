@@ -1,0 +1,326 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Alert Drupal'
+description: 'Drupal integration wrapper for MUI Alert component with automatic message handling and system integration'
+props:
+  type: object
+  properties:
+    # Message handling
+    message_types:
+      type: array
+      title: 'Message types to handle'
+      description: 'Drupal message types to convert to alerts'
+      items:
+        type: string
+        enum: ['status', 'warning', 'error', 'info']
+      default: ['status', 'warning', 'error', 'info']
+    
+    severity_mapping:
+      type: object
+      title: 'Severity mapping'
+      description: 'Map Drupal message types to MUI severities'
+      properties:
+        status:
+          type: string
+          enum: ['success', 'info', 'warning', 'error']
+          default: 'success'
+        warning:
+          type: string
+          enum: ['success', 'info', 'warning', 'error']
+          default: 'warning'
+        error:
+          type: string
+          enum: ['success', 'info', 'warning', 'error']
+          default: 'error'
+        info:
+          type: string
+          enum: ['success', 'info', 'warning', 'error']
+          default: 'info'
+      default:
+        status: 'success'
+        warning: 'warning'
+        error: 'error'
+        info: 'info'
+    
+    # Message sources
+    handle_messenger:
+      type: boolean
+      title: 'Handle messenger service'
+      description: 'Process messages from Drupal messenger service'
+      default: true
+    
+    handle_form_errors:
+      type: boolean
+      title: 'Handle form errors'
+      description: 'Display form validation errors as alerts'
+      default: true
+    
+    handle_system_messages:
+      type: boolean
+      title: 'Handle system messages'
+      description: 'Display system/admin messages as alerts'
+      default: true
+    
+    # Alert behavior
+    auto_dismiss:
+      type: boolean
+      title: 'Auto dismiss'
+      description: 'Automatically dismiss alerts after timeout'
+      default: true
+    
+    dismiss_timeout:
+      type: object
+      title: 'Dismiss timeouts by severity'
+      description: 'Timeout in milliseconds for each severity'
+      properties:
+        success:
+          type: integer
+          default: 5000
+        info:
+          type: integer
+          default: 7000
+        warning:
+          type: integer
+          default: 10000
+        error:
+          type: integer
+          default: 0
+      default:
+        success: 5000
+        info: 7000
+        warning: 10000
+        error: 0
+    
+    # Queue management
+    max_alerts:
+      type: integer
+      title: 'Maximum alerts'
+      description: 'Maximum number of alerts to show simultaneously'
+      default: 5
+      minimum: 1
+      maximum: 20
+    
+    queue_behavior:
+      type: string
+      title: 'Queue behavior'
+      description: 'How to handle alert overflow'
+      enum: ['fifo', 'lifo', 'priority']
+      default: 'fifo'
+    
+    group_similar:
+      type: boolean
+      title: 'Group similar messages'
+      description: 'Group similar messages together'
+      default: true
+    
+    # Display options
+    show_close_button:
+      type: boolean
+      title: 'Show close button'
+      description: 'Allow manual dismissal of alerts'
+      default: true
+    
+    show_icons:
+      type: boolean
+      title: 'Show severity icons'
+      description: 'Display icons for different severities'
+      default: true
+    
+    show_progress_bar:
+      type: boolean
+      title: 'Show progress bar'
+      description: 'Show countdown progress for auto-dismiss'
+      default: true
+    
+    # Positioning
+    position:
+      type: string
+      title: 'Alert position'
+      description: 'Where to position alerts on screen'
+      enum: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right']
+      default: 'top-right'
+    
+    slide_direction:
+      type: string
+      title: 'Slide direction'
+      description: 'Animation direction for alerts'
+      enum: ['up', 'down', 'left', 'right']
+      default: 'down'
+    
+    # MUI Alert settings (inherited from base component)
+    variant:
+      type: string
+      title: 'Alert variant'
+      enum: ['filled', 'outlined', 'standard']
+      default: 'standard'
+    
+    color:
+      type: string
+      title: 'Color override'
+      enum: ['inherit', 'primary', 'secondary', 'error', 'warning', 'info', 'success']
+      default: 'inherit'
+    
+    # Content processing
+    allow_html:
+      type: boolean
+      title: 'Allow HTML in messages'
+      description: 'Allow HTML content in alert messages'
+      default: true
+    
+    sanitize_html:
+      type: boolean
+      title: 'Sanitize HTML'
+      description: 'Sanitize HTML content for security'
+      default: true
+    
+    link_detection:
+      type: boolean
+      title: 'Auto-detect links'
+      description: 'Automatically convert URLs to links'
+      default: true
+    
+    # Form integration
+    form_error_selector:
+      type: string
+      title: 'Form error selector'
+      description: 'CSS selector for form error elements'
+      default: '.form-item--error'
+    
+    clear_form_errors:
+      type: boolean
+      title: 'Clear original form errors'
+      description: 'Hide original Drupal form error display'
+      default: false
+    
+    # System integration
+    replace_drupal_messages:
+      type: boolean
+      title: 'Replace Drupal messages'
+      description: 'Replace default Drupal message display'
+      default: false
+    
+    preserve_message_region:
+      type: boolean
+      title: 'Preserve message region'
+      description: 'Keep original message region for compatibility'
+      default: true
+    
+    # JavaScript integration
+    on_message_add:
+      type: string
+      title: 'Message add handler'
+      description: 'JavaScript function for new message events'
+      default: ''
+    
+    on_message_dismiss:
+      type: string
+      title: 'Message dismiss handler'
+      description: 'JavaScript function for message dismissal'
+      default: ''
+    
+    # AJAX integration
+    ajax_support:
+      type: boolean
+      title: 'AJAX support'
+      description: 'Handle AJAX form submissions and responses'
+      default: true
+    
+    ajax_message_selector:
+      type: string
+      title: 'AJAX message selector'
+      description: 'Selector for AJAX response messages'
+      default: '.messages'
+    
+    # Accessibility
+    announce_messages:
+      type: boolean
+      title: 'Announce messages'
+      description: 'Use Drupal.announce() for screen readers'
+      default: true
+    
+    aria_live_region:
+      type: string
+      title: 'ARIA live region'
+      description: 'ARIA live region politeness'
+      enum: ['polite', 'assertive', 'off']
+      default: 'polite'
+    
+    # Custom styling
+    container_classes:
+      type: array
+      title: 'Container CSS classes'
+      description: 'Additional CSS classes for alert container'
+      items:
+        type: string
+      default: []
+    
+    alert_classes:
+      type: array
+      title: 'Alert CSS classes'
+      description: 'Additional CSS classes for individual alerts'
+      items:
+        type: string
+      default: []
+    
+    # Data inputs
+    drupal_messages:
+      type: array
+      title: 'Drupal messages'
+      description: 'Pre-loaded Drupal messages from messenger service'
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+          message:
+            type: string
+          timestamp:
+            type: integer
+      default: []
+    
+    custom_alerts:
+      type: array
+      title: 'Custom alerts'
+      description: 'Additional custom alert messages'
+      items:
+        type: object
+        properties:
+          severity:
+            type: string
+          title:
+            type: string
+          message:
+            type: string
+          auto_dismiss:
+            type: boolean
+          dismiss_timeout:
+            type: integer
+      default: []
+    
+    # Cache settings
+    cache_messages:
+      type: boolean
+      title: 'Cache messages'
+      description: 'Cache processed messages'
+      default: true
+    
+    cache_max_age:
+      type: integer
+      title: 'Cache max age'
+      description: 'Cache duration in seconds'
+      default: 300
+    
+    # Processing callbacks
+    message_transform_callback:
+      type: string
+      title: 'Message transform callback'
+      description: 'Function to transform messages'
+      default: ''
+    
+    severity_transform_callback:
+      type: string
+      title: 'Severity transform callback'
+      description: 'Function to transform severity levels'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-alert

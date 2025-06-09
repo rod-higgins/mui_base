@@ -1,0 +1,365 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Table'
+description: 'Enhanced Material UI Table component with rich data display and interaction features'
+props:
+  type: object
+  properties:
+    # Table structure
+    columns:
+      type: array
+      title: 'Table columns'
+      description: 'Array of column configuration objects'
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            title: 'Column ID'
+          label:
+            type: string
+            title: 'Column header text'
+          field:
+            type: string
+            title: 'Data field name'
+          width:
+            type: string
+            title: 'Column width (CSS value)'
+          min_width:
+            type: string
+            title: 'Minimum width'
+          align:
+            type: string
+            enum: ['left', 'center', 'right']
+            default: 'left'
+          sortable:
+            type: boolean
+            default: true
+          filterable:
+            type: boolean
+            default: false
+          type:
+            type: string
+            enum: ['text', 'number', 'date', 'boolean', 'html', 'actions']
+            default: 'text'
+          format:
+            type: string
+            title: 'Display format for values'
+          render:
+            type: string
+            title: 'Custom render function name'
+          header_render:
+            type: string
+            title: 'Custom header render function'
+          css_classes:
+            type: array
+            items:
+              type: string
+    
+    rows:
+      type: array
+      title: 'Table rows'
+      description: 'Array of row data objects'
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          data:
+            type: object
+          selected:
+            type: boolean
+            default: false
+          disabled:
+            type: boolean
+            default: false
+          css_classes:
+            type: array
+            items:
+              type: string
+          actions:
+            type: array
+            items:
+              type: object
+    
+    # Table features
+    title:
+      type: string
+      title: 'Table title'
+      description: 'Optional title for the table'
+      default: ''
+    
+    subtitle:
+      type: string
+      title: 'Table subtitle'
+      description: 'Optional subtitle or description'
+      default: ''
+    
+    # Visual styling
+    variant:
+      type: string
+      title: 'Table variant'
+      description: 'Visual style of the table'
+      enum: ['standard', 'outlined', 'dense']
+      default: 'standard'
+    
+    size:
+      type: string
+      title: 'Table size'
+      description: 'Size density of table elements'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    # Header and footer
+    show_header:
+      type: boolean
+      title: 'Show header'
+      description: 'Display table header row'
+      default: true
+    
+    sticky_header:
+      type: boolean
+      title: 'Sticky header'
+      description: 'Keep header visible when scrolling'
+      default: false
+    
+    show_footer:
+      type: boolean
+      title: 'Show footer'
+      description: 'Display table footer row'
+      default: false
+    
+    footer_content:
+      type: text
+      title: 'Footer content'
+      description: 'Custom footer content (HTML)'
+      format: 'html'
+      default: ''
+    
+    # Selection features
+    selectable:
+      type: string
+      title: 'Selection mode'
+      description: 'Enable row selection'
+      enum: ['none', 'single', 'multiple']
+      default: 'none'
+    
+    select_all:
+      type: boolean
+      title: 'Select all checkbox'
+      description: 'Show select all checkbox in header'
+      default: false
+    
+    # Sorting
+    sortable:
+      type: boolean
+      title: 'Enable sorting'
+      description: 'Enable column sorting'
+      default: true
+    
+    default_sort:
+      type: object
+      title: 'Default sort'
+      description: 'Initial sort configuration'
+      properties:
+        column:
+          type: string
+        direction:
+          type: string
+          enum: ['asc', 'desc']
+    
+    # Filtering and search
+    searchable:
+      type: boolean
+      title: 'Enable search'
+      description: 'Add search functionality'
+      default: false
+    
+    search_placeholder:
+      type: string
+      title: 'Search placeholder'
+      description: 'Placeholder text for search input'
+      default: 'Search table...'
+    
+    filterable:
+      type: boolean
+      title: 'Enable filtering'
+      description: 'Add column filtering'
+      default: false
+    
+    # Pagination
+    paginated:
+      type: boolean
+      title: 'Enable pagination'
+      description: 'Add pagination controls'
+      default: false
+    
+    page_size:
+      type: integer
+      title: 'Page size'
+      description: 'Number of rows per page'
+      default: 10
+      minimum: 5
+      maximum: 100
+    
+    page_size_options:
+      type: array
+      title: 'Page size options'
+      description: 'Available page sizes'
+      items:
+        type: integer
+      default: [5, 10, 25, 50]
+    
+    # Layout and display
+    responsive:
+      type: boolean
+      title: 'Responsive'
+      description: 'Enable responsive behavior'
+      default: true
+    
+    horizontal_scroll:
+      type: boolean
+      title: 'Horizontal scroll'
+      description: 'Enable horizontal scrolling'
+      default: true
+    
+    virtual_scrolling:
+      type: boolean
+      title: 'Virtual scrolling'
+      description: 'Enable virtual scrolling for large datasets'
+      default: false
+    
+    max_height:
+      type: string
+      title: 'Maximum height'
+      description: 'CSS max-height value'
+      default: ''
+    
+    # Row features
+    hover_highlight:
+      type: boolean
+      title: 'Hover highlight'
+      description: 'Highlight rows on hover'
+      default: true
+    
+    stripe_rows:
+      type: boolean
+      title: 'Stripe rows'
+      description: 'Alternate row background colors'
+      default: false
+    
+    expandable_rows:
+      type: boolean
+      title: 'Expandable rows'
+      description: 'Allow rows to expand with additional content'
+      default: false
+    
+    # Toolbar features
+    show_toolbar:
+      type: boolean
+      title: 'Show toolbar'
+      description: 'Display table toolbar'
+      default: false
+    
+    toolbar_actions:
+      type: array
+      title: 'Toolbar actions'
+      description: 'Action buttons for toolbar'
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          icon:
+            type: string
+          action:
+            type: string
+          disabled:
+            type: boolean
+    
+    # Export features
+    exportable:
+      type: boolean
+      title: 'Enable export'
+      description: 'Add export functionality'
+      default: false
+    
+    export_formats:
+      type: array
+      title: 'Export formats'
+      description: 'Available export formats'
+      items:
+        type: string
+        enum: ['csv', 'excel', 'pdf', 'json']
+      default: ['csv']
+    
+    # Loading states
+    loading:
+      type: boolean
+      title: 'Loading state'
+      description: 'Show loading indicator'
+      default: false
+    
+    loading_rows:
+      type: integer
+      title: 'Loading skeleton rows'
+      description: 'Number of skeleton rows to show'
+      default: 5
+      minimum: 1
+      maximum: 20
+    
+    # Empty state
+    empty_message:
+      type: string
+      title: 'Empty message'
+      description: 'Message when no data is available'
+      default: 'No data available'
+    
+    empty_icon:
+      type: text
+      title: 'Empty state icon'
+      description: 'Icon for empty state'
+      format: 'html'
+      default: ''
+    
+    # JavaScript integration
+    on_row_click:
+      type: string
+      title: 'Row click handler'
+      description: 'JavaScript function for row clicks'
+      default: ''
+    
+    on_selection_change:
+      type: string
+      title: 'Selection change handler'
+      description: 'JavaScript function for selection changes'
+      default: ''
+    
+    on_sort:
+      type: string
+      title: 'Sort handler'
+      description: 'JavaScript function for sort events'
+      default: ''
+    
+    on_filter:
+      type: string
+      title: 'Filter handler'
+      description: 'JavaScript function for filter events'
+      default: ''
+    
+    # Accessibility
+    caption:
+      type: string
+      title: 'Table caption'
+      description: 'Accessible caption for screen readers'
+      default: ''
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes'
+      items:
+        type: string
+
+libraryDependencies:
+  - mui_base/mui-table

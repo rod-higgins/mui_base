@@ -1,0 +1,384 @@
+{#
+/**
+ * @file
+ * MUI AppBar component template with comprehensive navigation and branding.
+ */
+#}
+
+{% set appbar_classes = [
+  'MuiAppBar-root',
+  'MuiAppBar-' ~ position,
+  'MuiAppBar-color' ~ (color|title),
+  'MuiAppBar-' ~ variant,
+  color != 'transparent' ? 'MuiPaper-elevation' ~ elevation : '',
+  auto_hide ? 'MuiAppBar-autoHide' : '',
+  blur_background ? 'MuiAppBar-blur' : '',
+  scroll_color_change ? 'MuiAppBar-scrollColorChange' : '',
+  'mui-appbar'
+] %}
+
+<header{{ attributes.addClass(appbar_classes) }} 
+        data-mobile-breakpoint="{{ mobile_breakpoint }}"
+        {% if auto_hide %}data-auto-hide-threshold="{{ auto_hide_threshold }}"{% endif %}
+        {% if scroll_color_change %}data-scrolled-color="{{ scrolled_color }}"{% endif %}>
+  
+  {# Main AppBar Container #}
+  <div class="MuiToolbar-root MuiToolbar-{{ variant }}">
+    
+    {# Container wrapper #}
+    {% set container_classes = [
+      'MuiAppBar-container',
+      container_max_width != 'false' ? 'MuiContainer-root MuiContainer-maxWidth' ~ (container_max_width|title) : '',
+      disable_gutters ? 'MuiContainer-disableGutters' : ''
+    ] %}
+    <div class="{{ container_classes|join(' ')|trim }}">
+      
+      {# Left Section #}
+      <div class="MuiAppBar-section MuiAppBar-sectionLeft">
+        
+        {# Mobile Menu Button #}
+        {% if mobile_menu_enabled %}
+          <button 
+            type="button" 
+            class="MuiAppBar-mobileMenuButton MuiIconButton-root"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="mobile-navigation-menu"
+          >
+            <span class="MuiAppBar-hamburger">
+              <span class="MuiAppBar-hamburgerLine"></span>
+              <span class="MuiAppBar-hamburgerLine"></span>
+              <span class="MuiAppBar-hamburgerLine"></span>
+            </span>
+          </button>
+        {% endif %}
+        
+        {# Brand/Logo Section #}
+        {% if logo or logo_url or logo_svg or site_name %}
+          <div class="MuiAppBar-brand">
+            <a href="{{ home_url }}" class="MuiAppBar-brandLink" aria-label="Home">
+              
+              {# Logo Image #}
+              {% if logo %}
+                <div class="MuiAppBar-logo">
+                  {% if logo is iterable %}
+                    {% for media_item in logo %}
+                      {{ media_item }}
+                    {% endfor %}
+                  {% else %}
+                    {{ logo }}
+                  {% endif %}
+                </div>
+              {% elseif logo_url %}
+                <img src="{{ logo_url }}" alt="{{ site_name ?: 'Logo' }}" class="MuiAppBar-logoImage" />
+              {% elseif logo_svg %}
+                <div class="MuiAppBar-logoSvg">
+                  {{ logo_svg|raw }}
+                </div>
+              {% endif %}
+              
+              {# Site Name and Tagline #}
+              {% if site_name %}
+                <div class="MuiAppBar-brandText">
+                  <span class="MuiAppBar-siteName MuiTypography-h6">{{ site_name }}</span>
+                  {% if site_tagline %}
+                    <span class="MuiAppBar-tagline MuiTypography-caption">{{ site_tagline }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+              
+            </a>
+          </div>
+        {% endif %}
+        
+        {# Custom Left Content #}
+        {% if left_content %}
+          <div class="MuiAppBar-leftContent">
+            {{ left_content|raw }}
+          </div>
+        {% endif %}
+        
+      </div>
+      
+      {# Center Section #}
+      <div class="MuiAppBar-section MuiAppBar-sectionCenter">
+        
+        {# Desktop Navigation #}
+        {% if navigation_items and navigation_items is iterable %}
+          <nav class="MuiAppBar-navigation" aria-label="Main navigation">
+            <ul class="MuiAppBar-navList">
+              {% for item in navigation_items %}
+                <li class="MuiAppBar-navItem {{ item.active ? 'MuiAppBar-navItemActive' : '' }}">
+                  
+                  {% if item.children and item.children is iterable and item.children|length > 0 %}
+                    {# Navigation item with dropdown #}
+                    <button 
+                      type="button" 
+                      class="MuiAppBar-navButton MuiButton-root MuiButton-text"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                    >
+                      {% if item.icon %}
+                        <span class="MuiButton-startIcon">
+                          {% if item.icon starts with '<' %}
+                            {{ item.icon|raw }}
+                          {% else %}
+                            <i class="{{ item.icon }}" aria-hidden="true"></i>
+                          {% endif %}
+                        </span>
+                      {% endif %}
+                      <span class="MuiButton-label">{{ item.title }}</span>
+                      <span class="MuiButton-endIcon">
+                        <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M7 10l5 5 5-5z"></path>
+                        </svg>
+                      </span>
+                    </button>
+                    
+                    {# Dropdown menu #}
+                    <div class="MuiAppBar-dropdown MuiPaper-root MuiPaper-elevation8">
+                      <ul class="MuiList-root" role="menu">
+                        {% for child in item.children %}
+                          <li class="MuiListItem-root" role="none">
+                            <a 
+                              href="{{ child.url }}" 
+                              class="MuiListItemButton-root MuiAppBar-dropdownLink"
+                              role="menuitem"
+                              {% if child.target == '_blank' %}target="_blank" rel="noopener noreferrer"{% endif %}
+                            >
+                              {% if child.icon %}
+                                <span class="MuiListItemIcon-root">
+                                  {% if child.icon starts with '<' %}
+                                    {{ child.icon|raw }}
+                                  {% else %}
+                                    <i class="{{ child.icon }}" aria-hidden="true"></i>
+                                  {% endif %}
+                                </span>
+                              {% endif %}
+                              <span class="MuiListItemText-primary">{{ child.title }}</span>
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    
+                  {% else %}
+                    {# Simple navigation link #}
+                    <a 
+                      href="{{ item.url }}" 
+                      class="MuiAppBar-navLink MuiButton-root MuiButton-text"
+                      {% if item.target == '_blank' %}target="_blank" rel="noopener noreferrer"{% endif %}
+                    >
+                      {% if item.icon %}
+                        <span class="MuiButton-startIcon">
+                          {% if item.icon starts with '<' %}
+                            {{ item.icon|raw }}
+                          {% else %}
+                            <i class="{{ item.icon }}" aria-hidden="true"></i>
+                          {% endif %}
+                        </span>
+                      {% endif %}
+                      <span class="MuiButton-label">{{ item.title }}</span>
+                    </a>
+                  {% endif %}
+                  
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+        
+        {# Search Bar (when not in actions) #}
+        {% if search_enabled %}
+          <div class="MuiAppBar-search">
+            <form action="{{ search_action_url }}" method="get" class="MuiAppBar-searchForm">
+              <div class="MuiInputBase-root MuiAppBar-searchInput">
+                <div class="MuiInputAdornment-root MuiInputAdornment-positionStart">
+                  <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  name="q" 
+                  class="MuiInputBase-input"
+                  placeholder="{{ search_placeholder }}"
+                  aria-label="Search"
+                />
+              </div>
+            </form>
+          </div>
+        {% endif %}
+        
+        {# Custom Center Content #}
+        {% if center_content %}
+          <div class="MuiAppBar-centerContent">
+            {{ center_content|raw }}
+          </div>
+        {% endif %}
+        
+      </div>
+      
+      {# Right Section #}
+      <div class="MuiAppBar-section MuiAppBar-sectionRight">
+        
+        {# Action Items #}
+        {% if action_items and action_items is iterable %}
+          <div class="MuiAppBar-actions">
+            {% for action in action_items %}
+              
+              {% if action.type == 'button' %}
+                <a href="{{ action.url ?: '#' }}" class="MuiButton-root MuiButton-text MuiAppBar-actionButton">
+                  {% if action.icon %}
+                    <span class="MuiButton-startIcon">
+                      {% if action.icon starts with '<' %}
+                        {{ action.icon|raw }}
+                      {% else %}
+                        <i class="{{ action.icon }}" aria-hidden="true"></i>
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                  <span class="MuiButton-label">{{ action.label }}</span>
+                </a>
+                
+              {% elseif action.type == 'icon' %}
+                <button type="button" class="MuiIconButton-root MuiAppBar-iconButton" aria-label="{{ action.label }}">
+                  {% if action.badge %}
+                    <span class="MuiBadge-root">
+                      {% if action.icon starts with '<' %}
+                        {{ action.icon|raw }}
+                      {% else %}
+                        <i class="{{ action.icon }}" aria-hidden="true"></i>
+                      {% endif %}
+                      {% if action.badge.content %}
+                        <span class="MuiBadge-badge MuiBadge-{{ action.badge.color|default('error') }}">
+                          {{ action.badge.content }}
+                        </span>
+                      {% endif %}
+                    </span>
+                  {% else %}
+                    {% if action.icon starts with '<' %}
+                      {{ action.icon|raw }}
+                    {% else %}
+                      <i class="{{ action.icon }}" aria-hidden="true"></i>
+                    {% endif %}
+                  {% endif %}
+                </button>
+                
+              {% elseif action.type == 'avatar' %}
+                <button type="button" class="MuiAppBar-avatar MuiIconButton-root" aria-label="{{ action.label ?: 'User menu' }}">
+                  {% if action.avatar_url %}
+                    <img src="{{ action.avatar_url }}" alt="{{ action.label ?: 'Avatar' }}" class="MuiAvatar-img" />
+                  {% elseif action.avatar_initials %}
+                    <span class="MuiAvatar-initials">{{ action.avatar_initials|upper|slice(0, 2) }}</span>
+                  {% else %}
+                    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                    </svg>
+                  {% endif %}
+                </button>
+                
+              {% elseif action.type == 'menu' %}
+                <button 
+                  type="button" 
+                  class="MuiIconButton-root MuiAppBar-menuButton"
+                  aria-label="{{ action.label ?: 'More options' }}"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  {% if action.icon %}
+                    {% if action.icon starts with '<' %}
+                      {{ action.icon|raw }}
+                    {% else %}
+                      <i class="{{ action.icon }}" aria-hidden="true"></i>
+                    {% endif %}
+                  {% else %}
+                    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+                    </svg>
+                  {% endif %}
+                </button>
+              {% endif %}
+              
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        {# Custom Right Content #}
+        {% if right_content %}
+          <div class="MuiAppBar-rightContent">
+            {{ right_content|raw }}
+          </div>
+        {% endif %}
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  
+  {# Progress Indicator #}
+  {% if show_progress %}
+    <div class="MuiAppBar-progress">
+      <div class="MuiLinearProgress-root MuiLinearProgress-determinate">
+        <div class="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary" style="transform: translateX(-{{ 100 - progress_value }}%)"></div>
+      </div>
+    </div>
+  {% endif %}
+  
+  {# Mobile Navigation Menu #}
+  {% if mobile_menu_enabled and navigation_items %}
+    <div class="MuiAppBar-mobileMenu MuiDrawer-root" id="mobile-navigation-menu" aria-hidden="true">
+      <div class="MuiDrawer-paper">
+        
+        {# Mobile menu header #}
+        <div class="MuiAppBar-mobileHeader">
+          {% if site_name %}
+            <span class="MuiTypography-h6">{{ site_name }}</span>
+          {% endif %}
+          <button type="button" class="MuiIconButton-root MuiAppBar-mobileCloseButton" aria-label="Close menu">
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+            </svg>
+          </button>
+        </div>
+        
+        {# Mobile navigation items #}
+        <nav class="MuiAppBar-mobileNav">
+          <ul class="MuiList-root">
+            {% for item in navigation_items %}
+              <li class="MuiListItem-root">
+                <a 
+                  href="{{ item.url }}" 
+                  class="MuiListItemButton-root {{ item.active ? 'MuiListItem-selected' : '' }}"
+                  {% if item.target == '_blank' %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+                  {% if item.icon %}
+                    <span class="MuiListItemIcon-root">
+                      {% if item.icon starts with '<' %}
+                        {{ item.icon|raw }}
+                      {% else %}
+                        <i class="{{ item.icon }}" aria-hidden="true"></i>
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                  <span class="MuiListItemText-primary">{{ item.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+        
+      </div>
+      <div class="MuiBackdrop-root"></div>
+    </div>
+  {% endif %}
+  
+  {# Children content (for additional custom content) #}
+  {% if children %}
+    <div class="MuiAppBar-children">
+      {{ children }}
+    </div>
+  {% endif %}
+  
+</header>

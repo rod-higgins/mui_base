@@ -1,0 +1,125 @@
+{#
+/**
+ * @file
+ * Fixed MUI Avatar component template with proper string value handling.
+ */
+#}
+
+{% set avatar_classes = [
+  'MuiAvatar-root',
+  'MuiAvatar-' ~ variant,
+  'MuiAvatar-' ~ size,
+  background_color != 'default' ? 'MuiAvatar-color' ~ (background_color|title) : '',
+  text_color != 'default' ? 'MuiAvatar-text' ~ (text_color|title) : '',
+  link_url ? 'MuiAvatar-clickable' : '',
+  online_status != 'none' ? 'MuiAvatar-hasStatus' : '',
+  badge ? 'MuiAvatar-hasBadge' : '',
+  'mui-avatar'
+] %}
+
+{# Determine wrapper element #}
+{% set wrapper_tag = link_url ? 'a' : 'div' %}
+
+{# Set up link attributes if needed #}
+{% set link_attributes = {} %}
+{% if link_url %}
+  {% set link_attributes = {
+    href: link_url,
+    title: link_title ?: tooltip,
+    target: link_target != '_self' ? link_target : null,
+    rel: link_target == '_blank' ? 'noopener noreferrer' : null
+  } %}
+{% endif %}
+
+{# Calculate custom size styles #}
+{% set custom_styles = [] %}
+{% if size == 'custom' and custom_size %}
+  {% set custom_styles = custom_styles|merge([
+    'width: ' ~ custom_size ~ 'px',
+    'height: ' ~ custom_size ~ 'px'
+  ]) %}
+{% endif %}
+
+{# Add custom colors #}
+{% if background_color == 'custom' and custom_background %}
+  {% set custom_styles = custom_styles|merge(['background-color: ' ~ custom_background]) %}
+{% endif %}
+{% if text_color == 'custom' and custom_text_color %}
+  {% set custom_styles = custom_styles|merge(['color: ' ~ custom_text_color]) %}
+{% endif %}
+
+{# Set up tooltip #}
+{% set tooltip_attrs = {} %}
+{% if tooltip %}
+  {% set tooltip_attrs = {
+    'data-tooltip': tooltip,
+    'aria-label': tooltip
+  } %}
+{% endif %}
+
+<{{ wrapper_tag }}{{ attributes.addClass(avatar_classes).addAttributes(link_attributes).addAttributes(tooltip_attrs) }}{% if custom_styles %} style="{{ custom_styles|join('; ') }}"{% endif %}>
+  
+  {# Image content (highest priority) #}
+  {% if image %}
+    <div class="MuiAvatar-img">
+      {% if image is iterable %}
+        {% for media_item in image %}
+          {{ media_item }}
+        {% endfor %}
+      {% else %}
+        {{ image }}
+      {% endif %}
+    </div>
+  {% elseif image_url %}
+    <img 
+      src="{{ image_url }}" 
+      alt="{{ image_alt ?: 'Avatar' }}" 
+      class="MuiAvatar-img"
+      loading="lazy"
+    />
+  
+  {# Initials content (second priority) #}
+  {% elseif initials %}
+    <span class="MuiAvatar-initials">{{ initials|upper|slice(0, 4) }}</span>
+  
+  {# Icon content (third priority) #}
+  {% elseif icon %}
+    <span class="MuiAvatar-icon">
+      {% if icon starts with '<' %}
+        {{ icon|raw }}
+      {% else %}
+        <i class="{{ icon }}" aria-hidden="true"></i>
+      {% endif %}
+    </span>
+  
+  {# Default fallback icon #}
+  {% else %}
+    <span class="MuiAvatar-icon">
+      <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+      </svg>
+    </span>
+  {% endif %}
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    <div class="MuiAvatar-children">
+      {{ children }}
+    </div>
+  {% endif %}
+
+  {# Online status indicator #}
+  {% if online_status != 'none' %}
+    <span class="MuiAvatar-status MuiAvatar-status{{ online_status|title }}" aria-label="{{ online_status|title }}">
+      <span class="MuiAvatar-statusDot"></span>
+    </span>
+  {% endif %}
+
+  {# Badge overlay #}
+  {% if badge and badge.content %}
+    <span class="MuiAvatar-badge MuiAvatar-badge{{ badge.color|default('primary')|title }} MuiAvatar-badge{{ badge.position|default('top-right')|replace('-', '')|title }}">
+      {{ badge.content }}
+    </span>
+  {% endif %}
+
+</{{ wrapper_tag }}>

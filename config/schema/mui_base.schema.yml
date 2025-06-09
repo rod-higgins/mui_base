@@ -1,0 +1,110 @@
+mui_base.settings:
+  type: config_object
+  label: 'MUI Base theme settings'
+  mapping:
+    # Brand settings
+    brand_name:
+      type: string
+      label: 'Brand name'
+    brand_class:
+      type: string
+      label: 'Brand CSS class'
+    
+    # Logo settings
+    logo_type:
+      type: string
+      label: 'Logo type'
+    svg_logo:
+      type: text
+      label: 'SVG logo markup'
+    logo_max_width:
+      type: integer
+      label: 'Logo maximum width'
+    logo_max_height:
+      type: integer
+      label: 'Logo maximum height'
+    
+    # Layout settings
+    default_layout:
+      type: string
+      label: 'Default layout'
+    mobile_breakpoint:
+      type: string
+      label: 'Mobile breakpoint'
+    sticky_header:
+      type: boolean
+      label: 'Sticky header'
+    
+    # Color settings (all as strings for hex values)
+    primary_main:
+      type: string
+      label: 'Primary main color'
+    primary_light:
+      type: string
+      label: 'Primary light color'
+    primary_dark:
+      type: string
+      label: 'Primary dark color'
+    secondary_main:
+      type: string
+      label: 'Secondary main color'
+    secondary_light:
+      type: string
+      label: 'Secondary light color'
+    secondary_dark:
+      type: string
+      label: 'Secondary dark color'
+    tertiary_main:
+      type: string
+      label: 'Tertiary main color'
+    tertiary_light:
+      type: string
+      label: 'Tertiary light color'
+    tertiary_dark:
+      type: string
+      label: 'Tertiary dark color'
+    error_main:
+      type: string
+      label: 'Error color'
+    warning_main:
+      type: string
+      label: 'Warning color'
+    info_main:
+      type: string
+      label: 'Info color'
+    background_default:
+      type: string
+      label: 'Default background color'
+    background_paper:
+      type: string
+      label: 'Paper background color'
+    
+    # Typography
+    font_family:
+      type: string
+      label: 'Font family'
+    custom_font_family:
+      type: string
+      label: 'Custom font family'
+    font_size_base:
+      type: float
+      label: 'Base font size'
+    
+    # Advanced settings
+    enable_dark_mode:
+      type: boolean
+      label: 'Enable dark mode'
+    enable_animations:
+      type: boolean
+      label: 'Enable animations'
+    enable_ripple:
+      type: boolean
+      label: 'Enable ripple effects'
+    compact_mode:
+      type: boolean
+      label: 'Compact mode'
+    
+    # Custom CSS
+    custom_css_code:
+      type: text
+      label: 'Custom CSS code'

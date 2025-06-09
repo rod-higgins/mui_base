@@ -1,0 +1,363 @@
+/* MUI Sidebar Menu Component Styles */
+
+.MuiSidebarMenu-root {
+  width: 100%;
+  background-color: var(--mui-background-paper);
+  border-radius: var(--mui-border-radius);
+  overflow: hidden;
+}
+
+.MuiSidebarMenu-list {
+  margin: 0;
+  padding: var(--mui-spacing-1) 0;
+  list-style: none;
+}
+
+.MuiSidebarMenu-item {
+  position: relative;
+  margin: 0;
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiSidebarMenu-item:last-child {
+  border-bottom: none;
+}
+
+.MuiSidebarMenu-itemWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Links */
+.MuiSidebarMenu-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: var(--mui-spacing-2);
+  color: var(--mui-text-primary);
+  text-decoration: none;
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  min-height: 48px;
+}
+
+.MuiSidebarMenu-link:hover {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-primary-main);
+}
+
+.MuiSidebarMenu-link:focus-visible {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: -2px;
+}
+
+.MuiSidebarMenu-link:active {
+  background-color: var(--mui-grey-200);
+}
+
+/* Active trail styling */
+.MuiSidebarMenu-activeTrail {
+  color: var(--mui-primary-main);
+  background-color: rgba(25, 118, 210, 0.08);
+  font-weight: 500;
+}
+
+.MuiSidebarMenu-activeTrail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--mui-primary-main);
+}
+
+.MuiSidebarMenu-activeIndicator {
+  position: absolute;
+  right: var(--mui-spacing-2);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--mui-primary-main);
+}
+
+/* Indent for nested levels */
+.MuiSidebarMenu-indent {
+  display: inline-block;
+  height: 1px;
+  flex-shrink: 0;
+}
+
+.MuiSidebarMenu-sublevelLink {
+  padding-left: 0;
+  background-color: var(--mui-grey-50);
+  border-left: 2px solid var(--mui-divider);
+}
+
+.MuiSidebarMenu-sublevelLink:hover {
+  background-color: var(--mui-grey-100);
+  border-left-color: var(--mui-primary-light);
+}
+
+.MuiSidebarMenu-sublevelLink.MuiSidebarMenu-activeTrail {
+  border-left-color: var(--mui-primary-main);
+}
+
+/* Link text */
+.MuiSidebarMenu-linkText {
+  font-size: 0.875rem;
+  line-height: 1.43;
+  font-weight: 400;
+  color: inherit;
+}
+
+.MuiSidebarMenu-activeTrail .MuiSidebarMenu-linkText {
+  font-weight: 500;
+}
+
+/* Expand/Collapse button */
+.MuiSidebarMenu-expandButton {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--mui-text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--mui-border-radius);
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MuiSidebarMenu-expandButton:hover {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-text-primary);
+}
+
+.MuiSidebarMenu-expandButton:focus-visible {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+.MuiSidebarMenu-expandIcon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiSidebarMenu-expandButton[aria-expanded="true"] .MuiSidebarMenu-expandIcon {
+  transform: rotate(180deg);
+}
+
+.MuiSidebarMenu-expandText {
+  font-size: 16px;
+  font-weight: bold;
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiSidebarMenu-expandButton[aria-expanded="true"] .MuiSidebarMenu-expandText {
+  transform: rotate(45deg);
+}
+
+/* Submenu */
+.MuiSidebarMenu-submenu {
+  overflow: hidden;
+  background-color: var(--mui-background-paper);
+}
+
+.MuiSidebarMenu-collapsible {
+  max-height: 0;
+  transition: max-height var(--mui-transition-duration-short) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiSidebarMenu-collapsible.is-expanded {
+  max-height: 1000px;
+}
+
+.MuiSidebarMenu-expanded {
+  max-height: none;
+}
+
+.MuiSidebarMenu-submenuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: var(--mui-grey-50);
+  border-top: 1px solid var(--mui-divider);
+}
+
+.MuiSidebarMenu-subitem {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.MuiSidebarMenu-subitem:last-child {
+  border-bottom: none;
+}
+
+/* Level-specific styling */
+.MuiSidebarMenu-level-0 > .MuiSidebarMenu-itemWrapper > .MuiSidebarMenu-link {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.MuiSidebarMenu-level-1 > .MuiSidebarMenu-itemWrapper > .MuiSidebarMenu-link {
+  font-size: 0.85rem;
+  padding: var(--mui-spacing-1) var(--mui-spacing-2);
+  min-height: 40px;
+}
+
+.MuiSidebarMenu-level-2 > .MuiSidebarMenu-itemWrapper > .MuiSidebarMenu-link {
+  font-size: 0.8rem;
+  padding: 6px var(--mui-spacing-2);
+  min-height: 36px;
+}
+
+/* Compact mode */
+.MuiSidebarMenu-compact .MuiSidebarMenu-link {
+  padding: var(--mui-spacing-1) var(--mui-spacing-2);
+  min-height: 40px;
+}
+
+.MuiSidebarMenu-compact .MuiSidebarMenu-linkText {
+  font-size: 0.8rem;
+}
+
+.MuiSidebarMenu-compact .MuiSidebarMenu-expandButton {
+  padding: 4px;
+}
+
+.MuiSidebarMenu-compact .MuiSidebarMenu-expandIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Icon support */
+.MuiSidebarMenu-icon {
+  margin-right: var(--mui-spacing-1);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mui-text-secondary);
+}
+
+.MuiSidebarMenu-activeTrail .MuiSidebarMenu-icon {
+  color: var(--mui-primary-main);
+}
+
+/* Badge support for menu items */
+.MuiSidebarMenu-badge {
+  position: absolute;
+  top: 50%;
+  right: var(--mui-spacing-4);
+  transform: translateY(-50%);
+  background-color: var(--mui-error-main);
+  color: var(--mui-error-contrast-text);
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  min-width: 16px;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Accessibility improvements */
+.MuiSidebarMenu-root[aria-label] {
+  /* Screen reader only label if needed */
+}
+
+.MuiSidebarMenu-link[aria-current="page"] {
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+}
+
+.MuiSidebarMenu-link[aria-current="page"]:hover {
+  background-color: var(--mui-primary-dark);
+}
+
+/* Loading state */
+.MuiSidebarMenu-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.MuiSidebarMenu-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--mui-primary-main);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: mui-spin 1s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .MuiSidebarMenu-root {
+    border-radius: 0;
+  }
+  
+  .MuiSidebarMenu-link {
+    padding: var(--mui-spacing-2) var(--mui-spacing-3);
+    min-height: 56px;
+  }
+  
+  .MuiSidebarMenu-linkText {
+    font-size: 1rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiSidebarMenu-link {
+    border: 1px solid transparent;
+  }
+  
+  .MuiSidebarMenu-link:focus {
+    border-color: currentColor;
+  }
+  
+  .MuiSidebarMenu-activeTrail {
+    border: 2px solid;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiSidebarMenu-expandIcon,
+  .MuiSidebarMenu-expandText,
+  .MuiSidebarMenu-submenu {
+    transition: none;
+  }
+  
+  .MuiSidebarMenu-collapsible.is-expanded {
+    max-height: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .MuiSidebarMenu-sublevelLink {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+  
+  .MuiSidebarMenu-sublevelLink:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+}

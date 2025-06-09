@@ -1,0 +1,519 @@
+{#
+/**
+ * @file
+ * MUI Table component template with comprehensive data display features.
+ */
+#}
+
+{% set table_classes = [
+  'MuiTable-root',
+  'MuiTable-' ~ variant,
+  'MuiTable-size' ~ (size|title),
+  responsive ? 'MuiTable-responsive' : '',
+  stripe_rows ? 'striped' : '',
+  loading ? 'MuiTable-loading' : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  'mui-table'
+] %}
+
+{% set unique_id = 'mui-table-' ~ random() %}
+{% set current_page = 1 %}
+{% set total_pages = paginated ? ((rows|length / page_size)|round(0, 'ceil')) : 1 %}
+{% set display_rows = paginated ? rows|slice((current_page - 1) * page_size, page_size) : rows %}
+
+<div{{ attributes.addClass(table_classes) }} 
+     data-table-id="{{ unique_id }}"
+     {% if selectable != 'none' %}data-selectable="{{ selectable }}"{% endif %}
+     {% if sortable %}data-sortable="true"{% endif %}
+     {% if paginated %}data-paginated="true"{% endif %}
+     {% if on_row_click %}data-on-row-click="{{ on_row_click }}"{% endif %}
+     {% if on_selection_change %}data-on-selection-change="{{ on_selection_change }}"{% endif %}
+     {% if on_sort %}data-on-sort="{{ on_sort }}"{% endif %}
+     role="region"
+     aria-label="{{ caption ?: 'Data table' }}">
+  
+  {# Table Header/Title #}
+  {% if title or subtitle or show_toolbar %}
+    <div class="MuiTable-header">
+      <div class="MuiTable-headerContent">
+        {% if title or subtitle %}
+          <div class="MuiTable-headerText">
+            {% if title %}
+              <h2 class="MuiTable-title">{{ title }}</h2>
+            {% endif %}
+            {% if subtitle %}
+              <div class="MuiTable-subtitle">{{ subtitle }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+        
+        {% if show_toolbar %}
+          <div class="MuiTable-headerActions">
+            {% if exportable %}
+              <button type="button" class="MuiButton-root MuiButton-outlined MuiButton-sizeSmall" data-action="export">
+                <span class="MuiButton-startIcon">
+                  <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"></path>
+                  </svg>
+                </span>
+                <span class="MuiButton-label">Export</span>
+              </button>
+            {% endif %}
+            
+            {% if toolbar_actions and toolbar_actions is iterable %}
+              {% for action in toolbar_actions %}
+                <button 
+                  type="button" 
+                  class="MuiButton-root MuiButton-outlined MuiButton-sizeSmall"
+                  data-action="{{ action.action }}"
+                  {% if action.disabled %}disabled="disabled"{% endif %}
+                >
+                  {% if action.icon %}
+                    <span class="MuiButton-startIcon">
+                      {% if action.icon starts with '<' %}
+                        {{ action.icon|raw }}
+                      {% else %}
+                        <i class="{{ action.icon }}" aria-hidden="true"></i>
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                  <span class="MuiButton-label">{{ action.label }}</span>
+                </button>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+  
+  {# Table Toolbar #}
+  {% if searchable or filterable or show_toolbar %}
+    <div class="MuiTable-toolbar">
+      <div class="MuiTable-toolbarLeft">
+        
+        {# Search #}
+        {% if searchable %}
+          <div class="MuiTable-search">
+            <input 
+              type="text" 
+              class="MuiTable-searchInput"
+              placeholder="{{ search_placeholder }}"
+              aria-label="Search table"
+            />
+            <svg class="MuiTable-searchIcon MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+            </svg>
+          </div>
+        {% endif %}
+        
+      </div>
+      
+      <div class="MuiTable-toolbarRight">
+        {% if selectable != 'none' %}
+          <span class="MuiTable-selectedCount" style="display: none;">
+            <span class="count">0</span> selected
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+  
+  {# Column Filters #}
+  {% if filterable %}
+    <div class="MuiTable-filters" style="display: none;">
+      {% for column in columns %}
+        {% if column.filterable %}
+          <div class="MuiTable-filter">
+            <select class="MuiTable-filterSelect" data-column="{{ column.id }}">
+              <option value="">All {{ column.label }}</option>
+              {# Filter options would be populated by JavaScript #}
+            </select>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {# Table Container #}
+  <div class="MuiTable-container {% if horizontal_scroll %}horizontal-scroll{% endif %}"{% if max_height %} style="max-height: {{ max_height }}"{% endif %}>
+    
+    {% if loading %}
+      {# Loading Overlay #}
+      <div class="MuiTable-loadingOverlay">
+        <div class="MuiCircularProgress-root">
+          <svg class="MuiCircularProgress-svg" viewBox="22 22 44 44">
+            <circle class="MuiCircularProgress-circle" cx="44" cy="44" r="20.2" fill="none" stroke="currentColor" stroke-width="3.6"></circle>
+          </svg>
+        </div>
+      </div>
+    {% endif %}
+    
+    <table class="MuiTable-table {% if not horizontal_scroll %}auto-layout{% endif %}" role="table">
+      
+      {# Table Caption #}
+      {% if caption %}
+        <caption class="sr-only">{{ caption }}</caption>
+      {% endif %}
+      
+      {# Table Header #}
+      {% if show_header and columns %}
+        <thead class="MuiTable-head {% if sticky_header %}sticky{% endif %}">
+          <tr role="row">
+            
+            {# Selection column #}
+            {% if selectable == 'multiple' %}
+              <th class="MuiTable-headCell MuiTable-selectColumn" role="columnheader">
+                {% if select_all %}
+                  <span class="MuiCheckbox-root">
+                    <input 
+                      type="checkbox" 
+                      class="MuiCheckbox-input" 
+                      data-select-all="true"
+                      aria-label="Select all rows"
+                    />
+                    <span class="MuiCheckbox-icon"></span>
+                  </span>
+                {% endif %}
+              </th>
+            {% elseif selectable == 'single' %}
+              <th class="MuiTable-headCell MuiTable-selectColumn" role="columnheader">
+                <span class="sr-only">Select</span>
+              </th>
+            {% endif %}
+            
+            {# Expand column #}
+            {% if expandable_rows %}
+              <th class="MuiTable-headCell MuiTable-expandCell" role="columnheader">
+                <span class="sr-only">Expand</span>
+              </th>
+            {% endif %}
+            
+            {# Data columns #}
+            {% for column in columns %}
+              {% set header_classes = [
+                'MuiTable-headCell',
+                column.sortable ? 'sortable' : '',
+                column.align ? 'align-' ~ column.align : '',
+                'column-' ~ column.id
+              ] %}
+              
+              <th 
+                class="{{ header_classes|join(' ')|trim }}"
+                role="columnheader"
+                {% if column.sortable %}aria-sort="none" tabindex="0"{% endif %}
+                data-column="{{ column.id }}"
+                {% if column.width %}style="width: {{ column.width }}; {% if column.min_width %}min-width: {{ column.min_width }};{% endif %}"{% endif %}
+              >
+                
+                {% if column.sortable %}
+                  <div class="MuiTable-sortLabel">
+                    <span>{{ column.label }}</span>
+                    <svg class="MuiTable-sortIcon MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"></path>
+                    </svg>
+                  </div>
+                {% else %}
+                  {{ column.label }}
+                {% endif %}
+                
+              </th>
+            {% endfor %}
+            
+          </tr>
+        </thead>
+      {% endif %}
+      
+      {# Table Body #}
+      <tbody class="MuiTable-body">
+        
+        {% if loading %}
+          {# Loading skeleton rows #}
+          {% for i in 1..loading_rows %}
+            <tr class="MuiTable-row MuiTable-loadingSkeleton">
+              {% if selectable != 'none' %}
+                <td class="MuiTable-cell MuiTable-selectColumn">
+                  <div class="MuiTable-skeleton" style="width: 24px;"></div>
+                </td>
+              {% endif %}
+              
+              {% if expandable_rows %}
+                <td class="MuiTable-cell MuiTable-expandCell">
+                  <div class="MuiTable-skeleton" style="width: 24px;"></div>
+                </td>
+              {% endif %}
+              
+              {% for column in columns %}
+                <td class="MuiTable-cell">
+                  <div class="MuiTable-skeleton"></div>
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+          
+        {% elseif display_rows and display_rows|length > 0 %}
+          {# Data rows #}
+          {% for row in display_rows %}
+            {% set row_classes = [
+              'MuiTable-row',
+              hover_highlight ? 'hover' : '',
+              on_row_click ? 'clickable' : '',
+              row.selected ? 'selected' : '',
+              row.disabled ? 'disabled' : '',
+              row.css_classes ? row.css_classes|join(' ') : ''
+            ] %}
+            
+            <tr 
+              class="{{ row_classes|join(' ')|trim }}"
+              role="row"
+              data-row-id="{{ row.id }}"
+              {% if row.selected %}aria-selected="true"{% endif %}
+              {% if row.disabled %}aria-disabled="true"{% endif %}
+            >
+              
+              {# Selection column #}
+              {% if selectable == 'multiple' %}
+                <td class="MuiTable-cell MuiTable-selectColumn" role="gridcell">
+                  <span class="MuiCheckbox-root">
+                    <input 
+                      type="checkbox" 
+                      class="MuiCheckbox-input" 
+                      data-row-select="{{ row.id }}"
+                      {% if row.selected %}checked="checked"{% endif %}
+                      {% if row.disabled %}disabled="disabled"{% endif %}
+                      aria-label="Select row"
+                    />
+                    <span class="MuiCheckbox-icon"></span>
+                  </span>
+                </td>
+              {% elseif selectable == 'single' %}
+                <td class="MuiTable-cell MuiTable-selectColumn" role="gridcell">
+                  <span class="MuiRadio-root">
+                    <input 
+                      type="radio" 
+                      class="MuiRadio-input" 
+                      name="table-select"
+                      data-row-select="{{ row.id }}"
+                      {% if row.selected %}checked="checked"{% endif %}
+                      {% if row.disabled %}disabled="disabled"{% endif %}
+                      aria-label="Select row"
+                    />
+                    <span class="MuiRadio-icon"></span>
+                  </span>
+                </td>
+              {% endif %}
+              
+              {# Expand column #}
+              {% if expandable_rows %}
+                <td class="MuiTable-cell MuiTable-expandCell" role="gridcell">
+                  <button 
+                    type="button" 
+                    class="MuiTable-expandButton"
+                    aria-label="Expand row"
+                    aria-expanded="false"
+                    data-row-expand="{{ row.id }}"
+                  >
+                    <svg class="MuiTable-expandIcon MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+                    </svg>
+                  </button>
+                </td>
+              {% endif %}
+              
+              {# Data columns #}
+              {% for column in columns %}
+                {% set cell_classes = [
+                  'MuiTable-cell',
+                  column.align ? 'align-' ~ column.align : '',
+                  column.type ? 'type-' ~ column.type : '',
+                  column.css_classes ? column.css_classes|join(' ') : ''
+                ] %}
+                
+                {% set cell_value = row.data[column.field] %}
+                
+                <td class="{{ cell_classes|join(' ')|trim }}" role="gridcell">
+                  
+                  {% if column.type == 'actions' and row.actions %}
+                    {# Action buttons #}
+                    <div class="MuiTable-cellActions">
+                      {% for action in row.actions %}
+                        <button 
+                          type="button" 
+                          class="MuiIconButton-root MuiIconButton-sizeSmall"
+                          aria-label="{{ action.label }}"
+                          data-action="{{ action.action }}"
+                          data-row-id="{{ row.id }}"
+                          {% if action.disabled %}disabled="disabled"{% endif %}
+                        >
+                          {% if action.icon %}
+                            {% if action.icon starts with '<' %}
+                              {{ action.icon|raw }}
+                            {% else %}
+                              <i class="{{ action.icon }}" aria-hidden="true"></i>
+                            {% endif %}
+                          {% endif %}
+                        </button>
+                      {% endfor %}
+                    </div>
+                    
+                  {% elseif column.type == 'boolean' %}
+                    {# Boolean value #}
+                    {% if cell_value %}
+                      <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #4caf50;">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                      </svg>
+                    {% else %}
+                      <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="color: #f44336;">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                      </svg>
+                    {% endif %}
+                    
+                  {% elseif column.type == 'html' %}
+                    {# HTML content #}
+                    {{ cell_value|raw }}
+                    
+                  {% else %}
+                    {# Regular text content #}
+                    {{ cell_value }}
+                  {% endif %}
+                  
+                </td>
+              {% endfor %}
+              
+            </tr>
+            
+            {# Expandable content row #}
+            {% if expandable_rows %}
+              <tr class="MuiTable-expandedRow" style="display: none;" data-expanded-for="{{ row.id }}">
+                <td colspan="{{ columns|length + (selectable != 'none' ? 1 : 0) + (expandable_rows ? 1 : 0) }}" class="MuiTable-expandedContent">
+                  {# Expanded content would be populated by JavaScript or additional data #}
+                  <div class="MuiTable-expandedPlaceholder">Expanded content for row {{ row.id }}</div>
+                </td>
+              </tr>
+            {% endif %}
+            
+          {% endfor %}
+          
+        {% else %}
+          {# Empty state #}
+          <tr>
+            <td colspan="{{ columns|length + (selectable != 'none' ? 1 : 0) + (expandable_rows ? 1 : 0) }}" class="MuiTable-empty">
+              {% if empty_icon %}
+                <div class="MuiTable-emptyIcon">
+                  {{ empty_icon|raw }}
+                </div>
+              {% endif %}
+              <div class="MuiTable-emptyMessage">{{ empty_message }}</div>
+            </td>
+          </tr>
+        {% endif %}
+        
+      </tbody>
+      
+      {# Table Footer #}
+      {% if show_footer %}
+        <tfoot class="MuiTable-footer">
+          <tr role="row">
+            {% if selectable != 'none' %}
+              <td class="MuiTable-cell MuiTable-selectColumn"></td>
+            {% endif %}
+            
+            {% if expandable_rows %}
+              <td class="MuiTable-cell MuiTable-expandCell"></td>
+            {% endif %}
+            
+            {% for column in columns %}
+              <td class="MuiTable-cell">
+                {# Footer content could be computed totals, etc. #}
+              </td>
+            {% endfor %}
+          </tr>
+        </tfoot>
+      {% endif %}
+      
+    </table>
+    
+  </div>
+  
+  {# Pagination #}
+  {% if paginated and not loading %}
+    <div class="MuiTable-pagination">
+      <div class="MuiTable-paginationInfo">
+        Showing {{ (current_page - 1) * page_size + 1 }} to {{ (current_page * page_size > rows|length) ? rows|length : current_page * page_size }} of {{ rows|length }} entries
+      </div>
+      
+      <div class="MuiTable-paginationControls">
+        <div class="MuiTable-pageSize">
+          <span>Rows per page:</span>
+          <select class="MuiTable-pageSizeSelect" data-action="page-size">
+            {% for size in page_size_options %}
+              <option value="{{ size }}" {% if size == page_size %}selected{% endif %}>{{ size }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="MuiTable-paginationButtons">
+          <button 
+            type="button" 
+            class="MuiIconButton-root"
+            data-action="first-page"
+            {% if current_page == 1 %}disabled="disabled"{% endif %}
+            aria-label="First page"
+          >
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"></path>
+            </svg>
+          </button>
+          
+          <button 
+            type="button" 
+            class="MuiIconButton-root"
+            data-action="prev-page"
+            {% if current_page == 1 %}disabled="disabled"{% endif %}
+            aria-label="Previous page"
+          >
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+            </svg>
+          </button>
+          
+          <span class="MuiTable-pageInfo">
+            Page {{ current_page }} of {{ total_pages }}
+          </span>
+          
+          <button 
+            type="button" 
+            class="MuiIconButton-root"
+            data-action="next-page"
+            {% if current_page == total_pages %}disabled="disabled"{% endif %}
+            aria-label="Next page"
+          >
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+            </svg>
+          </button>
+          
+          <button 
+            type="button" 
+            class="MuiIconButton-root"
+            data-action="last-page"
+            {% if current_page == total_pages %}disabled="disabled"{% endif %}
+            aria-label="Last page"
+          >
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  
+  {# Children content (for additional custom content) #}
+  {% if children %}
+    <div class="MuiTable-children">
+      {{ children }}
+    </div>
+  {% endif %}
+  
+</div>

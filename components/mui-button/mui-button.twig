@@ -1,0 +1,170 @@
+{#
+/**
+ * @file
+ * Fixed MUI Button component template with proper string value handling.
+ */
+#}
+
+{% set tag = href ? 'a' : 'button' %}
+{% set button_classes = [
+  'MuiButton-root',
+  'MuiButtonBase-root',
+  'MuiButton-' ~ variant,
+  'MuiButton-' ~ variant ~ (color|title),
+  'MuiButton-size' ~ (size|title),
+  disabled or loading ? 'Mui-disabled' : '',
+  fullWidth ? 'MuiButton-fullWidth' : '',
+  icon_only ? 'MuiButton-iconOnly' : '',
+  loading ? 'MuiButton-loading' : '',
+  badge ? 'MuiButton-hasBadge' : '',
+  'mui-button'
+] %}
+
+{# Add custom classes #}
+{% if custom_classes and custom_classes is iterable %}
+  {% set button_classes = button_classes|merge(custom_classes) %}
+{% endif %}
+
+{# Set up attributes based on element type #}
+{% set button_attributes = {} %}
+
+{% if href %}
+  {# Link attributes #}
+  {% set button_attributes = button_attributes|merge({
+    href: href,
+    target: target != '_self' ? target : null,
+    rel: target == '_blank' ? 'noopener noreferrer' : null
+  }) %}
+  {% if disabled or loading %}
+    {% set button_attributes = button_attributes|merge({
+      'aria-disabled': 'true',
+      'tabindex': '-1'
+    }) %}
+  {% endif %}
+{% else %}
+  {# Button attributes #}
+  {% set button_attributes = button_attributes|merge({
+    type: type,
+    form: form_id ?: null
+  }) %}
+  {% if disabled or loading %}
+    {% set button_attributes = button_attributes|merge({disabled: 'disabled'}) %}
+  {% endif %}
+{% endif %}
+
+{# Accessibility attributes #}
+{% if aria_label %}
+  {% set button_attributes = button_attributes|merge({'aria-label': aria_label}) %}
+{% endif %}
+{% if aria_describedby %}
+  {% set button_attributes = button_attributes|merge({'aria-describedby': aria_describedby}) %}
+{% endif %}
+{% if loading %}
+  {% set button_attributes = button_attributes|merge({'aria-busy': 'true'}) %}
+{% endif %}
+
+{# Tooltip attributes #}
+{% if tooltip %}
+  {% set button_attributes = button_attributes|merge({
+    'data-tooltip': tooltip,
+    'title': tooltip
+  }) %}
+{% endif %}
+
+{# JavaScript handler #}
+{% if on_click %}
+  {% set button_attributes = button_attributes|merge({'data-onclick': on_click}) %}
+{% endif %}
+
+{# Data attributes #}
+{% if data_attributes and data_attributes is iterable %}
+  {% for key, value in data_attributes %}
+    {% set button_attributes = button_attributes|merge({('data-' ~ key): value}) %}
+  {% endfor %}
+{% endif %}
+
+<{{ tag }}{{ attributes.addClass(button_classes).addAttributes(button_attributes) }}>
+  
+  {# Loading spinner (overlays content when loading) #}
+  {% if loading %}
+    <span class="MuiButton-loadingIndicator">
+      <svg class="MuiCircularProgress-root MuiCircularProgress-indeterminate" viewBox="22 22 44 44">
+        <circle class="MuiCircularProgress-circle" cx="44" cy="44" r="20.2" fill="none" stroke="currentColor" stroke-width="3.6"></circle>
+      </svg>
+    </span>
+  {% endif %}
+
+  {# Button content container #}
+  <span class="MuiButton-content {{ loading ? 'MuiButton-contentHidden' : '' }}">
+    
+    {# Start icon #}
+    {% if start_icon and not icon_only %}
+      <span class="MuiButton-startIcon MuiButton-icon MuiButton-iconSize{{ size|title }}">
+        {% if start_icon starts with '<' %}
+          {{ start_icon|raw }}
+        {% else %}
+          <i class="{{ start_icon }}" aria-hidden="true"></i>
+        {% endif %}
+      </span>
+    {% endif %}
+    
+    {# Icon only content #}
+    {% if icon_only %}
+      <span class="MuiButton-iconOnly MuiButton-icon MuiButton-iconSize{{ size|title }}">
+        {% if start_icon %}
+          {% if start_icon starts with '<' %}
+            {{ start_icon|raw }}
+          {% else %}
+            <i class="{{ start_icon }}" aria-hidden="true"></i>
+          {% endif %}
+        {% elseif end_icon %}
+          {% if end_icon starts with '<' %}
+            {{ end_icon|raw }}
+          {% else %}
+            <i class="{{ end_icon }}" aria-hidden="true"></i>
+          {% endif %}
+        {% else %}
+          {# Default icon if icon_only but no icon provided #}
+          <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+          </svg>
+        {% endif %}
+      </span>
+    {% else %}
+      {# Label content #}
+      <span class="MuiButton-label">
+        {{ label|raw }}
+      </span>
+    {% endif %}
+    
+    {# End icon #}
+    {% if end_icon and not icon_only %}
+      <span class="MuiButton-endIcon MuiButton-icon MuiButton-iconSize{{ size|title }}">
+        {% if end_icon starts with '<' %}
+          {{ end_icon|raw }}
+        {% else %}
+          <i class="{{ end_icon }}" aria-hidden="true"></i>
+        {% endif %}
+      </span>
+    {% endif %}
+
+  </span>
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    <span class="MuiButton-children">
+      {{ children }}
+    </span>
+  {% endif %}
+
+  {# Badge overlay #}
+  {% if badge and badge.content %}
+    <span class="MuiButton-badge MuiBadge-root MuiBadge-{{ badge.color|default('primary') }} MuiBadge-{{ badge.position|default('top-right')|replace('-', '') }}">
+      <span class="MuiBadge-badge">{{ badge.content }}</span>
+    </span>
+  {% endif %}
+  
+  {# Touch ripple effect #}
+  <span class="MuiTouchRipple-root"></span>
+
+</{{ tag }}>

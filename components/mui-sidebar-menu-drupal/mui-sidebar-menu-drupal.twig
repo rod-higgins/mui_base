@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * MUI Sidebar Menu Drupal integration component template.
+ * 
+ * This component handles Drupal menu loading and transformation,
+ * then passes the resulting items to the base MUI sidebar menu component.
+ */
+#}
+
+{# Set up the menu tree from transformed items or fallback #}
+{% set sidebar_menu_tree = mui_sidebar_menu_items ?: menu_tree ?: [] %}
+
+{# Set up wrapper classes including custom ones #}
+{% set sidebar_classes = [
+  'mui-sidebar-menu-drupal',
+  'contextual-region'
+]|merge(custom_classes ?: []) %}
+
+{# Add data attributes for JavaScript integration #}
+{% set sidebar_attributes = attributes|default(create_attribute()) %}
+{% set sidebar_attributes = sidebar_attributes
+  .addClass(sidebar_classes)
+  .setAttribute('data-menu-name', menu_name)
+  .setAttribute('data-drupal-menu', 'true')
+%}
+
+{# Wrap in Drupal-specific container #}
+<nav{{ sidebar_attributes }}
+     aria-label="{{ 'Navigation menu'|t }}">
+  
+  {# Use the base MUI sidebar menu component #}
+  {% include 'mui_base:mui-sidebar-menu' with {
+    menu_tree: sidebar_menu_tree,
+    menu_name: menu_name,
+    collapsible: collapsible,
+    compact: compact,
+    show_icons: show_icons,
+    attributes: create_attribute().addClass(['MuiSidebarMenu-root'])
+  } %}
+  
+</nav>

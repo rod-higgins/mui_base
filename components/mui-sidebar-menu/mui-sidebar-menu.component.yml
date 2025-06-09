@@ -1,0 +1,32 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Sidebar Menu'
+description: 'Material UI styled collapsible sidebar menu'
+props:
+  type: object
+  properties:
+    menu_tree:
+      type: object
+      title: 'Menu tree'
+      description: 'Drupal menu tree structure'
+    menu_name:
+      type: string
+      title: 'Menu name'
+      description: 'Machine name of the menu'
+      default: 'main'
+    collapsible:
+      type: boolean
+      title: 'Collapsible submenus'
+      description: 'Enable collapsible submenu functionality'
+      default: true
+    compact:
+      type: boolean
+      title: 'Compact mode'
+      description: 'Use compact spacing'
+      default: false
+    show_icons:
+      type: boolean
+      title: 'Show icons'
+      description: 'Show expand/collapse icons'
+      default: true
+libraryDependencies:
+  - mui_base/mui-sidebar-menu

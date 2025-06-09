@@ -1,0 +1,602 @@
+/* MUI Dialog Component Styles */
+
+.MuiDialog-root {
+  position: fixed;
+  z-index: 1300;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out),
+              visibility 0s linear var(--mui-transition-duration-shorter);
+}
+
+.MuiDialog-root[aria-hidden="false"] {
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+/* Backdrop */
+.MuiDialog-backdrop {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Container */
+.MuiDialog-container {
+  height: 100%;
+  outline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--mui-spacing-2);
+}
+
+.MuiDialog-scrollPaper .MuiDialog-container {
+  align-items: center;
+}
+
+.MuiDialog-scrollBody .MuiDialog-container {
+  align-items: flex-start;
+  padding: var(--mui-spacing-3) var(--mui-spacing-2);
+}
+
+/* Paper */
+.MuiDialog-paper {
+  margin: var(--mui-spacing-4);
+  position: relative;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 64px);
+  background-color: var(--mui-background-paper);
+  color: var(--mui-text-primary);
+  box-shadow: var(--mui-shadow-24);
+  border-radius: var(--mui-border-radius);
+  transition: opacity var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out),
+              transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+/* Width variants */
+.MuiDialog-paperWidthXs {
+  max-width: 444px;
+}
+
+.MuiDialog-paperWidthSm {
+  max-width: 600px;
+}
+
+.MuiDialog-paperWidthMd {
+  max-width: 960px;
+}
+
+.MuiDialog-paperWidthLg {
+  max-width: 1280px;
+}
+
+.MuiDialog-paperWidthXl {
+  max-width: 1920px;
+}
+
+.MuiDialog-paperFullWidth {
+  width: calc(100% - 64px);
+}
+
+/* Full screen */
+.MuiDialog-paperFullScreen {
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  overflow-y: auto;
+}
+
+.MuiDialog-fullScreen .MuiDialog-container {
+  padding: 0;
+}
+
+/* Scroll variants */
+.MuiDialog-paperScrollBody {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+}
+
+.MuiDialog-paperScrollPaper {
+  max-height: calc(100% - 64px);
+}
+
+.MuiDialog-scrollBody {
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-align: center;
+}
+
+.MuiDialog-scrollBody::after {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+/* Form wrapper */
+.MuiDialog-form {
+  display: contents;
+}
+
+/* Dialog Title */
+.MuiDialogTitle-root {
+  margin: 0;
+  padding: var(--mui-spacing-3) var(--mui-spacing-3) var(--mui-spacing-2);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.MuiDialogTitle-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.MuiDialogTitle-icon {
+  margin-right: var(--mui-spacing-2);
+  display: flex;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.MuiDialogTitle-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.MuiDialogTitle-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--mui-text-primary);
+}
+
+.MuiDialogTitle-subtitle {
+  color: var(--mui-text-secondary);
+  margin-top: 4px;
+}
+
+.MuiDialogTitle-closeButton {
+  position: relative;
+  margin: -12px -12px -12px 0;
+  color: var(--mui-text-secondary);
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiDialogTitle-closeButton:hover {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-text-primary);
+}
+
+/* Dialog Content */
+.MuiDialogContent-root {
+  flex: 1 1 auto;
+  padding: 0 var(--mui-spacing-3) var(--mui-spacing-2);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.MuiDialogContent-root:first-child {
+  padding-top: var(--mui-spacing-3);
+}
+
+.MuiDialogContent-dividers {
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  border-top: 1px solid var(--mui-divider);
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiDialogContentText-root {
+  margin-bottom: var(--mui-spacing-2);
+}
+
+.MuiDialogContentText-root:last-child {
+  margin-bottom: 0;
+}
+
+/* Dialog Actions */
+.MuiDialogActions-root {
+  display: flex;
+  align-items: center;
+  padding: var(--mui-spacing-1) var(--mui-spacing-2) var(--mui-spacing-2);
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  min-height: 52px;
+  box-sizing: border-box;
+}
+
+.MuiDialogActions-spacing > :not(:first-child) {
+  margin-left: var(--mui-spacing-1);
+}
+
+/* Special dialog types */
+
+/* Loading Dialog */
+.MuiDialog-loading .MuiDialog-paper {
+  min-width: 280px;
+}
+
+.MuiDialog-loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--mui-spacing-4) var(--mui-spacing-3);
+  text-align: center;
+}
+
+.MuiDialog-loadingText {
+  margin-top: var(--mui-spacing-2);
+  color: var(--mui-text-secondary);
+}
+
+/* Confirmation Dialog */
+.MuiDialog-confirmation .MuiDialogContent-root {
+  text-align: center;
+  padding: var(--mui-spacing-2) var(--mui-spacing-3) var(--mui-spacing-3);
+}
+
+/* Alert Dialog */
+.MuiDialog-alert .MuiDialogTitle-root {
+  background-color: rgba(var(--mui-info-main-rgb), 0.1);
+}
+
+/* Image Dialog */
+.MuiDialog-image .MuiDialogContent-root {
+  padding: 0;
+}
+
+.MuiDialog-imageContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiDialog-image {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+
+.MuiDialog-imageCaption {
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  text-align: center;
+  color: var(--mui-text-secondary);
+}
+
+/* Video Dialog */
+.MuiDialog-video .MuiDialogContent-root {
+  padding: 0;
+}
+
+.MuiDialog-videoContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.MuiDialog-videoWrapper {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  background-color: #000;
+}
+
+.MuiDialog-videoFrame,
+.MuiDialog-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.MuiDialog-videoCaption {
+  padding: var(--mui-spacing-2) var(--mui-spacing-3);
+  text-align: center;
+  color: var(--mui-text-secondary);
+}
+
+/* Draggable dialog */
+.MuiDialog-draggable .MuiDialog-paper {
+  position: absolute;
+}
+
+.MuiDialog-draggableHandle {
+  cursor: move;
+}
+
+.MuiDialog-draggableHandle:active {
+  cursor: grabbing;
+}
+
+/* Resizable dialog */
+.MuiDialog-resizable .MuiDialog-paper {
+  resize: both;
+  overflow: auto;
+  min-width: 280px;
+  min-height: 200px;
+}
+
+.MuiDialog-resizeHandles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.MuiDialog-resizeHandle {
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.MuiDialog-resizeHandle-n {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: n-resize;
+}
+
+.MuiDialog-resizeHandle-s {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  cursor: s-resize;
+}
+
+.MuiDialog-resizeHandle-e {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: e-resize;
+}
+
+.MuiDialog-resizeHandle-w {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: w-resize;
+}
+
+.MuiDialog-resizeHandle-ne {
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: ne-resize;
+}
+
+.MuiDialog-resizeHandle-nw {
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nw-resize;
+}
+
+.MuiDialog-resizeHandle-se {
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  cursor: se-resize;
+}
+
+.MuiDialog-resizeHandle-sw {
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  cursor: sw-resize;
+}
+
+/* Progress indicator (circular) */
+.MuiCircularProgress-root {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  color: var(--mui-primary-main);
+}
+
+.MuiCircularProgress-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.MuiCircularProgress-circle {
+  stroke: currentColor;
+  stroke-dasharray: 125.664;
+  stroke-dashoffset: 125.664;
+  animation: mui-circular-rotate 2s linear infinite;
+}
+
+@keyframes mui-circular-rotate {
+  0% {
+    transform: rotate(0deg);
+    stroke-dashoffset: 125.664;
+  }
+  50% {
+    transform: rotate(180deg);
+    stroke-dashoffset: 31.416;
+  }
+  100% {
+    transform: rotate(360deg);
+    stroke-dashoffset: 125.664;
+  }
+}
+
+/* Touch ripple */
+.MuiTouchRipple-root {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .MuiDialog-container {
+    padding: var(--mui-spacing-1);
+  }
+  
+  .MuiDialog-paper {
+    margin: var(--mui-spacing-2);
+    max-height: calc(100% - 32px);
+  }
+  
+  .MuiDialog-paperWidthXs,
+  .MuiDialog-paperWidthSm,
+  .MuiDialog-paperWidthMd,
+  .MuiDialog-paperWidthLg,
+  .MuiDialog-paperWidthXl {
+    max-width: calc(100% - 32px);
+  }
+  
+  .MuiDialog-paperFullWidth {
+    width: calc(100% - 32px);
+  }
+  
+  .MuiDialogTitle-root {
+    padding: var(--mui-spacing-2);
+  }
+  
+  .MuiDialogContent-root {
+    padding: 0 var(--mui-spacing-2) var(--mui-spacing-2);
+  }
+  
+  .MuiDialogActions-root {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--mui-spacing-1) var(--mui-spacing-2) var(--mui-spacing-2);
+  }
+  
+  .MuiDialogActions-spacing > :not(:first-child) {
+    margin-left: 0;
+    margin-top: var(--mui-spacing-1);
+  }
+}
+
+/* Very small screens */
+@media (max-width: 400px) {
+  .MuiDialog-paperFullScreen {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  
+  .MuiDialog-paper:not(.MuiDialog-paperFullScreen) {
+    margin: var(--mui-spacing-1);
+    max-height: calc(100% - 16px);
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .MuiDialog-container {
+    align-items: flex-start;
+    padding: var(--mui-spacing-1);
+  }
+  
+  .MuiDialog-paper {
+    margin: 0;
+    max-height: 100%;
+  }
+}
+
+/* Print styles */
+@media print {
+  .MuiDialog-root {
+    position: static;
+  }
+  
+  .MuiDialog-backdrop {
+    display: none;
+  }
+  
+  .MuiDialog-paper {
+    box-shadow: none;
+    margin: 0;
+    max-height: none;
+  }
+  
+  .MuiDialogActions-root {
+    display: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiDialog-paper {
+    border: 2px solid currentColor;
+  }
+  
+  .MuiDialogTitle-closeButton:focus {
+    outline: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiDialog-root,
+  .MuiDialog-paper,
+  .MuiDialog-backdrop,
+  .MuiDialogTitle-closeButton {
+    transition: none;
+  }
+  
+  .MuiCircularProgress-circle {
+    animation: none;
+    stroke-dashoffset: 94.248; /* 75% of circle */
+  }
+}
+
+.MuiDialog-paper:focus {
+  outline: none;
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .MuiDialog-backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .MuiDialogTitle-closeButton:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}

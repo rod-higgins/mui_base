@@ -1,0 +1,350 @@
+/* Accessibility Enhancements for MUI Base Theme */
+
+/* Screen reader only content */
+.sr-only,
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus management */
+*:focus {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+/* Skip links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  z-index: var(--mui-zindex-tooltip);
+  padding: 8px 16px;
+  background: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  /* Increase contrast for borders and outlines */
+  .MuiButton-root,
+  .MuiCard-root,
+  .MuiPaper-root,
+  input,
+  textarea,
+  select {
+    border: 2px solid currentColor !important;
+  }
+
+  /* Ensure text has sufficient contrast */
+  body,
+  .MuiTypography-root {
+    color: #000 !important;
+    background-color: #fff !important;
+  }
+
+  /* High contrast links */
+  a {
+    color: #0000ee !important;
+    text-decoration: underline !important;
+  }
+
+  a:visited {
+    color: #551a8b !important;
+  }
+
+  a:focus,
+  a:hover {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable parallax and auto-playing media */
+  .parallax {
+    transform: none !important;
+  }
+
+  video {
+    animation: none !important;
+  }
+}
+
+/* Color blindness support */
+@media (prefers-color-scheme: no-preference) {
+  /* Use patterns or textures in addition to color for important information */
+  .messages--error::before {
+    content: "⚠ ";
+  }
+
+  .messages--warning::before {
+    content: "⚠ ";
+  }
+
+  .messages--status::before {
+    content: "✓ ";
+  }
+}
+
+/* Keyboard navigation improvements */
+.MuiButton-root:focus-visible,
+.MuiIconButton-root:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--mui-primary-main);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 4px var(--mui-primary-main);
+}
+
+/* Enhanced focus for form elements */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 1px;
+  border-color: var(--mui-primary-main);
+}
+
+/* Focus indicators for custom elements */
+.MuiCheckbox-root:focus-within,
+.MuiRadio-root:focus-within {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+/* Enhanced link styling for accessibility */
+a {
+  color: var(--mui-primary-main);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+a:focus {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Improved target sizes for mobile accessibility */
+@media (max-width: 768px) {
+  .MuiButton-root,
+  .MuiIconButton-root,
+  button,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px;
+  }
+
+  input,
+  textarea,
+  select {
+    min-height: 44px;
+    padding: 12px;
+  }
+}
+
+/* Error state accessibility */
+.form-item--error input,
+.form-item--error textarea,
+.form-item--error select {
+  border-color: var(--mui-error-main);
+  border-width: 2px;
+}
+
+.form-item--error-message {
+  color: var(--mui-error-main);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* Required field indicators */
+.form-required::after {
+  content: " *";
+  color: var(--mui-error-main);
+  font-weight: bold;
+}
+
+/* Improve table accessibility */
+th {
+  font-weight: 600;
+  text-align: left;
+}
+
+caption {
+  font-weight: 600;
+  text-align: left;
+  margin-bottom: 8px;
+  caption-side: top;
+}
+
+/* Language direction support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .MuiButton-startIcon {
+  margin-left: 8px;
+  margin-right: -4px;
+}
+
+[dir="rtl"] .MuiButton-endIcon {
+  margin-right: 8px;
+  margin-left: -4px;
+}
+
+/* Improve heading hierarchy visibility */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+  margin-top: 0;
+}
+
+/* Ensure sufficient spacing between interactive elements */
+.MuiButton-root + .MuiButton-root {
+  margin-left: 8px;
+}
+
+.form-item + .form-item {
+  margin-top: 16px;
+}
+
+/* Accessible loading states */
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: "Loading...";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  z-index: 10;
+}
+
+/* Accessible tooltips */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 4px;
+}
+
+/* Accessible navigation landmarks */
+nav[role="navigation"] {
+  border: 1px solid transparent;
+}
+
+nav[role="navigation"]:focus-within {
+  border-color: var(--mui-primary-main);
+}
+
+/* Status announcements for screen readers */
+.status-announcement {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Ensure adequate color contrast for placeholder text */
+::placeholder {
+  color: #666;
+  opacity: 1;
+}
+
+/* Dark mode accessibility adjustments */
+@media (prefers-color-scheme: dark) {
+  ::placeholder {
+    color: #aaa;
+  }
+
+  .form-item--error input,
+  .form-item--error textarea,
+  .form-item--error select {
+    border-color: #ff6b6b;
+  }
+
+  .form-item--error-message {
+    color: #ff6b6b;
+  }
+}
+
+/* Print accessibility */
+@media print {
+  .sr-only {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    clip: auto !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    font-size: 10pt;
+    color: #666;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+}

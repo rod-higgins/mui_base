@@ -1,0 +1,82 @@
+{#
+/**
+ * @file
+ * MUI Test component template.
+ */
+#}
+
+{% set test_classes = [
+  'MuiTest-root',
+  'MuiTest-' ~ variant,
+  'MuiTest-size' ~ (size|title),
+  disabled ? 'MuiTest-disabled',
+  'mui-test'
+] %}
+
+<div{{ attributes.addClass(test_classes) }}>
+  
+  {# Component header #}
+  <div class="MuiTest-header">
+    <h4 class="MuiTest-title">{{ title }}</h4>
+    <div class="MuiTest-meta">
+      <span class="MuiTest-variant">{{ variant }}</span>
+      <span class="MuiTest-size">{{ size }}</span>
+    </div>
+  </div>
+
+  {# Component content #}
+  <div class="MuiTest-content">
+    
+    {# Main content text #}
+    {% if content %}
+      <div class="MuiTest-description">
+        {{ content }}
+      </div>
+    {% endif %}
+
+    {# Counter display #}
+    {% if counter is defined and counter is not null %}
+      <div class="MuiTest-counter">
+        <strong>Counter:</strong> {{ counter }}
+      </div>
+    {% endif %}
+
+    {# Status indicator #}
+    <div class="MuiTest-status">
+      <span>Status:</span>
+      <span class="MuiTest-statusBadge {{ disabled ? 'disabled' : 'enabled' }}">
+        {{ disabled ? 'Disabled' : 'Enabled' }}
+      </span>
+    </div>
+
+    {# Tags display #}
+    {% if tags and tags is iterable %}
+      <div class="MuiTest-tags">
+        <span>Tags:</span>
+        {% for tag in tags %}
+          <span class="MuiTest-tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Metadata display #}
+    {% if metadata %}
+      <div class="MuiTest-config">
+        <strong>Configuration:</strong>
+        <pre class="MuiTest-configData">{{ metadata|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+      </div>
+    {% endif %}
+
+    {# Children content #}
+    {% if children %}
+      <div class="MuiTest-children">
+        {{ children }}
+      </div>
+    {% endif %}
+  </div>
+
+  {# Component footer #}
+  <div class="MuiTest-footer">
+    ✅ MUI Test Component Working!
+  </div>
+</div>

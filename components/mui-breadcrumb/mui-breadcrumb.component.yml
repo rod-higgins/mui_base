@@ -1,0 +1,180 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Breadcrumb'
+description: 'Material UI Breadcrumb component for navigation hierarchy display'
+props:
+  type: object
+  properties:
+    # Breadcrumb items
+    items:
+      type: array
+      title: 'Breadcrumb items'
+      description: 'Array of breadcrumb navigation items'
+      items:
+        type: object
+        properties:
+          text:
+            type: string
+            title: 'Link text'
+          url:
+            type: string
+            title: 'Link URL'
+          current:
+            type: boolean
+            title: 'Current page indicator'
+            default: false
+          icon:
+            type: string
+            title: 'Icon (SVG markup or CSS class)'
+          title_attribute:
+            type: string
+            title: 'Title attribute for accessibility'
+          data_attributes:
+            type: object
+            title: 'Custom data attributes'
+      default: []
+    
+    # Visual styling
+    variant:
+      type: string
+      title: 'Breadcrumb variant'
+      description: 'Visual style variant'
+      enum: ['standard', 'outlined', 'filled']
+      default: 'standard'
+    
+    size:
+      type: string
+      title: 'Breadcrumb size'
+      description: 'Size variant'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    color:
+      type: string
+      title: 'Color theme'
+      description: 'Color scheme'
+      enum: ['default', 'primary', 'secondary', 'inherit']
+      default: 'default'
+    
+    # Separator options
+    separator:
+      type: string
+      title: 'Separator character/icon'
+      description: 'Character or HTML for breadcrumb separator'
+      default: '/'
+    
+    separator_variant:
+      type: string
+      title: 'Separator style'
+      description: 'How separator is displayed'
+      enum: ['text', 'icon', 'custom']
+      default: 'text'
+    
+    # Layout options
+    max_items:
+      type: integer
+      title: 'Maximum items'
+      description: 'Maximum breadcrumb items to show (0 = unlimited)'
+      default: 8
+      minimum: 0
+      maximum: 20
+    
+    items_before_collapse:
+      type: integer
+      title: 'Items before collapse'
+      description: 'Items to show before collapse button'
+      default: 1
+      minimum: 0
+      maximum: 5
+    
+    items_after_collapse:
+      type: integer
+      title: 'Items after collapse'
+      description: 'Items to show after collapse button'
+      default: 2
+      minimum: 0
+      maximum: 5
+    
+    # Content options
+    show_home:
+      type: boolean
+      title: 'Show home link'
+      description: 'Include home/root link at start'
+      default: true
+    
+    home_text:
+      type: string
+      title: 'Home link text'
+      description: 'Text for home breadcrumb item'
+      default: 'Home'
+    
+    home_url:
+      type: string
+      title: 'Home link URL'
+      description: 'URL for home breadcrumb item'
+      default: '/'
+    
+    home_icon:
+      type: string
+      title: 'Home icon'
+      description: 'Icon for home breadcrumb (SVG or CSS class)'
+      default: ''
+    
+    show_current:
+      type: boolean
+      title: 'Show current page'
+      description: 'Include current page in breadcrumb'
+      default: false
+    
+    current_text:
+      type: string
+      title: 'Current page text'
+      description: 'Override text for current page'
+      default: ''
+    
+    # Accessibility
+    aria_label:
+      type: string
+      title: 'ARIA label'
+      description: 'Accessible label for breadcrumb navigation'
+      default: 'Breadcrumb navigation'
+    
+    # Advanced features
+    expandable:
+      type: boolean
+      title: 'Expandable collapsed items'
+      description: 'Allow expanding collapsed breadcrumb items'
+      default: true
+    
+    truncate_length:
+      type: integer
+      title: 'Text truncation length'
+      description: 'Maximum characters per breadcrumb item (0 = no truncation)'
+      default: 0
+      minimum: 0
+      maximum: 100
+    
+    # Structured data
+    structured_data:
+      type: boolean
+      title: 'Include structured data'
+      description: 'Add JSON-LD structured data for SEO'
+      default: true
+    
+    # Interactive features
+    click_handler:
+      type: string
+      title: 'Click handler'
+      description: 'JavaScript function for breadcrumb clicks'
+      default: ''
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes'
+      items:
+        type: string
+      default: []
+
+libraryDependencies:
+  - mui_base/mui-breadcrumb

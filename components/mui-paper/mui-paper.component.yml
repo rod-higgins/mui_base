@@ -1,0 +1,157 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Paper'
+description: 'Enhanced Material UI Paper component with flexible content areas'
+props:
+  type: object
+  properties:
+    # Paper styling
+    elevation:
+      type: integer
+      title: 'Paper elevation'
+      description: 'Shadow depth, corresponds to dp in Material Design'
+      enum: [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+      default: 1
+    
+    variant:
+      type: string
+      title: 'Paper variant'
+      description: 'The variant to use'
+      enum: ['elevation', 'outlined']
+      default: 'elevation'
+    
+    square:
+      type: boolean
+      title: 'Square corners'
+      description: 'If true, rounded corners are disabled'
+      default: false
+    
+    # Content areas
+    title:
+      type: string
+      title: 'Paper title'
+      description: 'Optional title for the paper (creates header area)'
+      default: ''
+    
+    subtitle:
+      type: string
+      title: 'Paper subtitle'
+      description: 'Optional subtitle text'
+      default: ''
+    
+    content:
+      type: text
+      title: 'Main content'
+      description: 'The main content area (supports HTML)'
+      format: 'html'
+      default: ''
+    
+    # Header customization
+    header_actions:
+      type: text
+      title: 'Header actions'
+      description: 'Actions/buttons for the header area (HTML)'
+      format: 'html'
+      default: ''
+    
+    # Content sections
+    sections:
+      type: array
+      title: 'Content sections'
+      description: 'Array of content sections with titles'
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          content:
+            type: string
+          collapsible:
+            type: boolean
+          expanded:
+            type: boolean
+    
+    # Footer area
+    footer_content:
+      type: text
+      title: 'Footer content'
+      description: 'Content for footer area (HTML)'
+      format: 'html'
+      default: ''
+    
+    footer_actions:
+      type: text
+      title: 'Footer actions'
+      description: 'Action buttons for footer area (HTML)'
+      format: 'html'
+      default: ''
+    
+    # Layout options
+    padding:
+      type: string
+      title: 'Content padding'
+      description: 'Padding level for content areas'
+      enum: ['none', 'small', 'medium', 'large']
+      default: 'medium'
+    
+    dividers:
+      type: boolean
+      title: 'Show dividers'
+      description: 'Shows dividers between sections'
+      default: false
+    
+    # Interactive features
+    clickable:
+      type: boolean
+      title: 'Clickable'
+      description: 'Makes the entire paper clickable'
+      default: false
+    
+    link_url:
+      type: string
+      title: 'Link URL'
+      description: 'URL to navigate to when paper is clicked'
+      default: ''
+    
+    link_target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    # Advanced features
+    loading:
+      type: boolean
+      title: 'Loading state'
+      description: 'Shows loading spinner overlay'
+      default: false
+    
+    error_state:
+      type: boolean
+      title: 'Error state'
+      description: 'Shows error styling'
+      default: false
+    
+    error_message:
+      type: string
+      title: 'Error message'
+      description: 'Error message to display'
+      default: ''
+    
+    # Background options
+    background_color:
+      type: string
+      title: 'Background color'
+      description: 'Background color theme'
+      enum: ['default', 'primary', 'secondary', 'transparent']
+      default: 'default'
+    
+    # Custom HTML
+    custom_html:
+      type: text
+      title: 'Custom HTML'
+      description: 'Advanced users can add custom HTML content'
+      format: 'raw_html'
+
+libraryDependencies:
+  - mui_base/mui-paper

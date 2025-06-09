@@ -1,0 +1,114 @@
+{#
+/**
+ * @file
+ * MUI Sidebar Menu component template.
+ */
+#}
+
+{% set menu_classes = [
+  'MuiSidebarMenu-root',
+  'MuiList-root',
+  compact ? 'MuiSidebarMenu-compact' : '',
+  collapsible ? 'MuiSidebarMenu-collapsible' : '',
+  'mui-sidebar-menu'
+] %}
+
+<nav{{ attributes.addClass(menu_classes) }} 
+     aria-label="{{ 'Navigation menu'|t }}" 
+     data-menu-name="{{ menu_name }}">
+  
+  {% if menu_tree %}
+    <ul class="MuiSidebarMenu-list">
+      {% for item in menu_tree %}
+        {% if item.link %}
+          {{ _self.render_menu_item(item, 0, collapsible, show_icons) }}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+</nav>
+
+{# Recursive macro for rendering menu items #}
+{% macro render_menu_item(item, level, collapsible, show_icons) %}
+  {% set item_classes = [
+    'MuiSidebarMenu-item',
+    'MuiListItem-root',
+    level > 0 ? 'MuiSidebarMenu-subitem' : 'MuiSidebarMenu-parentItem',
+    item.below ? 'MuiSidebarMenu-hasChildren' : '',
+    'MuiSidebarMenu-level-' ~ level
+  ] %}
+  
+  {% set link_classes = [
+    'MuiSidebarMenu-link',
+    'MuiListItemButton-root',
+    'MuiButtonBase-root',
+    item.in_active_trail ? 'MuiSidebarMenu-activeTrail' : '',
+    level > 0 ? 'MuiSidebarMenu-sublevelLink' : ''
+  ] %}
+  
+  <li{{ item.attributes.addClass(item_classes) }}>
+    
+    <div class="MuiSidebarMenu-itemWrapper">
+      <!-- Main link -->
+      <a href="{{ item.url }}" {{ item.link.attributes.addClass(link_classes) }}>
+        
+        <!-- Indent for nested items -->
+        {% if level > 0 %}
+          <span class="MuiSidebarMenu-indent" style="width: {{ level * 16 }}px;"></span>
+        {% endif %}
+        
+        <!-- Link content -->
+        <span class="MuiListItemText-root">
+          <span class="MuiListItemText-primary MuiSidebarMenu-linkText">
+            {{ item.title }}
+          </span>
+        </span>
+        
+        <!-- Active indicator -->
+        {% if item.in_active_trail %}
+          <span class="MuiSidebarMenu-activeIndicator"></span>
+        {% endif %}
+        
+      </a>
+      
+      <!-- Expand/Collapse button for items with children -->
+      {% if item.below and collapsible %}
+        <button 
+          class="MuiSidebarMenu-expandButton MuiIconButton-root"
+          aria-label="{{ 'Toggle submenu for'|t }} {{ item.title }}"
+          aria-expanded="false"
+          type="button"
+          data-target="submenu-{{ item.link.pluginId|clean_class }}-{{ level }}"
+        >
+          {% if show_icons %}
+            <svg class="MuiSvgIcon-root MuiSidebarMenu-expandIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+            </svg>
+          {% else %}
+            <span class="MuiSidebarMenu-expandText">+</span>
+          {% endif %}
+        </button>
+      {% endif %}
+      
+    </div>
+    
+    <!-- Submenu -->
+    {% if item.below %}
+      <div 
+        class="MuiSidebarMenu-submenu MuiCollapse-root {{ collapsible ? 'MuiSidebarMenu-collapsible' : 'MuiSidebarMenu-expanded' }}"
+        id="submenu-{{ item.link.pluginId|clean_class }}-{{ level }}"
+        {% if collapsible %}aria-hidden="true"{% endif %}
+      >
+        <ul class="MuiSidebarMenu-submenuList MuiList-root">
+          {% for subitem in item.below %}
+            {% if subitem.link %}
+              {{ _self.render_menu_item(subitem, level + 1, collapsible, show_icons) }}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    
+  </li>
+{% endmacro %}

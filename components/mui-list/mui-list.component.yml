@@ -1,0 +1,194 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI List'
+description: 'Enhanced Material UI List component with rich item support and interaction patterns'
+props:
+  type: object
+  properties:
+    # List styling
+    variant:
+      type: string
+      title: 'List variant'
+      description: 'The visual style of the list'
+      enum: ['standard', 'outlined', 'filled']
+      default: 'standard'
+    
+    density:
+      type: string
+      title: 'List density'
+      description: 'Spacing density of list items'
+      enum: ['comfortable', 'standard', 'compact']
+      default: 'standard'
+    
+    # Content structure
+    title:
+      type: string
+      title: 'List title'
+      description: 'Optional title for the list'
+      default: ''
+    
+    subtitle:
+      type: string
+      title: 'List subtitle'
+      description: 'Optional subtitle for the list'
+      default: ''
+    
+    items:
+      type: array
+      title: 'List items'
+      description: 'Array of list item objects'
+      items:
+        type: object
+        properties:
+          # Core content
+          primary_text:
+            type: string
+            title: 'Primary text'
+          secondary_text:
+            type: string
+            title: 'Secondary text'
+          overline_text:
+            type: string
+            title: 'Overline text'
+          
+          # Media content
+          avatar:
+            type: entity_reference
+            target_type: 'media'
+            target_bundles: ['image']
+          avatar_url:
+            type: string
+          avatar_initials:
+            type: string
+          icon:
+            type: string
+          
+          # Actions
+          button:
+            type: boolean
+            default: false
+          link_url:
+            type: string
+          link_target:
+            type: string
+            enum: ['_self', '_blank']
+            default: '_self'
+          
+          # Visual states
+          selected:
+            type: boolean
+            default: false
+          disabled:
+            type: boolean
+            default: false
+          divider:
+            type: boolean
+            default: false
+          
+          # Interactive elements
+          checkbox:
+            type: boolean
+            default: false
+          checkbox_checked:
+            type: boolean
+            default: false
+          radio:
+            type: boolean
+            default: false
+          radio_checked:
+            type: boolean
+            default: false
+          switch:
+            type: boolean
+            default: false
+          switch_checked:
+            type: boolean
+            default: false
+          
+          # Rich content
+          badge:
+            type: object
+            properties:
+              content:
+                type: string
+              color:
+                type: string
+                enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+          
+          # Nested items
+          nested_items:
+            type: array
+            items:
+              type: object
+          
+          # Metadata
+          id:
+            type: string
+          css_classes:
+            type: array
+            items:
+              type: string
+          data_attributes:
+            type: object
+    
+    # List-wide settings
+    selectable:
+      type: string
+      title: 'Selection mode'
+      description: 'Enable item selection'
+      enum: ['none', 'single', 'multiple']
+      default: 'none'
+    
+    show_dividers:
+      type: boolean
+      title: 'Show dividers'
+      description: 'Show dividers between items'
+      default: false
+    
+    nested_inset:
+      type: boolean
+      title: 'Nested inset'
+      description: 'Inset nested items'
+      default: true
+    
+    # Header actions
+    header_actions:
+      type: text
+      title: 'Header actions'
+      description: 'Action buttons for list header'
+      format: 'html'
+      default: ''
+    
+    # Interactive features
+    collapsible_groups:
+      type: boolean
+      title: 'Collapsible groups'
+      description: 'Enable group collapse/expand'
+      default: false
+    
+    search_enabled:
+      type: boolean
+      title: 'Enable search'
+      description: 'Add search functionality'
+      default: false
+    
+    search_placeholder:
+      type: string
+      title: 'Search placeholder'
+      description: 'Placeholder text for search input'
+      default: 'Search items...'
+    
+    # Virtualization
+    virtual_scrolling:
+      type: boolean
+      title: 'Virtual scrolling'
+      description: 'Enable virtual scrolling for large lists'
+      default: false
+    
+    max_height:
+      type: string
+      title: 'Maximum height'
+      description: 'CSS max-height value (e.g., "400px", "50vh")'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-list 

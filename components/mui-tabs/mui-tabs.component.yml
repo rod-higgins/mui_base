@@ -1,0 +1,232 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Tabs'
+description: 'Enhanced Material UI Tabs component with flexible content panels and navigation patterns'
+props:
+  type: object
+  properties:
+    # Tab configuration
+    tabs:
+      type: array
+      title: 'Tab items'
+      description: 'Array of tab configuration objects'
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+            title: 'Tab label'
+          content:
+            type: text
+            title: 'Tab content'
+            format: 'html'
+          icon:
+            type: text
+            title: 'Tab icon'
+            format: 'html'
+          disabled:
+            type: boolean
+            default: false
+          href:
+            type: string
+            title: 'Link URL (for navigation tabs)'
+          target:
+            type: string
+            enum: ['_self', '_blank']
+            default: '_self'
+          badge:
+            type: object
+            properties:
+              content:
+                type: string
+              color:
+                type: string
+                enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+          id:
+            type: string
+            title: 'Unique identifier'
+          css_classes:
+            type: array
+            items:
+              type: string
+    
+    # Visual styling
+    variant:
+      type: string
+      title: 'Tabs variant'
+      description: 'The variant to use'
+      enum: ['standard', 'scrollable', 'fullWidth']
+      default: 'standard'
+    
+    orientation:
+      type: string
+      title: 'Tab orientation'
+      description: 'Layout orientation'
+      enum: ['horizontal', 'vertical']
+      default: 'horizontal'
+    
+    # Tab appearance
+    text_color:
+      type: string
+      title: 'Text color'
+      description: 'Color of the tab text'
+      enum: ['inherit', 'primary', 'secondary']
+      default: 'primary'
+    
+    indicator_color:
+      type: string
+      title: 'Indicator color'
+      description: 'Color of the active tab indicator'
+      enum: ['primary', 'secondary']
+      default: 'primary'
+    
+    # Layout options
+    centered:
+      type: boolean
+      title: 'Centered tabs'
+      description: 'Center the tabs within the container'
+      default: false
+    
+    # Scrolling behavior (for scrollable variant)
+    scroll_buttons:
+      type: string
+      title: 'Scroll buttons'
+      description: 'When to show scroll buttons'
+      enum: ['auto', 'on', 'off']
+      default: 'auto'
+    
+    allow_scroll_button_mobile:
+      type: boolean
+      title: 'Allow scroll buttons on mobile'
+      description: 'Show scroll buttons on mobile devices'
+      default: false
+    
+    # State management
+    default_tab:
+      type: integer
+      title: 'Default active tab'
+      description: 'Index of initially active tab (0-based)'
+      default: 0
+      minimum: 0
+    
+    # Content behavior
+    lazy_load:
+      type: boolean
+      title: 'Lazy load content'
+      description: 'Only render active tab content'
+      default: false
+    
+    keep_mounted:
+      type: boolean
+      title: 'Keep content mounted'
+      description: 'Keep inactive tab content in DOM'
+      default: true
+    
+    # Animation
+    transition_duration:
+      type: integer
+      title: 'Transition duration'
+      description: 'Animation duration in milliseconds'
+      default: 300
+      minimum: 0
+      maximum: 1000
+    
+    # Navigation behavior
+    navigation_mode:
+      type: boolean
+      title: 'Navigation mode'
+      description: 'Use tabs for navigation (links) instead of content panels'
+      default: false
+    
+    # Advanced features
+    closable_tabs:
+      type: boolean
+      title: 'Closable tabs'
+      description: 'Allow closing tabs with close button'
+      default: false
+    
+    addable_tabs:
+      type: boolean
+      title: 'Addable tabs'
+      description: 'Show add new tab button'
+      default: false
+    
+    reorderable:
+      type: boolean
+      title: 'Reorderable tabs'
+      description: 'Allow drag and drop reordering'
+      default: false
+    
+    # Content areas
+    header_content:
+      type: text
+      title: 'Header content'
+      description: 'Additional content in tabs header area'
+      format: 'html'
+      default: ''
+    
+    footer_content:
+      type: text
+      title: 'Footer content'
+      description: 'Content below tab panels'
+      format: 'html'
+      default: ''
+    
+    # Tab panel styling
+    panel_padding:
+      type: string
+      title: 'Panel padding'
+      description: 'Padding for tab panels'
+      enum: ['none', 'small', 'medium', 'large']
+      default: 'medium'
+    
+    # Responsive behavior
+    mobile_variant:
+      type: string
+      title: 'Mobile variant'
+      description: 'Variant to use on mobile devices'
+      enum: ['scrollable', 'fullWidth', 'same']
+      default: 'scrollable'
+    
+    mobile_breakpoint:
+      type: string
+      title: 'Mobile breakpoint'
+      description: 'Breakpoint for mobile behavior'
+      enum: ['sm', 'md', 'lg']
+      default: 'sm'
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes for root element'
+      items:
+        type: string
+    
+    # Accessibility
+    aria_label:
+      type: string
+      title: 'ARIA label'
+      description: 'Accessible label for the tab list'
+      default: ''
+    
+    # Event handlers (JavaScript function names)
+    on_change:
+      type: string
+      title: 'Change handler'
+      description: 'JavaScript function name for tab change events'
+      default: ''
+    
+    on_close:
+      type: string
+      title: 'Close handler'
+      description: 'JavaScript function name for tab close events'
+      default: ''
+    
+    on_add:
+      type: string
+      title: 'Add handler'
+      description: 'JavaScript function name for add tab events'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-tabs

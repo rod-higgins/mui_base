@@ -1,0 +1,260 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Dialog'
+description: 'Enhanced Material UI Dialog component with flexible content areas and interaction patterns'
+props:
+  type: object
+  properties:
+    # Dialog behavior
+    open:
+      type: boolean
+      title: 'Open state'
+      description: 'Whether the dialog is open'
+      default: false
+    
+    # Size and layout
+    max_width:
+      type: string
+      title: 'Maximum width'
+      description: 'Maximum width of the dialog'
+      enum: ['xs', 'sm', 'md', 'lg', 'xl', 'false']
+      default: 'sm'
+    
+    full_width:
+      type: boolean
+      title: 'Full width'
+      description: 'Stretch dialog to max width'
+      default: false
+    
+    full_screen:
+      type: boolean
+      title: 'Full screen'
+      description: 'Make dialog full screen'
+      default: false
+    
+    # Visual styling
+    scroll:
+      type: string
+      title: 'Scroll behavior'
+      description: 'Where scrolling happens'
+      enum: ['paper', 'body']
+      default: 'paper'
+    
+    # Header section
+    title:
+      type: string
+      title: 'Dialog title'
+      description: 'Main title for the dialog'
+      default: ''
+    
+    subtitle:
+      type: string
+      title: 'Dialog subtitle'
+      description: 'Optional subtitle text'
+      default: ''
+    
+    title_icon:
+      type: text
+      title: 'Title icon'
+      description: 'Icon for the title area (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    close_button:
+      type: boolean
+      title: 'Show close button'
+      description: 'Show X button in header'
+      default: true
+    
+    # Content areas
+    content:
+      type: text
+      title: 'Dialog content'
+      description: 'Main content area (supports HTML)'
+      format: 'html'
+      default: ''
+    
+    # Form integration
+    form_action:
+      type: string
+      title: 'Form action URL'
+      description: 'URL to submit form to (creates form wrapper)'
+      default: ''
+    
+    form_method:
+      type: string
+      title: 'Form method'
+      description: 'HTTP method for form submission'
+      enum: ['get', 'post']
+      default: 'post'
+    
+    form_id:
+      type: string
+      title: 'Form ID'
+      description: 'HTML ID for the form element'
+      default: ''
+    
+    # Action buttons
+    actions:
+      type: array
+      title: 'Action buttons'
+      description: 'Array of action buttons for footer'
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          type:
+            type: string
+            enum: ['button', 'submit', 'reset']
+            default: 'button'
+          variant:
+            type: string
+            enum: ['text', 'outlined', 'contained']
+            default: 'text'
+          color:
+            type: string
+            enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success', 'inherit']
+            default: 'primary'
+          size:
+            type: string
+            enum: ['small', 'medium', 'large']
+            default: 'medium'
+          disabled:
+            type: boolean
+            default: false
+          autofocus:
+            type: boolean
+            default: false
+          click_handler:
+            type: string
+          href:
+            type: string
+          target:
+            type: string
+            enum: ['_self', '_blank']
+            default: '_self'
+          icon:
+            type: string
+    
+    # Interaction
+    disable_backdrop_click:
+      type: boolean
+      title: 'Disable backdrop click'
+      description: 'Prevent closing by clicking backdrop'
+      default: false
+    
+    disable_escape_key:
+      type: boolean
+      title: 'Disable escape key'
+      description: 'Prevent closing with escape key'
+      default: false
+    
+    auto_focus:
+      type: boolean
+      title: 'Auto focus'
+      description: 'Automatically focus first focusable element'
+      default: true
+    
+    keep_mounted:
+      type: boolean
+      title: 'Keep mounted'
+      description: 'Keep dialog in DOM when closed'
+      default: false
+    
+    # Animation
+    transition_duration:
+      type: integer
+      title: 'Transition duration'
+      description: 'Animation duration in milliseconds'
+      default: 225
+      minimum: 0
+      maximum: 1000
+    
+    # Dialog types (with preset configurations)
+    dialog_type:
+      type: string
+      title: 'Dialog type'
+      description: 'Preset dialog configuration'
+      enum: ['default', 'confirmation', 'alert', 'form', 'loading', 'image', 'video']
+      default: 'default'
+    
+    # Type-specific properties
+    confirmation_message:
+      type: string
+      title: 'Confirmation message'
+      description: 'Message for confirmation dialogs'
+      default: ''
+    
+    confirmation_danger:
+      type: boolean
+      title: 'Danger confirmation'
+      description: 'Style as dangerous action'
+      default: false
+    
+    alert_severity:
+      type: string
+      title: 'Alert severity'
+      description: 'Severity level for alert dialogs'
+      enum: ['info', 'warning', 'error', 'success']
+      default: 'info'
+    
+    loading_message:
+      type: string
+      title: 'Loading message'
+      description: 'Message for loading dialogs'
+      default: 'Loading...'
+    
+    image_url:
+      type: string
+      title: 'Image URL'
+      description: 'URL for image dialogs'
+      default: ''
+    
+    image_alt:
+      type: string
+      title: 'Image alt text'
+      description: 'Alt text for image dialogs'
+      default: ''
+    
+    video_url:
+      type: string
+      title: 'Video URL'
+      description: 'URL for video dialogs'
+      default: ''
+    
+    # Advanced features
+    draggable:
+      type: boolean
+      title: 'Draggable'
+      description: 'Allow dragging the dialog'
+      default: false
+    
+    resizable:
+      type: boolean
+      title: 'Resizable'
+      description: 'Allow resizing the dialog'
+      default: false
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes'
+      items:
+        type: string
+    
+    # Accessibility
+    aria_labelledby:
+      type: string
+      title: 'ARIA labelled by'
+      description: 'ID of element that labels the dialog'
+      default: ''
+    
+    aria_describedby:
+      type: string
+      title: 'ARIA described by'
+      description: 'ID of element that describes the dialog'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-dialog

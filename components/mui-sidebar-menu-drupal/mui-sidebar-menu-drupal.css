@@ -1,0 +1,296 @@
+/* MUI Sidebar Menu Drupal Integration Styles */
+
+.mui-sidebar-menu-drupal {
+  position: relative;
+}
+
+/* Drupal-specific menu item states */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.is-active,
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.active {
+  background-color: rgba(25, 118, 210, 0.08);
+  color: var(--mui-primary-main);
+  font-weight: 500;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.is-active .MuiSidebarMenu-icon,
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.active .MuiSidebarMenu-icon {
+  color: var(--mui-primary-main);
+}
+
+/* Enhanced active trail styling for sidebar */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.in-active-trail {
+  background-color: rgba(25, 118, 210, 0.04);
+  border-left: 2px solid rgba(25, 118, 210, 0.3);
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.in-active-trail > .MuiSidebarMenu-linkText {
+  font-weight: 500;
+}
+
+/* Current page highlighting */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[aria-current="page"] {
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  border-left: 4px solid var(--mui-primary-dark);
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[aria-current="page"]:hover {
+  background-color: var(--mui-primary-dark);
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[aria-current="page"] .MuiSidebarMenu-icon {
+  color: inherit;
+}
+
+/* External link indicators */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[target="_blank"]::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+  margin-right: 8px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3e%3cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3e%3cpolyline points='15,3 21,3 21,9'/%3e%3cline x1='10' y1='14' x2='21' y2='3'/%3e%3c/svg%3e");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Drupal contextual links integration */
+.mui-sidebar-menu-drupal .contextual-region {
+  position: relative;
+}
+
+.mui-sidebar-menu-drupal .contextual {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: var(--mui-zindex-tooltip);
+}
+
+/* Menu loading states */
+.mui-sidebar-menu-drupal.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.mui-sidebar-menu-drupal.is-loading::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--mui-primary-main);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: mui-sidebar-menu-drupal-spin 1s linear infinite;
+  z-index: 1000;
+}
+
+@keyframes mui-sidebar-menu-drupal-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error states */
+.mui-sidebar-menu-drupal.has-error {
+  border-left: 4px solid var(--mui-error-main);
+  background-color: rgba(244, 67, 54, 0.04);
+}
+
+.mui-sidebar-menu-drupal-error-message {
+  padding: 12px 16px;
+  color: var(--mui-error-main);
+  font-size: 0.875rem;
+  background-color: rgba(244, 67, 54, 0.08);
+  border-radius: var(--mui-border-radius);
+  margin: 8px;
+}
+
+/* Drupal menu item types */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-menu-type="menu_link_content"] {
+  /* Styling for content menu links */
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-menu-type="system"] {
+  /* Styling for system menu links */
+  opacity: 0.8;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-menu-type="views"] {
+  /* Styling for Views menu links */
+}
+
+/* Drupal access denied styling */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link.access-denied {
+  opacity: 0.5;
+  pointer-events: none;
+  text-decoration: line-through;
+}
+
+/* Drupal workflow states */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-workflow-state="draft"] {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-workflow-state="published"] {
+  /* Normal styling for published content */
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-link[data-workflow-state="archived"] {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+/* Language switching integration */
+.mui-sidebar-menu-drupal .language-switcher {
+  border-top: 1px solid var(--mui-divider);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.mui-sidebar-menu-drupal .language-switcher .MuiSidebarMenu-link {
+  min-height: 40px;
+  font-size: 0.8125rem;
+}
+
+.mui-sidebar-menu-drupal .language-switcher .MuiSidebarMenu-link.is-active {
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+}
+
+/* User menu specific styling */
+.mui-sidebar-menu-drupal.user-menu .MuiSidebarMenu-link[data-menu-item="user.logout"] {
+  border-top: 1px solid var(--mui-divider);
+  margin-top: 8px;
+  color: var(--mui-error-main);
+}
+
+.mui-sidebar-menu-drupal.user-menu .MuiSidebarMenu-link[data-menu-item="user.logout"]:hover {
+  background-color: rgba(244, 67, 54, 0.08);
+}
+
+/* Admin menu styling */
+.mui-sidebar-menu-drupal.admin-menu {
+  font-size: 0.8125rem;
+}
+
+.mui-sidebar-menu-drupal.admin-menu .MuiSidebarMenu-link {
+  min-height: 40px;
+  padding: 8px 16px;
+}
+
+.mui-sidebar-menu-drupal.admin-menu .MuiSidebarMenu-icon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.mui-sidebar-menu-drupal.admin-menu .MuiSidebarMenu-expandIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Nested menu indentation enhancement */
+.mui-sidebar-menu-drupal .MuiSidebarMenu-level-1 .MuiSidebarMenu-link {
+  padding-left: 32px;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-level-2 .MuiSidebarMenu-link {
+  padding-left: 48px;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-level-3 .MuiSidebarMenu-link {
+  padding-left: 64px;
+}
+
+.mui-sidebar-menu-drupal .MuiSidebarMenu-level-4 .MuiSidebarMenu-link {
+  padding-left: 80px;
+}
+
+/* Breadcrumb trail in sidebar (optional feature) */
+.mui-sidebar-menu-drupal .breadcrumb-trail {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--mui-divider);
+  background-color: var(--mui-grey-50);
+  font-size: 0.75rem;
+  color: var(--mui-text-secondary);
+}
+
+.mui-sidebar-menu-drupal .breadcrumb-trail a {
+  color: var(--mui-primary-main);
+  text-decoration: none;
+}
+
+.mui-sidebar-menu-drupal .breadcrumb-trail a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link[target="_blank"]::after {
+    display: none; /* Hide external link icons on mobile */
+  }
+  
+  .mui-sidebar-menu-drupal .contextual {
+    display: none; /* Hide contextual links on mobile */
+  }
+  
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link {
+    padding: 12px 16px;
+    min-height: 48px;
+  }
+  
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-linkText {
+    font-size: 1rem;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link.is-active,
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link.active {
+    border: 2px solid var(--mui-primary-main);
+  }
+  
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link.in-active-trail {
+    border-left: 4px solid var(--mui-primary-main);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mui-sidebar-menu-drupal.is-loading::before {
+    animation: none;
+    border: 2px solid var(--mui-primary-main);
+    border-radius: 0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .mui-sidebar-menu-drupal .contextual,
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link[target="_blank"]::after,
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-expandButton {
+    display: none;
+  }
+  
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link {
+    background: none !important;
+    color: black !important;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .mui-sidebar-menu-drupal .MuiSidebarMenu-link[target="_blank"]::after {
+    filter: invert(1);
+  }
+  
+  .mui-sidebar-menu-drupal .breadcrumb-trail {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+}

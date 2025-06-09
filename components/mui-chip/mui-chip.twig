@@ -1,0 +1,146 @@
+{#
+/**
+ * @file
+ * Fixed MUI Chip component template with proper string value handling.
+ */
+#}
+
+{% set chip_classes = [
+  'MuiChip-root',
+  'MuiChip-' ~ variant,
+  'MuiChip-size' ~ (size|title),
+  'MuiChip-color' ~ (color|title),
+  clickable or link_url ? 'MuiChip-clickable' : '',
+  deletable ? 'MuiChip-deletable' : '',
+  disabled ? 'MuiChip-disabled Mui-disabled' : '',
+  selected ? 'MuiChip-selected' : '',
+  avatar or avatar_url ? 'MuiChip-avatar' : '',
+  icon ? 'MuiChip-icon' : '',
+  badge ? 'MuiChip-hasBadge' : '',
+  'mui-chip'
+] %}
+
+{# Determine wrapper element #}
+{% set wrapper_tag = link_url ? 'a' : (clickable ? 'button' : 'div') %}
+
+{# Set up attributes #}
+{% set chip_attributes = {} %}
+{% if link_url %}
+  {% set chip_attributes = chip_attributes|merge({
+    href: link_url,
+    target: link_target != '_self' ? link_target : null,
+    rel: link_target == '_blank' ? 'noopener noreferrer' : null
+  }) %}
+{% elseif clickable %}
+  {% set chip_attributes = chip_attributes|merge({
+    type: 'button',
+    disabled: disabled ? 'disabled' : null
+  }) %}
+{% endif %}
+
+{# Add data attributes #}
+{% if category %}
+  {% set chip_attributes = chip_attributes|merge({'data-category': category}) %}
+{% endif %}
+{% if value %}
+  {% set chip_attributes = chip_attributes|merge({'data-value': value}) %}
+{% endif %}
+{% if on_click %}
+  {% set chip_attributes = chip_attributes|merge({'data-onclick': on_click}) %}
+{% endif %}
+
+{# Tooltip attributes #}
+{% if tooltip %}
+  {% set chip_attributes = chip_attributes|merge({
+    'data-tooltip': tooltip,
+    'title': tooltip
+  }) %}
+{% endif %}
+
+{# ARIA attributes #}
+{% if clickable or link_url %}
+  {% set chip_attributes = chip_attributes|merge({
+    'role': 'button',
+    'tabindex': disabled ? '-1' : '0'
+  }) %}
+{% endif %}
+
+<{{ wrapper_tag }}{{ attributes.addClass(chip_classes).addAttributes(chip_attributes) }}>
+  
+  {# Avatar or Icon (start) #}
+  {% if avatar %}
+    <span class="MuiChip-avatar">
+      {% if avatar is iterable %}
+        {% for media_item in avatar %}
+          {{ media_item }}
+        {% endfor %}
+      {% else %}
+        {{ avatar }}
+      {% endif %}
+    </span>
+  {% elseif avatar_url %}
+    <img 
+      src="{{ avatar_url }}" 
+      alt="{{ avatar_alt ?: label }}" 
+      class="MuiChip-avatar"
+      loading="lazy"
+    />
+  {% elseif icon %}
+    <span class="MuiChip-icon MuiChip-iconSmall">
+      {% if icon starts with '<' %}
+        {{ icon|raw }}
+      {% else %}
+        <i class="{{ icon }}" aria-hidden="true"></i>
+      {% endif %}
+    </span>
+  {% endif %}
+
+  {# Label content #}
+  <span class="MuiChip-label">
+    {{ label }}
+  </span>
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    <span class="MuiChip-children">
+      {{ children }}
+    </span>
+  {% endif %}
+
+  {# Delete button #}
+  {% if deletable %}
+    <button 
+      type="button" 
+      class="MuiChip-deleteIcon MuiIconButton-root MuiIconButton-sizeSmall"
+      aria-label="{{ delete_label }} {{ label }}"
+      {% if disabled %}disabled="disabled"{% endif %}
+      {% if on_delete %}data-ondelete="{{ on_delete }}"{% endif %}
+    >
+      {% if delete_icon %}
+        {% if delete_icon starts with '<' %}
+          {{ delete_icon|raw }}
+        {% else %}
+          <i class="{{ delete_icon }}" aria-hidden="true"></i>
+        {% endif %}
+      {% else %}
+        {# Default delete icon #}
+        <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"></path>
+        </svg>
+      {% endif %}
+    </button>
+  {% endif %}
+
+  {# Badge overlay #}
+  {% if badge and badge.content %}
+    <span class="MuiChip-badge MuiBadge-root MuiBadge-{{ badge.color|default('primary') }} MuiBadge-{{ badge.position|default('top-right')|replace('-', '') }}">
+      <span class="MuiBadge-badge">{{ badge.content }}</span>
+    </span>
+  {% endif %}
+
+  {# Touch ripple for interactive chips #}
+  {% if clickable or link_url %}
+    <span class="MuiTouchRipple-root"></span>
+  {% endif %}
+
+</{{ wrapper_tag }}>

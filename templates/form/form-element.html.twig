@@ -1,0 +1,57 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a form element.
+ */
+#}
+{%
+  set classes = [
+    'MuiFormControl-root',
+    'form-item',
+    'js-form-item',
+    'form-item-' ~ name|clean_class,
+    'js-form-item-' ~ name|clean_class,
+    title_display not in ['after', 'before'] ? 'form-no-label',
+    disabled == 'disabled' ? 'form-disabled',
+    errors ? 'form-item--error'
+  ]
+%}
+{%
+  set description_classes = [
+    'MuiFormHelperText-root',
+    'description',
+    disabled == 'disabled' ? 'is-disabled' : '',
+    errors ? 'MuiFormHelperText-error' : ''
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
+  {% if label_display in ['before', 'invisible'] %}
+    {{ label }}
+  {% endif %}
+  
+  {% if prefix is not empty %}
+    <span class="field-prefix">{{ prefix }}</span>
+  {% endif %}
+  
+  {{ children }}
+  
+  {% if suffix is not empty %}
+    <span class="field-suffix">{{ suffix }}</span>
+  {% endif %}
+  
+  {% if label_display == 'after' %}
+    {{ label }}
+  {% endif %}
+  
+  {% if errors %}
+    <div class="MuiFormHelperText-root MuiFormHelperText-error form-item--error-message">
+      {{ errors }}
+    </div>
+  {% endif %}
+  
+  {% if description %}
+    <div{{ description.attributes.addClass(description_classes) }}>
+      {{ description.content }}
+    </div>
+  {% endif %}
+</div>

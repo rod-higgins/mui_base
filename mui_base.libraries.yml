@@ -1,0 +1,114 @@
+# Core Libraries
+foundation:
+  css:
+    base:
+      css/mui-foundation.css: { weight: -100, preprocess: true }
+  js:
+    js/mui-base.js: { preprocess: true }
+  dependencies:
+    - core/drupal
+    - core/once
+
+components:
+  css:
+    theme:
+      css/mui-components.css: { weight: -70, preprocess: true }
+  dependencies:
+    - mui_base/foundation
+
+global:
+  dependencies:
+    - mui_base/foundation
+    - mui_base/components
+
+# Component Libraries
+mobile-menu:
+  js:
+    components/mui-mobile-menu/mui-mobile-menu.js: { preprocess: true }
+  dependencies:
+    - mui_base/components
+
+sidebar-menu:
+  js:
+    components/mui-sidebar-menu/mui-sidebar-menu.js: { preprocess: true }
+  dependencies:
+    - mui_base/components
+
+button:
+  js:
+    components/mui-button/mui-button.js: { preprocess: true }
+  dependencies:
+    - mui_base/components
+
+# Utility Libraries
+admin:
+  css:
+    theme:
+      css/admin/admin.css: { preprocess: false }
+  js:
+    js/admin/theme-settings.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/drupal
+
+accessibility:
+  css:
+    theme:
+      css/accessibility.css: { weight: -50, preprocess: true }
+  js:
+    js/accessibility.js: { preprocess: true }
+  dependencies:
+    - mui_base/foundation
+
+print:
+  css:
+    theme:
+      css/print.css: { media: print, preprocess: true }
+
+dark-mode:
+  css:
+    theme:
+      css/dark-mode.css: { weight: -60, preprocess: true }
+  dependencies:
+    - mui_base/foundation
+
+mui-menu-drupal:
+  version: 1.0.0
+  css:
+    component:
+      components/mui-menu-drupal/mui-menu-drupal.css: {}
+  js:
+    components/mui-menu-drupal/mui-menu-drupal.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - mui_base/mui-menu
+    - core/drupal.ajax
+
+# Base MUI Breadcrumb Component
+mui-breadcrumb:
+  version: 1.0.0
+  css:
+    component:
+      components/mui-breadcrumb/mui-breadcrumb.css: {}
+  js:
+    components/mui-breadcrumb/mui-breadcrumb.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+# MUI Breadcrumb Drupal Integration
+mui-breadcrumb-drupal:
+  version: 1.0.0
+  css:
+    component:
+      components/mui-breadcrumb-drupal/mui-breadcrumb-drupal.css: {}
+  js:
+    components/mui-breadcrumb-drupal/mui-breadcrumb-drupal.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - mui_base/mui-breadcrumb
+    - core/drupal.ajax

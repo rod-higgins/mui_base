@@ -1,0 +1,254 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI AppBar'
+description: 'Enhanced Material UI AppBar component for site headers with flexible navigation and branding'
+props:
+  type: object
+  properties:
+    # AppBar positioning
+    position:
+      type: string
+      title: 'AppBar position'
+      description: 'The positioning type'
+      enum: ['fixed', 'absolute', 'sticky', 'static', 'relative']
+      default: 'fixed'
+    
+    # Visual styling
+    color:
+      type: string
+      title: 'AppBar color'
+      description: 'The color theme of the AppBar'
+      enum: ['default', 'primary', 'secondary', 'inherit', 'transparent']
+      default: 'primary'
+    
+    elevation:
+      type: integer
+      title: 'AppBar elevation'
+      description: 'Shadow depth when not transparent'
+      enum: [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+      default: 4
+    
+    variant:
+      type: string
+      title: 'AppBar variant'
+      description: 'The variant to use'
+      enum: ['regular', 'dense', 'prominent']
+      default: 'regular'
+    
+    # Branding section
+    logo:
+      type: entity_reference
+      title: 'Logo image'
+      description: 'Media entity for site logo'
+      target_type: 'media'
+      target_bundles: ['image']
+    
+    logo_url:
+      type: string
+      title: 'Logo URL'
+      description: 'Direct URL to logo image'
+      default: ''
+    
+    logo_svg:
+      type: text
+      title: 'Logo SVG'
+      description: 'SVG markup for logo'
+      format: 'html'
+      default: ''
+    
+    site_name:
+      type: string
+      title: 'Site name'
+      description: 'Site name text'
+      default: ''
+    
+    site_tagline:
+      type: string
+      title: 'Site tagline'
+      description: 'Optional tagline or subtitle'
+      default: ''
+    
+    home_url:
+      type: string
+      title: 'Home URL'
+      description: 'URL for logo/brand link'
+      default: '/'
+    
+    # Navigation
+    navigation_items:
+      type: array
+      title: 'Navigation items'
+      description: 'Array of navigation menu items'
+      items:
+        type: object
+        properties:
+          title:
+            type: string
+          url:
+            type: string
+          target:
+            type: string
+            enum: ['_self', '_blank']
+            default: '_self'
+          icon:
+            type: string
+          active:
+            type: boolean
+            default: false
+          children:
+            type: array
+            items:
+              type: object
+    
+    # Action items (right side)
+    action_items:
+      type: array
+      title: 'Action items'
+      description: 'Array of action buttons/links for the right side'
+      items:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: ['button', 'icon', 'avatar', 'search', 'menu']
+          label:
+            type: string
+          icon:
+            type: string
+          url:
+            type: string
+          avatar_url:
+            type: string
+          avatar_initials:
+            type: string
+          badge:
+            type: object
+            properties:
+              content:
+                type: string
+              color:
+                type: string
+          dropdown_items:
+            type: array
+            items:
+              type: object
+    
+    # Mobile menu
+    mobile_menu_enabled:
+      type: boolean
+      title: 'Enable mobile menu'
+      description: 'Show mobile hamburger menu'
+      default: true
+    
+    mobile_breakpoint:
+      type: string
+      title: 'Mobile breakpoint'
+      description: 'Breakpoint for mobile menu activation'
+      enum: ['sm', 'md', 'lg', 'xl']
+      default: 'md'
+    
+    # Search functionality
+    search_enabled:
+      type: boolean
+      title: 'Enable search'
+      description: 'Include search functionality'
+      default: false
+    
+    search_placeholder:
+      type: string
+      title: 'Search placeholder'
+      description: 'Placeholder text for search input'
+      default: 'Search...'
+    
+    search_action_url:
+      type: string
+      title: 'Search action URL'
+      description: 'URL to submit search to'
+      default: '/search'
+    
+    # Layout options
+    container_max_width:
+      type: string
+      title: 'Container max width'
+      description: 'Maximum width constraint'
+      enum: ['xs', 'sm', 'md', 'lg', 'xl', 'false']
+      default: 'lg'
+    
+    disable_gutters:
+      type: boolean
+      title: 'Disable gutters'
+      description: 'Remove horizontal padding'
+      default: false
+    
+    # Behavior
+    auto_hide:
+      type: boolean
+      title: 'Auto hide'
+      description: 'Hide AppBar when scrolling down'
+      default: false
+    
+    auto_hide_threshold:
+      type: integer
+      title: 'Auto hide threshold'
+      description: 'Scroll distance before hiding (px)'
+      default: 100
+      minimum: 0
+    
+    blur_background:
+      type: boolean
+      title: 'Blur background'
+      description: 'Add backdrop blur when scrolled'
+      default: false
+    
+    # Custom content areas
+    left_content:
+      type: text
+      title: 'Left content'
+      description: 'Custom content for left side (before navigation)'
+      format: 'html'
+      default: ''
+    
+    center_content:
+      type: text
+      title: 'Center content'
+      description: 'Custom content for center area'
+      format: 'html'
+      default: ''
+    
+    right_content:
+      type: text
+      title: 'Right content'
+      description: 'Custom content for right side (after actions)'
+      format: 'html'
+      default: ''
+    
+    # Progress indicator
+    show_progress:
+      type: boolean
+      title: 'Show progress indicator'
+      description: 'Show linear progress at bottom'
+      default: false
+    
+    progress_value:
+      type: integer
+      title: 'Progress value'
+      description: 'Progress percentage (0-100)'
+      default: 0
+      minimum: 0
+      maximum: 100
+    
+    # Advanced features
+    scroll_color_change:
+      type: boolean
+      title: 'Scroll color change'
+      description: 'Change color scheme when scrolled'
+      default: false
+    
+    scrolled_color:
+      type: string
+      title: 'Scrolled color'
+      description: 'Color theme when scrolled'
+      enum: ['default', 'primary', 'secondary', 'inherit', 'transparent']
+      default: 'default'
+
+libraryDependencies:
+  - mui_base/mui-appbar

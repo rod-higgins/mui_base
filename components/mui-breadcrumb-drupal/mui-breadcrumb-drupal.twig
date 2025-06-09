@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * MUI Breadcrumb Drupal integration component template.
+ * 
+ * This component handles Drupal-specific breadcrumb generation and passes
+ * the resulting breadcrumb items to the base MUI breadcrumb component.
+ */
+#}
+
+{# Generate breadcrumb items if not provided #}
+{% if not items and custom_breadcrumbs %}
+  {% set items = custom_breadcrumbs %}
+{% endif %}
+
+{# Use the base MUI breadcrumb component #}
+{% include 'mui_base:mui-breadcrumb' with {
+  items: items,
+  variant: variant,
+  size: size,
+  color: color,
+  separator: separator,
+  separator_variant: separator_variant,
+  max_items: max_items,
+  items_before_collapse: items_before_collapse,
+  items_after_collapse: items_after_collapse,
+  show_home: show_home,
+  home_text: home_text,
+  home_url: home_url,
+  home_icon: home_icon,
+  show_current: show_current,
+  current_text: current_page_title,
+  aria_label: 'Breadcrumb navigation',
+  expandable: expandable,
+  truncate_length: truncate_length,
+  structured_data: structured_data,
+  click_handler: click_handler,
+  custom_classes: custom_classes,
+  attributes: attributes
+} %}

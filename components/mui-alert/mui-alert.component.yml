@@ -1,0 +1,189 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Alert'
+description: 'Enhanced Material UI Alert component for user feedback and notifications'
+props:
+  type: object
+  properties:
+    # Alert content
+    title:
+      type: string
+      title: 'Alert title'
+      description: 'Optional title for the alert'
+      default: ''
+    
+    message:
+      type: text
+      title: 'Alert message'
+      description: 'Main alert content (supports HTML)'
+      format: 'html'
+      default: ''
+    
+    # Severity and styling
+    severity:
+      type: string
+      title: 'Alert severity'
+      description: 'The severity level of the alert'
+      enum: ['error', 'warning', 'info', 'success']
+      default: 'info'
+    
+    variant:
+      type: string
+      title: 'Alert variant'
+      description: 'The visual style variant'
+      enum: ['filled', 'outlined', 'standard']
+      default: 'standard'
+    
+    color:
+      type: string
+      title: 'Alert color'
+      description: 'Override default severity color'
+      enum: ['inherit', 'primary', 'secondary', 'error', 'warning', 'info', 'success']
+      default: 'inherit'
+    
+    # Icons
+    icon:
+      type: text
+      title: 'Custom icon'
+      description: 'Custom icon (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    show_icon:
+      type: boolean
+      title: 'Show icon'
+      description: 'Display severity icon'
+      default: true
+    
+    # Actions
+    closable:
+      type: boolean
+      title: 'Closable'
+      description: 'Show close button'
+      default: false
+    
+    close_text:
+      type: string
+      title: 'Close button text'
+      description: 'Accessible text for close button'
+      default: 'Close'
+    
+    # Action buttons
+    actions:
+      type: array
+      title: 'Action buttons'
+      description: 'Array of action buttons'
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          url:
+            type: string
+          variant:
+            type: string
+            enum: ['text', 'outlined', 'contained']
+            default: 'text'
+          color:
+            type: string
+            enum: ['inherit', 'primary', 'secondary']
+            default: 'inherit'
+          size:
+            type: string
+            enum: ['small', 'medium', 'large']
+            default: 'small'
+          click_handler:
+            type: string
+    
+    # Layout
+    full_width:
+      type: boolean
+      title: 'Full width'
+      description: 'Expand to full container width'
+      default: false
+    
+    # Animation
+    slide_in:
+      type: boolean
+      title: 'Slide in animation'
+      description: 'Animate alert entrance'
+      default: false
+    
+    slide_direction:
+      type: string
+      title: 'Slide direction'
+      description: 'Direction for slide animation'
+      enum: ['up', 'down', 'left', 'right']
+      default: 'down'
+    
+    # Auto dismiss
+    auto_dismiss:
+      type: boolean
+      title: 'Auto dismiss'
+      description: 'Automatically dismiss after timeout'
+      default: false
+    
+    dismiss_timeout:
+      type: integer
+      title: 'Dismiss timeout'
+      description: 'Timeout in milliseconds'
+      default: 5000
+      minimum: 1000
+      maximum: 30000
+    
+    # Rich content
+    allow_html:
+      type: boolean
+      title: 'Allow HTML'
+      description: 'Allow HTML content in message'
+      default: true
+    
+    link_urls:
+      type: array
+      title: 'Link URLs'
+      description: 'Array of links to highlight in text'
+      items:
+        type: object
+        properties:
+          text:
+            type: string
+          url:
+            type: string
+          target:
+            type: string
+    
+    # JavaScript integration
+    on_close:
+      type: string
+      title: 'Close handler'
+      description: 'JavaScript function name for close events'
+      default: ''
+    
+    on_action:
+      type: string
+      title: 'Action handler'
+      description: 'JavaScript function name for action events'
+      default: ''
+    
+    # Advanced features
+    progress_bar:
+      type: boolean
+      title: 'Show progress bar'
+      description: 'Show progress bar for auto-dismiss'
+      default: false
+    
+    persistent:
+      type: boolean
+      title: 'Persistent'
+      description: 'Alert remains after page reload'
+      default: false
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes'
+      items:
+        type: string
+
+libraryDependencies:
+  - mui_base/mui-alert

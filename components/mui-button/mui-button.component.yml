@@ -1,0 +1,162 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Button'
+description: 'Enhanced Material UI button component with rich content and icon support'
+props:
+  type: object
+  properties:
+    # Core content (enhanced)
+    label:
+      type: text
+      title: 'Button label'
+      description: 'The text content of the button (supports HTML)'
+      format: 'html'
+      default: 'Button'
+    
+    # Styling (existing with additions)
+    variant:
+      type: string
+      title: 'Button variant'
+      description: 'The variant to use'
+      enum: ['text', 'outlined', 'contained']
+      default: 'contained'
+    
+    color:
+      type: string
+      title: 'Button color'
+      description: 'The color of the component'
+      enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success', 'inherit']
+      default: 'primary'
+    
+    size:
+      type: string
+      title: 'Button size'
+      description: 'The size of the component'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    # State
+    disabled:
+      type: boolean
+      title: 'Disabled state'
+      description: 'If true, the component is disabled'
+      default: false
+    
+    loading:
+      type: boolean
+      title: 'Loading state'
+      description: 'Shows loading spinner and disables button'
+      default: false
+    
+    # Layout
+    fullWidth:
+      type: boolean
+      title: 'Full width'
+      description: 'If true, the button will take up the full width'
+      default: false
+    
+    # Link functionality (enhanced)
+    href:
+      type: string
+      title: 'Link URL'
+      description: 'If provided, renders as a link instead of button'
+      default: ''
+    
+    target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    # Icons (enhanced)
+    start_icon:
+      type: text
+      title: 'Start icon'
+      description: 'Icon placed before the label (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    end_icon:
+      type: text
+      title: 'End icon'
+      description: 'Icon placed after the label (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    icon_only:
+      type: boolean
+      title: 'Icon only'
+      description: 'Button contains only an icon (makes it circular)'
+      default: false
+    
+    # Form integration
+    type:
+      type: string
+      title: 'Button type'
+      description: 'The type attribute for button elements'
+      enum: ['button', 'submit', 'reset']
+      default: 'button'
+    
+    form_id:
+      type: string
+      title: 'Form ID'
+      description: 'ID of form to submit (for type="submit")'
+      default: ''
+    
+    # JavaScript integration
+    on_click:
+      type: string
+      title: 'Click handler'
+      description: 'JavaScript function name for click events'
+      default: ''
+    
+    # Advanced features
+    tooltip:
+      type: string
+      title: 'Tooltip text'
+      description: 'Tooltip text on hover'
+      default: ''
+    
+    badge:
+      type: object
+      title: 'Badge'
+      description: 'Optional badge overlay (e.g., notification count)'
+      properties:
+        content:
+          type: string
+        color:
+          type: string
+          enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+        position:
+          type: string
+          enum: ['top-right', 'top-left']
+    
+    # Accessibility
+    aria_label:
+      type: string
+      title: 'ARIA label'
+      description: 'Accessible label (especially important for icon-only buttons)'
+      default: ''
+    
+    aria_describedby:
+      type: string
+      title: 'ARIA described by'
+      description: 'ID of element that describes the button'
+      default: ''
+    
+    # Data attributes
+    data_attributes:
+      type: object
+      title: 'Data attributes'
+      description: 'Custom data attributes as key-value pairs'
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      description: 'Additional CSS classes to apply'
+      items:
+        type: string
+
+libraryDependencies:
+  - mui_base/mui-button

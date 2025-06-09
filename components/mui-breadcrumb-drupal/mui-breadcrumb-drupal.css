@@ -1,0 +1,349 @@
+/* MUI Breadcrumb Drupal Integration Styles */
+
+.mui-breadcrumb-drupal {
+  position: relative;
+}
+
+/* Drupal-specific breadcrumb source styling */
+.mui-breadcrumb-drupal.breadcrumb-source-path .MuiBreadcrumb-link {
+  /* Path-based breadcrumbs styling */
+}
+
+.mui-breadcrumb-drupal.breadcrumb-source-menu .MuiBreadcrumb-link {
+  /* Menu-based breadcrumbs styling */
+  font-weight: 500;
+}
+
+.mui-breadcrumb-drupal.breadcrumb-source-taxonomy .MuiBreadcrumb-link {
+  /* Taxonomy-based breadcrumbs styling */
+  font-style: italic;
+}
+
+.mui-breadcrumb-drupal.breadcrumb-source-book .MuiBreadcrumb-link {
+  /* Book-based breadcrumbs styling */
+}
+
+/* Entity-specific breadcrumb styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-type="node"] {
+  color: var(--mui-primary-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-type="taxonomy_term"] {
+  color: var(--mui-secondary-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-type="user"] {
+  color: var(--mui-info-main);
+}
+
+/* Content type specific styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-bundle="article"]::before {
+  content: '📰';
+  margin-right: 4px;
+  font-size: 0.875em;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-bundle="page"]::before {
+  content: '📄';
+  margin-right: 4px;
+  font-size: 0.875em;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-bundle="event"]::before {
+  content: '📅';
+  margin-right: 4px;
+  font-size: 0.875em;
+}
+
+/* Route-specific styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-route-name="entity.node.canonical"] {
+  /* Node view pages */
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-route-name="entity.taxonomy_term.canonical"] {
+  /* Taxonomy term pages */
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-route-name="entity.user.canonical"] {
+  /* User profile pages */
+}
+
+/* Published/unpublished content indicators */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-status="0"] {
+  opacity: 0.6;
+  position: relative;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-status="0"]::after {
+  content: '(unpublished)';
+  font-size: 0.75em;
+  color: var(--mui-warning-main);
+  margin-left: 4px;
+}
+
+/* Language-specific breadcrumb styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-langcode]:not([data-langcode=""]) {
+  position: relative;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-langcode]:not([data-langcode=""])::before {
+  content: attr(data-langcode);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  background-color: var(--mui-grey-300);
+  color: var(--mui-text-primary);
+  padding: 1px 4px;
+  border-radius: 2px;
+  margin-right: 4px;
+  line-height: 1;
+}
+
+/* Access denied styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link.access-denied {
+  opacity: 0.5;
+  text-decoration: line-through;
+  pointer-events: none;
+}
+
+/* Loading state for dynamic breadcrumbs */
+.mui-breadcrumb-drupal.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.mui-breadcrumb-drupal.is-loading::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: 2px solid var(--mui-primary-main);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: mui-breadcrumb-drupal-spin 1s linear infinite;
+  z-index: 1;
+}
+
+@keyframes mui-breadcrumb-drupal-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.mui-breadcrumb-drupal.has-error {
+  border-left: 4px solid var(--mui-error-main);
+  padding-left: 8px;
+  background-color: rgba(244, 67, 54, 0.04);
+}
+
+.mui-breadcrumb-drupal-error-message {
+  color: var(--mui-error-main);
+  font-size: 0.75rem;
+  margin-top: 4px;
+  padding: 4px 8px;
+  background-color: rgba(244, 67, 54, 0.08);
+  border-radius: var(--mui-border-radius);
+}
+
+/* Contextual links integration */
+.mui-breadcrumb-drupal .contextual-region {
+  position: relative;
+  display: inline-block;
+}
+
+.mui-breadcrumb-drupal .contextual {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  z-index: var(--mui-zindex-tooltip);
+}
+
+.mui-breadcrumb-drupal .contextual .trigger {
+  width: 18px;
+  height: 18px;
+  background-color: var(--mui-grey-600);
+  border-radius: 50%;
+}
+
+/* Workflow state indicators */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-workflow-state="draft"] {
+  border-bottom: 2px dotted var(--mui-warning-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-workflow-state="review"] {
+  border-bottom: 2px dotted var(--mui-info-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-workflow-state="published"] {
+  border-bottom: 2px solid var(--mui-success-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-workflow-state="archived"] {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* Hierarchy depth indicators */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-depth="1"] {
+  font-weight: 600;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-depth="2"] {
+  font-weight: 500;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-depth="3"] {
+  font-weight: 400;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-depth="4"],
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[data-depth="5"] {
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+/* Book navigation specific styling */
+.mui-breadcrumb-drupal.breadcrumb-source-book .MuiBreadcrumb-link {
+  position: relative;
+}
+
+.mui-breadcrumb-drupal.breadcrumb-source-book .MuiBreadcrumb-link[data-book-weight]::before {
+  content: attr(data-book-weight) ".";
+  font-size: 0.75em;
+  color: var(--mui-text-secondary);
+  margin-right: 4px;
+}
+
+/* Taxonomy hierarchy styling */
+.mui-breadcrumb-drupal.breadcrumb-source-taxonomy .MuiBreadcrumb-separator {
+  color: var(--mui-secondary-main);
+  font-weight: bold;
+}
+
+.mui-breadcrumb-drupal.breadcrumb-source-taxonomy .MuiBreadcrumb-link[data-term-depth] {
+  padding-left: calc(var(--mui-spacing-1) * attr(data-term-depth number, 0));
+}
+
+/* Menu trail styling */
+.mui-breadcrumb-drupal.breadcrumb-source-menu .MuiBreadcrumb-link.is-active {
+  background-color: rgba(25, 118, 210, 0.08);
+  padding: 2px 6px;
+  border-radius: var(--mui-border-radius);
+  margin: -2px -6px;
+}
+
+/* Admin pages breadcrumb styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/admin"] {
+  color: var(--mui-warning-main);
+  font-family: monospace;
+  font-size: 0.8125rem;
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/admin"]::before {
+  content: '⚙️';
+  margin-right: 4px;
+  font-size: 0.875em;
+}
+
+/* User pages breadcrumb styling */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/user/"] {
+  color: var(--mui-info-main);
+}
+
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/user/"]::before {
+  content: '👤';
+  margin-right: 4px;
+  font-size: 0.875em;
+}
+
+/* External link indicators */
+.mui-breadcrumb-drupal .MuiBreadcrumb-link[target="_blank"]::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3e%3cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3e%3cpolyline points='15,3 21,3 21,9'/%3e%3cline x1='10' y1='14' x2='21' y2='3'/%3e%3c/svg%3e");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  vertical-align: top;
+}
+
+/* Responsive adjustments for Drupal breadcrumbs */
+@media (max-width: 600px) {
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-bundle]::before,
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/admin"]::before,
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[href*="/user/"]::before {
+    display: none; /* Hide emoji icons on mobile */
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-langcode]:not([data-langcode=""])::before {
+    display: none; /* Hide language indicators on mobile */
+  }
+  
+  .mui-breadcrumb-drupal .contextual {
+    display: none; /* Hide contextual links on mobile */
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-status="0"]::after {
+    display: none; /* Hide unpublished indicators on mobile */
+  }
+}
+
+/* Print styles */
+@media print {
+  .mui-breadcrumb-drupal .contextual,
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[target="_blank"]::after {
+    display: none;
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link {
+    color: black !important;
+    text-decoration: none !important;
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-separator {
+    color: black !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-entity-type] {
+    border: 1px solid currentColor;
+    padding: 1px 4px;
+    margin: -1px -4px;
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-workflow-state] {
+    border-bottom-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mui-breadcrumb-drupal.is-loading::before {
+    animation: none;
+    border: 2px solid var(--mui-primary-main);
+    border-radius: 0;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[data-langcode]:not([data-langcode=""])::before {
+    background-color: var(--mui-grey-700);
+    color: var(--mui-grey-100);
+  }
+  
+  .mui-breadcrumb-drupal .MuiBreadcrumb-link[target="_blank"]::after {
+    filter: invert(1);
+  }
+  
+  .mui-breadcrumb-drupal.has-error {
+    background-color: rgba(244, 67, 54, 0.08);
+  }
+}

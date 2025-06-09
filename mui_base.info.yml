@@ -1,0 +1,79 @@
+# MUI Base Theme
+# File: web/themes/custom/mui_base/mui_base.info.yml
+
+name: 'MUI Base'
+type: theme
+description: 'Material UI themed Drupal theme with flexible layouts and comprehensive component system.'
+package: Custom
+core_version_requirement: ^10 || ^11
+base theme: false
+
+# Required libraries loaded on every page
+libraries:
+  - mui_base/global
+
+# Add dependency on companion module
+dependencies:
+  - mui_base_components:mui_base_components
+
+# Component library support
+component-libraries:
+  mui_base:
+    paths:
+      - components
+
+# Supported regions for flexible layouts
+regions:
+  # Header regions
+  header_top: 'Header Top'
+  header: 'Header'
+  navigation: 'Navigation'
+  
+  # Utility regions
+  highlighted: 'Highlighted'
+  messages: 'Messages'
+  help: 'Help'
+  breadcrumb: 'Breadcrumb'
+  page_title: 'Page Title'
+  
+  # Content top regions
+  content_top: 'Content Top'
+  content_top_left: 'Content Top Left'
+  content_top_center: 'Content Top Center'
+  content_top_right: 'Content Top Right'
+  
+  # Main content and sidebars
+  content: 'Content'
+  sidebar_first: 'Sidebar First'
+  sidebar_second: 'Sidebar Second' 
+  sidebar_third: 'Sidebar Third'
+  sidebar_fourth: 'Sidebar Fourth'
+  
+  # Content bottom regions
+  content_bottom_left: 'Content Bottom Left'
+  content_bottom_center: 'Content Bottom Center'
+  content_bottom_right: 'Content Bottom Right'
+  content_bottom: 'Content Bottom'
+  
+  # Footer regions
+  footer_top: 'Footer Top'
+  footer_first: 'Footer First'
+  footer_second: 'Footer Second'
+  footer_third: 'Footer Third'
+  footer_fourth: 'Footer Fourth'
+  footer_bottom: 'Footer Bottom'
+
+# Theme features
+features:
+  - logo
+  - name
+  - slogan
+  - favicon
+
+# Screenshot for admin interface
+screenshot: screenshot.png
+
+# Additional theme info
+version: '1.0.0'
+project: 'mui_base'
+datestamp: 1735689600

@@ -1,0 +1,103 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Typography'
+description: 'Enhanced Material UI typography component with rich content support'
+props:
+  type: object
+  properties:
+    # Typography styling (existing)
+    variant:
+      type: string
+      title: 'Typography variant'
+      description: 'Applies the theme typography styles'
+      enum: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'caption', 'button', 'overline']
+      default: 'body1'
+    component:
+      type: string
+      title: 'HTML element'
+      description: 'The component maps the variant to a range of different HTML element types'
+      default: 'p'
+    color:
+      type: string
+      title: 'Typography color'
+      description: 'The color of the component'
+      enum: ['inherit', 'primary', 'secondary', 'textPrimary', 'textSecondary', 'error', 'warning', 'info', 'success']
+      default: 'inherit'
+    align:
+      type: string
+      title: 'Text alignment'
+      description: 'Set the text-align on the component'
+      enum: ['inherit', 'left', 'center', 'right', 'justify']
+      default: 'inherit'
+    gutterBottom:
+      type: boolean
+      title: 'Gutter bottom'
+      description: 'If true, the text will have a bottom margin'
+      default: false
+    noWrap:
+      type: boolean
+      title: 'No wrap'
+      description: 'If true, the text will not wrap, but instead will truncate with an ellipsis'
+      default: false
+    
+    # Enhanced content properties (new)
+    content:
+      type: text
+      title: 'Text content'
+      description: 'The main text content (supports HTML and formatting)'
+      format: 'html'
+      default: ''
+    
+    # Link support
+    link_url:
+      type: string
+      title: 'Link URL'
+      description: 'If provided, wraps content in a link'
+      default: ''
+    link_title:
+      type: string
+      title: 'Link title'
+      description: 'Title attribute for the link (accessibility)'
+      default: ''
+    link_target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    # Rich content features
+    highlight_terms:
+      type: array
+      title: 'Highlight terms'
+      description: 'Array of terms to highlight in the text'
+      items:
+        type: string
+    
+    prefix_content:
+      type: text
+      title: 'Prefix content'
+      description: 'Content to display before main text (icons, badges, etc.)'
+      format: 'html'
+    
+    suffix_content:
+      type: text
+      title: 'Suffix content'
+      description: 'Content to display after main text (icons, badges, etc.)'
+      format: 'html'
+    
+    # Advanced formatting
+    truncate_length:
+      type: integer
+      title: 'Truncate length'
+      description: 'Maximum character length before truncation (0 = no limit)'
+      default: 0
+      minimum: 0
+    
+    custom_html:
+      type: text
+      title: 'Custom HTML'
+      description: 'Advanced users can add custom HTML content'
+      format: 'raw_html'
+
+libraryDependencies:
+  - mui_base/mui-typography

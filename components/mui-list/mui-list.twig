@@ -1,0 +1,284 @@
+{#
+/**
+ * @file
+ * MUI List component template with comprehensive item support.
+ */
+#}
+
+{% set list_classes = [
+  'MuiList-root',
+  'MuiList-' ~ variant,
+  'MuiList-' ~ density,
+  selectable != 'none' ? 'MuiList-selectable' : '',
+  show_dividers ? 'MuiList-showDividers' : '',
+  virtual_scrolling ? 'MuiList-virtual' : '',
+  'mui-list'
+] %}
+
+<div{{ attributes.addClass(list_classes) }}{% if max_height %} style="max-height: {{ max_height }}"{% endif %}>
+  
+  {# List Header #}
+  {% if title or subtitle or header_actions or search_enabled %}
+    <div class="MuiList-header">
+      {% if title or subtitle %}
+        <div class="MuiList-headerContent">
+          {% if title %}
+            <h3 class="MuiList-title MuiTypography-h6">{{ title }}</h3>
+          {% endif %}
+          {% if subtitle %}
+            <div class="MuiList-subtitle MuiTypography-body2">{{ subtitle }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {% if search_enabled %}
+        <div class="MuiList-search">
+          <div class="MuiInputBase-root MuiInput-root">
+            <input 
+              type="text" 
+              class="MuiInputBase-input MuiList-searchInput"
+              placeholder="{{ search_placeholder }}"
+              aria-label="Search list items"
+            />
+            <div class="MuiInputAdornment-root">
+              <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+              </svg>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+      
+      {% if header_actions %}
+        <div class="MuiList-headerActions">
+          {{ header_actions|raw }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {# List Content Container #}
+  <div class="MuiList-container {{ virtual_scrolling ? 'MuiList-virtualContainer' : '' }}">
+    
+    {# List Items #}
+    {% if items and items is iterable %}
+      <ul class="MuiList-itemsContainer" role="list">
+        {% for item in items %}
+          {{ _self.render_list_item(item, 0, selectable, nested_inset, show_dividers) }}
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {# Children content (for manual list items) #}
+    {% if children %}
+      <div class="MuiList-children">
+        {{ children }}
+      </div>
+    {% endif %}
+    
+  </div>
+  
+</div>
+
+{# Recursive macro for rendering list items #}
+{% macro render_list_item(item, level, selectable, nested_inset, show_dividers) %}
+  {% set item_classes = [
+    'MuiListItem-root',
+    item.button ? 'MuiListItem-button' : '',
+    item.selected ? 'MuiListItem-selected' : '',
+    item.disabled ? 'MuiListItem-disabled Mui-disabled' : '',
+    item.divider or show_dividers ? 'MuiListItem-divider' : '',
+    level > 0 ? 'MuiListItem-nested' : '',
+    nested_inset and level > 0 ? 'MuiListItem-inset' : '',
+    item.css_classes ? item.css_classes|join(' ') : ''
+  ] %}
+  
+  {# Determine wrapper element #}
+  {% set wrapper_tag = item.link_url ? 'a' : (item.button ? 'button' : 'li') %}
+  
+  {# Set up attributes #}
+  {% set item_attributes = {} %}
+  {% if item.link_url %}
+    {% set item_attributes = item_attributes|merge({
+      href: item.link_url,
+      target: item.link_target != '_self' ? item.link_target : null,
+      rel: item.link_target == '_blank' ? 'noopener noreferrer' : null
+    }) %}
+  {% elseif item.button %}
+    {% set item_attributes = item_attributes|merge({
+      type: 'button',
+      disabled: item.disabled ? 'disabled' : null
+    }) %}
+  {% endif %}
+  
+  {# Selection attributes #}
+  {% if selectable != 'none' %}
+    {% set item_attributes = item_attributes|merge({
+      'role': 'option',
+      'aria-selected': item.selected ? 'true' : 'false',
+      'tabindex': item.disabled ? '-1' : '0'
+    }) %}
+  {% endif %}
+  
+  {# Data attributes #}
+  {% if item.id %}
+    {% set item_attributes = item_attributes|merge({'data-id': item.id}) %}
+  {% endif %}
+  {% if item.data_attributes and item.data_attributes is iterable %}
+    {% for key, value in item.data_attributes %}
+      {% set item_attributes = item_attributes|merge({('data-' ~ key): value}) %}
+    {% endfor %}
+  {% endif %}
+  
+  <{{ wrapper_tag }} class="{{ item_classes|join(' ')|trim }}"{% for attr, value in item_attributes %} {{ attr }}="{{ value }}"{% endfor %}>
+    
+    {# Leading content (avatar, icon, checkbox, radio) #}
+    <div class="MuiListItem-leading">
+      
+      {# Selection controls #}
+      {% if item.checkbox %}
+        <div class="MuiListItem-checkbox">
+          <span class="MuiCheckbox-root">
+            <input 
+              type="checkbox" 
+              class="MuiCheckbox-input"
+              {% if item.checkbox_checked %}checked="checked"{% endif %}
+              {% if item.disabled %}disabled="disabled"{% endif %}
+            />
+            <span class="MuiCheckbox-icon"></span>
+          </span>
+        </div>
+      {% elseif item.radio %}
+        <div class="MuiListItem-radio">
+          <span class="MuiRadio-root">
+            <input 
+              type="radio" 
+              class="MuiRadio-input"
+              {% if item.radio_checked %}checked="checked"{% endif %}
+              {% if item.disabled %}disabled="disabled"{% endif %}
+            />
+            <span class="MuiRadio-icon"></span>
+          </span>
+        </div>
+      {% endif %}
+      
+      {# Avatar #}
+      {% if item.avatar %}
+        <div class="MuiListItem-avatar">
+          {% if item.avatar is iterable %}
+            {% for media_item in item.avatar %}
+              {{ media_item }}
+            {% endfor %}
+          {% else %}
+            {{ item.avatar }}
+          {% endif %}
+        </div>
+      {% elseif item.avatar_url %}
+        <div class="MuiListItem-avatar">
+          <img src="{{ item.avatar_url }}" alt="{{ item.primary_text ?: 'Avatar' }}" class="MuiAvatar-img" loading="lazy" />
+        </div>
+      {% elseif item.avatar_initials %}
+        <div class="MuiListItem-avatar">
+          <span class="MuiAvatar-initials">{{ item.avatar_initials|upper|slice(0, 2) }}</span>
+        </div>
+      {% elseif item.icon %}
+        <div class="MuiListItem-icon">
+          {% if item.icon starts with '<' %}
+            {{ item.icon|raw }}
+          {% else %}
+            <i class="{{ item.icon }}" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+    </div>
+    
+    {# Content area #}
+    <div class="MuiListItem-content">
+      
+      {# Overline text #}
+      {% if item.overline_text %}
+        <div class="MuiListItem-overline MuiTypography-overline">
+          {{ item.overline_text }}
+        </div>
+      {% endif %}
+      
+      {# Primary text #}
+      {% if item.primary_text %}
+        <div class="MuiListItem-primary MuiTypography-body1">
+          {{ item.primary_text }}
+        </div>
+      {% endif %}
+      
+      {# Secondary text #}
+      {% if item.secondary_text %}
+        <div class="MuiListItem-secondary MuiTypography-body2">
+          {{ item.secondary_text }}
+        </div>
+      {% endif %}
+      
+    </div>
+    
+    {# Trailing content (switch, badge, actions) #}
+    <div class="MuiListItem-trailing">
+      
+      {# Switch control #}
+      {% if item.switch %}
+        <div class="MuiListItem-switch">
+          <span class="MuiSwitch-root">
+            <input 
+              type="checkbox" 
+              class="MuiSwitch-input"
+              {% if item.switch_checked %}checked="checked"{% endif %}
+              {% if item.disabled %}disabled="disabled"{% endif %}
+            />
+            <span class="MuiSwitch-track"></span>
+            <span class="MuiSwitch-thumb"></span>
+          </span>
+        </div>
+      {% endif %}
+      
+      {# Badge #}
+      {% if item.badge and item.badge.content %}
+        <div class="MuiListItem-badge">
+          <span class="MuiBadge-root MuiBadge-{{ item.badge.color|default('primary') }}">
+            <span class="MuiBadge-badge">{{ item.badge.content }}</span>
+          </span>
+        </div>
+      {% endif %}
+      
+      {# Collapse/Expand icon for nested items #}
+      {% if item.nested_items and item.nested_items is iterable and item.nested_items|length > 0 %}
+        <button 
+          type="button" 
+          class="MuiListItem-expandButton MuiIconButton-root"
+          aria-label="Toggle nested items"
+          aria-expanded="false"
+        >
+          <svg class="MuiSvgIcon-root MuiListItem-expandIcon" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+          </svg>
+        </button>
+      {% endif %}
+      
+    </div>
+    
+    {# Touch ripple for interactive items #}
+    {% if item.button or item.link_url %}
+      <span class="MuiTouchRipple-root"></span>
+    {% endif %}
+    
+  </{{ wrapper_tag }}>
+  
+  {# Nested items #}
+  {% if item.nested_items and item.nested_items is iterable and item.nested_items|length > 0 %}
+    <div class="MuiListItem-nestedContainer MuiCollapse-root">
+      <ul class="MuiList-nested" role="group">
+        {% for nested_item in item.nested_items %}
+          {{ _self.render_list_item(nested_item, level + 1, selectable, nested_inset, show_dividers) }}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  
+{% endmacro %}

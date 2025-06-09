@@ -1,0 +1,164 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Chip'
+description: 'Enhanced Material UI Chip component for tags, labels, and interactive elements'
+props:
+  type: object
+  properties:
+    # Core content
+    label:
+      type: string
+      title: 'Chip label'
+      description: 'The main text content of the chip'
+      default: 'Chip'
+    
+    # Styling
+    variant:
+      type: string
+      title: 'Chip variant'
+      description: 'The visual style variant'
+      enum: ['filled', 'outlined']
+      default: 'filled'
+    
+    size:
+      type: string
+      title: 'Chip size'
+      description: 'The size of the chip'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    color:
+      type: string
+      title: 'Chip color'
+      description: 'The color theme of the chip'
+      enum: ['default', 'primary', 'secondary', 'error', 'warning', 'info', 'success']
+      default: 'default'
+    
+    # Icons
+    icon:
+      type: text
+      title: 'Start icon'
+      description: 'Icon to display at the start of the chip (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    avatar:
+      type: entity_reference
+      title: 'Avatar image'
+      description: 'Media entity for avatar at start of chip'
+      target_type: 'media'
+      target_bundles: ['image']
+    
+    avatar_url:
+      type: string
+      title: 'Avatar URL'
+      description: 'Direct URL to avatar image'
+      default: ''
+    
+    avatar_alt:
+      type: string
+      title: 'Avatar alt text'
+      description: 'Alternative text for avatar image'
+      default: ''
+    
+    # Interactive features
+    clickable:
+      type: boolean
+      title: 'Clickable'
+      description: 'Makes the chip clickable (shows hover effects)'
+      default: false
+    
+    link_url:
+      type: string
+      title: 'Link URL'
+      description: 'URL to navigate to when chip is clicked'
+      default: ''
+    
+    link_target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    # Delete functionality
+    deletable:
+      type: boolean
+      title: 'Deletable'
+      description: 'Shows delete button and makes chip deletable'
+      default: false
+    
+    delete_icon:
+      type: text
+      title: 'Delete icon'
+      description: 'Custom delete icon (SVG markup or icon class)'
+      format: 'html'
+      default: ''
+    
+    delete_label:
+      type: string
+      title: 'Delete label'
+      description: 'Accessible label for delete button'
+      default: 'Delete'
+    
+    # JavaScript callbacks (data attributes)
+    on_click:
+      type: string
+      title: 'Click handler'
+      description: 'JavaScript function name for click events'
+      default: ''
+    
+    on_delete:
+      type: string
+      title: 'Delete handler'
+      description: 'JavaScript function name for delete events'
+      default: ''
+    
+    # Advanced features
+    tooltip:
+      type: string
+      title: 'Tooltip text'
+      description: 'Tooltip text on hover'
+      default: ''
+    
+    badge:
+      type: object
+      title: 'Badge'
+      description: 'Optional badge overlay (e.g., notification count)'
+      properties:
+        content:
+          type: string
+        color:
+          type: string
+          enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+        position:
+          type: string
+          enum: ['top-right', 'top-left']
+    
+    # State
+    disabled:
+      type: boolean
+      title: 'Disabled'
+      description: 'Disables the chip'
+      default: false
+    
+    selected:
+      type: boolean
+      title: 'Selected'
+      description: 'Shows selected state'
+      default: false
+    
+    # Data attributes for filtering/grouping
+    category:
+      type: string
+      title: 'Category'
+      description: 'Category for grouping/filtering chips'
+      default: ''
+    
+    value:
+      type: string
+      title: 'Value'
+      description: 'Data value associated with the chip'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-chip

@@ -1,0 +1,261 @@
+{#
+/**
+ * @file
+ * MUI Menu component template with comprehensive dropdown and context menu support.
+ */
+#}
+
+{% set menu_classes = [
+  'MuiMenu-root',
+  'MuiMenu-elevation' ~ elevation,
+  dense ? 'MuiMenu-dense' : '',
+  variant == 'selectedMenu' ? 'MuiMenu-selectedMenu' : '',
+  context_menu ? 'MuiMenu-context' : '',
+  virtual_scrolling ? 'MuiMenu-virtual' : '',
+  open ? 'is-open' : '',
+  'mui-menu'
+] %}
+
+{% set paper_classes = [
+  'MuiMenu-paper',
+  'MuiPaper-root',
+  'MuiPaper-elevation' ~ elevation
+] %}
+
+<div{{ attributes.addClass(menu_classes) }}
+     {% if anchor_origin %}data-anchor-origin="{{ anchor_origin.vertical }}-{{ anchor_origin.horizontal }}"{% endif %}
+     {% if transform_origin %}data-transform-origin="{{ transform_origin.vertical }}-{{ transform_origin.horizontal }}"{% endif %}
+     {% if auto_focus is defined %}data-auto-focus="{{ auto_focus ? 'true' : 'false' }}"{% endif %}
+     {% if on_select %}data-on-select="{{ on_select }}"{% endif %}
+     {% if on_close %}data-on-close="{{ on_close }}"{% endif %}
+     role="presentation">
+
+  {# Backdrop for context menus #}
+  {% if context_menu %}
+    <div class="MuiMenu-backdrop"></div>
+  {% endif %}
+
+  {# Menu Paper Container #}
+  <div class="{{ paper_classes|join(' ')|trim }}"
+       {% if max_height %}style="max-height: {{ max_height }}; min-width: {{ min_width }}"{% endif %}
+       role="none">
+
+    {# Menu Header #}
+    {% if title or header_content %}
+      <div class="MuiMenu-header">
+        {% if title %}
+          <h6 class="MuiTypography-h6">{{ title }}</h6>
+        {% endif %}
+        {% if header_content %}
+          {{ header_content|raw }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Search Input #}
+    {% if searchable %}
+      <div class="MuiMenu-search">
+        <input 
+          type="text" 
+          class="MuiMenu-searchInput"
+          placeholder="{{ search_placeholder }}"
+          aria-label="Search menu items"
+        />
+      </div>
+    {% endif %}
+
+    {# Menu List #}
+    <ul class="MuiMenu-list" 
+        role="menu" 
+        aria-label="{{ title ?: 'Menu' }}"
+        {% if disable_auto_focus_item %}aria-activedescendant=""{% endif %}>
+
+      {# Render grouped items #}
+      {% if groups and groups is iterable %}
+        {% for group in groups %}
+          {% if group.header %}
+            <li class="MuiMenuGroup-header" role="presentation">
+              {{ group.header }}
+            </li>
+          {% endif %}
+          
+          <ul class="MuiMenuGroup-list" role="group">
+            {% for item in group.items %}
+              {{ _self.render_menu_item(item) }}
+            {% endfor %}
+          </ul>
+          
+          {% if not loop.last %}
+            <li class="MuiMenuGroup-divider" role="separator"></li>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {# Render regular items #}
+      {% if items and items is iterable %}
+        {% for item in items %}
+          {{ _self.render_menu_item(item) }}
+        {% endfor %}
+      {% endif %}
+
+      {# Children content (for manual menu items) #}
+      {% if children %}
+        {{ children }}
+      {% endif %}
+
+    </ul>
+
+    {# Menu Footer #}
+    {% if footer_content %}
+      <div class="MuiMenu-footer">
+        {{ footer_content|raw }}
+      </div>
+    {% endif %}
+
+  </div>
+
+</div>
+
+{# Recursive macro for rendering menu items #}
+{% macro render_menu_item(item) %}
+  {% set item_classes = [
+    'MuiMenuItem-root',
+    item.selected ? 'Mui-selected' : '',
+    item.disabled ? 'Mui-disabled' : '',
+    item.submenu_items and item.submenu_items is iterable and item.submenu_items|length > 0 ? 'MuiMenuItem-hasSubmenu' : '',
+    item.checkbox ? 'MuiMenuItem-checkbox' : '',
+    item.radio ? 'MuiMenuItem-radio' : '',
+    item.css_classes ? item.css_classes|join(' ') : ''
+  ] %}
+
+  {# Determine wrapper element #}
+  {% set wrapper_tag = item.url ? 'a' : 'li' %}
+
+  {# Set up attributes #}
+  {% set item_attributes = {} %}
+  {% if item.url %}
+    {% set item_attributes = item_attributes|merge({
+      href: item.url,
+      target: item.target != '_self' ? item.target : null,
+      rel: item.target == '_blank' ? 'noopener noreferrer' : null
+    }) %}
+  {% endif %}
+
+  {# Role and accessibility #}
+  {% set item_attributes = item_attributes|merge({
+    'role': 'menuitem',
+    'tabindex': item.disabled ? '-1' : '0',
+    'aria-disabled': item.disabled ? 'true' : null
+  }) %}
+
+  {# Data attributes #}
+  {% if item.id %}
+    {% set item_attributes = item_attributes|merge({'data-id': item.id}) %}
+  {% endif %}
+  {% if item.click_handler %}
+    {% set item_attributes = item_attributes|merge({'data-click': item.click_handler}) %}
+  {% endif %}
+  {% if item.data_attributes and item.data_attributes is iterable %}
+    {% for key, value in item.data_attributes %}
+      {% set item_attributes = item_attributes|merge({('data-' ~ key): value}) %}
+    {% endfor %}
+  {% endif %}
+
+  <{{ wrapper_tag }} class="{{ item_classes|join(' ')|trim }}"{% for attr, value in item_attributes %} {{ attr }}="{{ value }}"{% endfor %}>
+
+    {# Icon or Avatar #}
+    {% if item.icon or item.avatar_url %}
+      {% if item.avatar_url %}
+        <div class="MuiMenuItem-avatar">
+          <img src="{{ item.avatar_url }}" alt="{{ item.text ?: 'Avatar' }}" class="MuiMenuItem-avatarImg" loading="lazy" />
+        </div>
+      {% else %}
+        <div class="MuiMenuItem-icon">
+          {% if item.icon starts with '<' %}
+            {{ item.icon|raw }}
+          {% else %}
+            <i class="{{ item.icon }}" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {# Checkbox Control #}
+    {% if item.checkbox %}
+      <span class="MuiCheckbox-root">
+        <input 
+          type="checkbox" 
+          class="MuiCheckbox-input"
+          {% if item.checkbox_checked %}checked="checked"{% endif %}
+          {% if item.disabled %}disabled="disabled"{% endif %}
+          aria-hidden="true"
+          tabindex="-1"
+        />
+        <span class="MuiCheckbox-icon"></span>
+      </span>
+    {% endif %}
+
+    {# Radio Control #}
+    {% if item.radio %}
+      <span class="MuiRadio-root">
+        <input 
+          type="radio" 
+          class="MuiRadio-input"
+          {% if item.radio_group %}name="{{ item.radio_group }}"{% endif %}
+          {% if item.radio_checked %}checked="checked"{% endif %}
+          {% if item.disabled %}disabled="disabled"{% endif %}
+          aria-hidden="true"
+          tabindex="-1"
+        />
+        <span class="MuiRadio-icon"></span>
+      </span>
+    {% endif %}
+
+    {# Content Area #}
+    <div class="MuiMenuItem-content">
+      {# Primary Text #}
+      {% if item.text %}
+        <div class="MuiMenuItem-primary">
+          {{ item.text }}
+        </div>
+      {% endif %}
+
+      {# Secondary Text #}
+      {% if item.secondary_text %}
+        <div class="MuiMenuItem-secondary">
+          {{ item.secondary_text }}
+        </div>
+      {% endif %}
+    </div>
+
+    {# Keyboard Shortcut #}
+    {% if item.shortcut %}
+      <div class="MuiMenuItem-shortcut">
+        {{ item.shortcut }}
+      </div>
+    {% endif %}
+
+    {# Submenu #}
+    {% if item.submenu_items and item.submenu_items is iterable and item.submenu_items|length > 0 %}
+      <div class="MuiMenu-submenu {{ item.submenu_align == 'right' ? 'align-right' : '' }}">
+        <div class="MuiMenu-paper MuiPaper-root MuiPaper-elevation8">
+          <ul class="MuiMenu-list" role="menu">
+            {% for submenu_item in item.submenu_items %}
+              {{ _self.render_menu_item(submenu_item) }}
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    {# Touch ripple for interactive items #}
+    <span class="MuiTouchRipple-root"></span>
+
+  </{{ wrapper_tag }}>
+
+  {# Divider after item #}
+  {% if item.divider %}
+    <li class="MuiMenuItem-divider" role="separator"></li>
+  {% endif %}
+
+{% endmacro %}

@@ -1,0 +1,454 @@
+/* MUI Mobile Menu Component Styles */
+
+.MuiMobileMenu-root {
+  position: relative;
+  width: 100%;
+}
+
+/* Mobile Header */
+.MuiMobileMenu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mui-spacing-2);
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  box-shadow: var(--mui-shadow-2);
+  position: relative;
+  z-index: var(--mui-zindex-appBar);
+}
+
+.MuiMobileMenu-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-1);
+}
+
+.MuiMobileMenu-logoImage {
+  height: 40px;
+  width: auto;
+  max-width: 120px;
+}
+
+.MuiMobileMenu-logo svg {
+  height: 40px;
+  width: auto;
+  max-width: 120px;
+  fill: currentColor;
+}
+
+.MuiMobileMenu-siteName {
+  color: inherit;
+  margin: 0;
+}
+
+/* Mobile Toggle Button */
+.MuiMobileMenu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--mui-border-radius);
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.MuiMobileMenu-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.MuiMobileMenu-toggleIcon {
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  height: 18px;
+  justify-content: space-between;
+}
+
+.MuiMobileMenu-toggleLine {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: all var(--mui-transition-duration-short) var(--mui-transition-easing-ease-in-out);
+  transform-origin: center;
+}
+
+/* Animated hamburger */
+.MuiMobileMenu-toggle[aria-expanded="true"] .MuiMobileMenu-toggleLine:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.MuiMobileMenu-toggle[aria-expanded="true"] .MuiMobileMenu-toggleLine:nth-child(2) {
+  opacity: 0;
+}
+
+.MuiMobileMenu-toggle[aria-expanded="true"] .MuiMobileMenu-toggleLine:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Mobile Drawer */
+.MuiMobileMenu-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--mui-zindex-drawer);
+  display: none;
+}
+
+.MuiMobileMenu-drawer.is-open {
+  display: block;
+}
+
+.MuiMobileMenu-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity var(--mui-transition-duration-entering-screen) var(--mui-transition-easing-ease-out);
+}
+
+.MuiMobileMenu-drawer.is-open .MuiMobileMenu-backdrop {
+  opacity: 1;
+}
+
+.MuiMobileMenu-drawerPaper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 80vw;
+  background-color: var(--mui-background-paper);
+  transform: translateX(-100%);
+  transition: transform var(--mui-transition-duration-entering-screen) var(--mui-transition-easing-ease-out);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.MuiMobileMenu-drawer.is-open .MuiMobileMenu-drawerPaper {
+  transform: translateX(0);
+}
+
+/* Drawer Header */
+.MuiMobileMenu-drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--mui-spacing-2);
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiMobileMenu-drawerLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-1);
+}
+
+.MuiMobileMenu-closeButton {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--mui-border-radius);
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-closeButton:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.MuiMobileMenu-closeButton .MuiSvgIcon-root {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+/* Mobile Navigation */
+.MuiMobileMenu-nav {
+  flex: 1;
+  padding: var(--mui-spacing-1) 0;
+}
+
+.MuiMobileMenu-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.MuiMobileMenu-listItem {
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiMobileMenu-link {
+  display: flex;
+  align-items: center;
+  padding: var(--mui-spacing-2);
+  color: var(--mui-text-primary);
+  text-decoration: none;
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.MuiMobileMenu-link:hover {
+  background-color: var(--mui-grey-100);
+}
+
+.MuiMobileMenu-link:focus-visible {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: -2px;
+}
+
+/* Parent items with submenu */
+.MuiMobileMenu-parentItem {
+  display: flex;
+  align-items: center;
+}
+
+.MuiMobileMenu-parentItem .MuiMobileMenu-link {
+  flex: 1;
+}
+
+.MuiMobileMenu-expandButton {
+  background: transparent;
+  border: none;
+  color: var(--mui-text-secondary);
+  cursor: pointer;
+  padding: var(--mui-spacing-2);
+  border-radius: var(--mui-border-radius);
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-expandButton:hover {
+  background-color: var(--mui-grey-100);
+  color: var(--mui-text-primary);
+}
+
+.MuiMobileMenu-expandIcon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-expandButton[aria-expanded="true"] .MuiMobileMenu-expandIcon {
+  transform: rotate(180deg);
+}
+
+/* Submenu */
+.MuiMobileMenu-submenu {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height var(--mui-transition-duration-short) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-submenu.is-expanded {
+  max-height: 1000px;
+}
+
+.MuiMobileMenu-submenuList {
+  background-color: var(--mui-grey-50);
+  border-top: 1px solid var(--mui-divider);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.MuiMobileMenu-submenuItem {
+  border-bottom: 1px solid var(--mui-divider);
+}
+
+.MuiMobileMenu-submenuLink {
+  display: flex;
+  align-items: center;
+  padding: var(--mui-spacing-2) var(--mui-spacing-4);
+  color: var(--mui-text-secondary);
+  text-decoration: none;
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  font-size: 0.875rem;
+}
+
+.MuiMobileMenu-submenuLink:hover {
+  background-color: var(--mui-grey-200);
+  color: var(--mui-text-primary);
+}
+
+/* Desktop Navigation */
+.MuiMobileMenu-desktopNav {
+  display: none;
+}
+
+.MuiMobileMenu-desktopList {
+  display: flex;
+  align-items: center;
+  gap: var(--mui-spacing-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.MuiMobileMenu-desktopItem {
+  position: relative;
+}
+
+.MuiMobileMenu-desktopLink {
+  color: var(--mui-primary-contrast-text);
+  text-decoration: none;
+  padding: var(--mui-spacing-1) var(--mui-spacing-2);
+  border-radius: var(--mui-border-radius);
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+.MuiMobileMenu-desktopLink:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Desktop Submenu */
+.MuiMobileMenu-desktopSubmenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: var(--mui-background-paper);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-out);
+  z-index: var(--mui-zindex-tooltip);
+}
+
+.MuiMobileMenu-hasDesktopSubmenu:hover .MuiMobileMenu-desktopSubmenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.MuiMobileMenu-desktopSubmenu .MuiList-root {
+  padding: var(--mui-spacing-1) 0;
+  margin: 0;
+  list-style: none;
+}
+
+.MuiMobileMenu-desktopSubmenu .MuiListItemButton-root {
+  padding: var(--mui-spacing-1) var(--mui-spacing-2);
+  color: var(--mui-text-primary);
+  text-decoration: none;
+  transition: background-color var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  display: block;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.MuiMobileMenu-desktopSubmenu .MuiListItemButton-root:hover {
+  background-color: var(--mui-grey-100);
+}
+
+/* Responsive Breakpoints */
+
+/* Small devices and up - show mobile menu */
+@media (max-width: 599px) {
+  .MuiMobileMenu-root[data-breakpoint="sm"] .MuiMobileMenu-toggle {
+    display: block;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="sm"] .MuiMobileMenu-desktopNav {
+    display: none;
+  }
+}
+
+/* Medium devices and up - show mobile menu */
+@media (max-width: 899px) {
+  .MuiMobileMenu-root[data-breakpoint="md"] .MuiMobileMenu-toggle {
+    display: block;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="md"] .MuiMobileMenu-desktopNav {
+    display: none;
+  }
+}
+
+/* Large devices and up - show mobile menu */
+@media (max-width: 1199px) {
+  .MuiMobileMenu-root[data-breakpoint="lg"] .MuiMobileMenu-toggle {
+    display: block;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="lg"] .MuiMobileMenu-desktopNav {
+    display: none;
+  }
+}
+
+/* Extra large devices and up - show mobile menu */
+@media (max-width: 1535px) {
+  .MuiMobileMenu-root[data-breakpoint="xl"] .MuiMobileMenu-toggle {
+    display: block;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="xl"] .MuiMobileMenu-desktopNav {
+    display: none;
+  }
+}
+
+/* Desktop view */
+@media (min-width: 600px) {
+  .MuiMobileMenu-root[data-breakpoint="sm"] .MuiMobileMenu-toggle {
+    display: none;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="sm"] .MuiMobileMenu-desktopNav {
+    display: block;
+  }
+}
+
+@media (min-width: 900px) {
+  .MuiMobileMenu-root[data-breakpoint="md"] .MuiMobileMenu-toggle {
+    display: none;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="md"] .MuiMobileMenu-desktopNav {
+    display: block;
+  }
+}
+
+@media (min-width: 1200px) {
+  .MuiMobileMenu-root[data-breakpoint="lg"] .MuiMobileMenu-toggle {
+    display: none;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="lg"] .MuiMobileMenu-desktopNav {
+    display: block;
+  }
+}
+
+@media (min-width: 1536px) {
+  .MuiMobileMenu-root[data-breakpoint="xl"] .MuiMobileMenu-toggle {
+    display: none;
+  }
+  
+  .MuiMobileMenu-root[data-breakpoint="xl"] .MuiMobileMenu-desktopNav {
+    display: block;
+  }
+}

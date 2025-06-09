@@ -1,0 +1,242 @@
+{#
+/**
+ * @file
+ * MUI Tabs component template with comprehensive tab functionality.
+ */
+#}
+
+{% set tabs_classes = [
+  'MuiTabs-root',
+  'MuiTabs-' ~ orientation,
+  'MuiTabs-' ~ variant,
+  'MuiTabs-textColor' ~ (text_color|title),
+  'MuiTabs-indicatorColor' ~ (indicator_color|title),
+  centered ? 'MuiTabs-centered' : '',
+  navigation_mode ? 'MuiTabs-navigation' : '',
+  closable_tabs ? 'MuiTabs-closable' : '',
+  reorderable ? 'MuiTabs-reorderable' : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  'mui-tabs'
+] %}
+
+{% set unique_id = 'mui-tabs-' ~ random() %}
+
+<div{{ attributes.addClass(tabs_classes) }} 
+     data-default-tab="{{ default_tab }}"
+     data-transition-duration="{{ transition_duration }}"
+     data-lazy-load="{{ lazy_load ? 'true' : 'false' }}"
+     data-keep-mounted="{{ keep_mounted ? 'true' : 'false' }}"
+     data-mobile-variant="{{ mobile_variant }}"
+     data-mobile-breakpoint="{{ mobile_breakpoint }}"
+     {% if on_change %}data-on-change="{{ on_change }}"{% endif %}
+     {% if on_close %}data-on-close="{{ on_close }}"{% endif %}
+     {% if on_add %}data-on-add="{{ on_add }}"{% endif %}>
+  
+  {# Header content area #}
+  {% if header_content %}
+    <div class="MuiTabs-header">
+      {{ header_content|raw }}
+    </div>
+  {% endif %}
+  
+  {# Tabs container #}
+  <div class="MuiTabs-flexContainer {{ orientation == 'vertical' ? 'MuiTabs-flexContainerVertical' : '' }}">
+    
+    {# Scroll left button (for scrollable variant) #}
+    {% if variant == 'scrollable' %}
+      <button 
+        type="button" 
+        class="MuiTabs-scrollButton MuiTabs-scrollButtonLeft MuiIconButton-root"
+        aria-label="Scroll left"
+        disabled
+        style="display: {{ scroll_buttons == 'off' ? 'none' : (scroll_buttons == 'on' ? 'flex' : 'none') }};"
+      >
+        <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"></path>
+        </svg>
+      </button>
+    {% endif %}
+    
+    {# Tab list container #}
+    <div class="MuiTabs-scroller MuiTabs-scrollerHorizontal">
+      
+      {# Tab list #}
+      <div class="MuiTabs-indicator"></div>
+      <div 
+        class="MuiTabs-flexContainer"
+        role="tablist"
+        {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+        aria-orientation="{{ orientation }}"
+      >
+        
+        {# Individual tabs #}
+        {% for index, tab in tabs %}
+          {% set tab_classes = [
+            'MuiTab-root',
+            'MuiButtonBase-root',
+            'MuiTab-textColor' ~ (text_color|title),
+            'MuiTab-' ~ orientation,
+            tab.disabled ? 'Mui-disabled' : '',
+            index == default_tab ? 'Mui-selected' : '',
+            tab.css_classes ? tab.css_classes|join(' ') : ''
+          ] %}
+          
+          {% set tab_id = tab.id ?: (unique_id ~ '-tab-' ~ index) %}
+          {% set panel_id = unique_id ~ '-panel-' ~ index %}
+          
+          {% if navigation_mode and tab.href %}
+            {# Navigation tab (link) #}
+            <a 
+              href="{{ tab.href }}"
+              class="{{ tab_classes|join(' ')|trim }}"
+              role="tab"
+              id="{{ tab_id }}"
+              {% if tab.target == '_blank' %}target="_blank" rel="noopener noreferrer"{% endif %}
+              {% if tab.disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+            >
+          {% else %}
+            {# Content tab (button) #}
+            <button 
+              type="button"
+              class="{{ tab_classes|join(' ')|trim }}"
+              role="tab"
+              id="{{ tab_id }}"
+              aria-controls="{{ panel_id }}"
+              aria-selected="{{ index == default_tab ? 'true' : 'false' }}"
+              tabindex="{{ index == default_tab ? '0' : '-1' }}"
+              {% if tab.disabled %}disabled="disabled"{% endif %}
+            >
+          {% endif %}
+          
+            {# Tab wrapper (for flex layout) #}
+            <span class="MuiTab-wrapper">
+              
+              {# Tab icon #}
+              {% if tab.icon %}
+                <span class="MuiTab-iconWrapper">
+                  {% if tab.icon starts with '<' %}
+                    {{ tab.icon|raw }}
+                  {% else %}
+                    <i class="{{ tab.icon }}" aria-hidden="true"></i>
+                  {% endif %}
+                </span>
+              {% endif %}
+              
+              {# Tab label #}
+              <span class="MuiTab-label">
+                {{ tab.label }}
+                
+                {# Tab badge #}
+                {% if tab.badge and tab.badge.content %}
+                  <span class="MuiTab-badge MuiBadge-root MuiBadge-{{ tab.badge.color|default('primary') }}">
+                    <span class="MuiBadge-badge">{{ tab.badge.content }}</span>
+                  </span>
+                {% endif %}
+              </span>
+              
+            </span>
+            
+            {# Close button for closable tabs #}
+            {% if closable_tabs and not tab.disabled %}
+              <button 
+                type="button" 
+                class="MuiTab-closeButton MuiIconButton-root MuiIconButton-sizeSmall"
+                aria-label="Close {{ tab.label }}"
+                data-tab-index="{{ index }}"
+                data-action="close-tab"
+              >
+                <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                </svg>
+              </button>
+            {% endif %}
+            
+            {# Touch ripple for interactive feedback #}
+            <span class="MuiTouchRipple-root"></span>
+          
+          {% if navigation_mode and tab.href %}
+            </a>
+          {% else %}
+            </button>
+          {% endif %}
+        {% endfor %}
+        
+        {# Add tab button #}
+        {% if addable_tabs %}
+          <button 
+            type="button" 
+            class="MuiTab-root MuiTab-addButton MuiIconButton-root"
+            aria-label="Add new tab"
+            data-action="add-tab"
+          >
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
+            </svg>
+          </button>
+        {% endif %}
+        
+      </div>
+    </div>
+    
+    {# Scroll right button (for scrollable variant) #}
+    {% if variant == 'scrollable' %}
+      <button 
+        type="button" 
+        class="MuiTabs-scrollButton MuiTabs-scrollButtonRight MuiIconButton-root"
+        aria-label="Scroll right"
+        style="display: {{ scroll_buttons == 'off' ? 'none' : (scroll_buttons == 'on' ? 'flex' : 'none') }};"
+      >
+        <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"></path>
+        </svg>
+      </button>
+    {% endif %}
+    
+  </div>
+  
+  {# Tab panels (content areas) - only for non-navigation mode #}
+  {% if not navigation_mode and tabs %}
+    <div class="MuiTabs-panels">
+      {% for index, tab in tabs %}
+        {% set panel_classes = [
+          'MuiTabPanel-root',
+          'MuiTabPanel-padding' ~ (panel_padding|title),
+          index == default_tab ? 'MuiTabPanel-active' : 'MuiTabPanel-hidden'
+        ] %}
+        
+        <div 
+          class="{{ panel_classes|join(' ')|trim }}"
+          role="tabpanel"
+          id="{{ unique_id }}-panel-{{ index }}"
+          aria-labelledby="{{ tab.id ?: (unique_id ~ '-tab-' ~ index) }}"
+          {% if index != default_tab %}hidden{% endif %}
+          data-tab-index="{{ index }}"
+        >
+          
+          {# Panel content #}
+          {% if tab.content %}
+            <div class="MuiTabPanel-content">
+              {{ tab.content|raw }}
+            </div>
+          {% endif %}
+          
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {# Footer content area #}
+  {% if footer_content %}
+    <div class="MuiTabs-footer">
+      {{ footer_content|raw }}
+    </div>
+  {% endif %}
+  
+  {# Children content (for additional custom content) #}
+  {% if children %}
+    <div class="MuiTabs-children">
+      {{ children }}
+    </div>
+  {% endif %}
+  
+</div>

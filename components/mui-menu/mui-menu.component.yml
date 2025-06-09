@@ -1,0 +1,266 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Menu'
+description: 'Enhanced Material UI Menu component with rich dropdown and context menu support'
+props:
+  type: object
+  properties:
+    # Menu positioning and behavior
+    anchor_origin:
+      type: object
+      title: 'Anchor origin'
+      description: 'Origin point for menu positioning'
+      properties:
+        vertical:
+          type: string
+          enum: ['top', 'center', 'bottom']
+          default: 'top'
+        horizontal:
+          type: string
+          enum: ['left', 'center', 'right']
+          default: 'left'
+      default:
+        vertical: 'top'
+        horizontal: 'left'
+    
+    transform_origin:
+      type: object
+      title: 'Transform origin'
+      description: 'Transform origin for animations'
+      properties:
+        vertical:
+          type: string
+          enum: ['top', 'center', 'bottom']
+          default: 'top'
+        horizontal:
+          type: string
+          enum: ['left', 'center', 'right']
+          default: 'left'
+      default:
+        vertical: 'top'
+        horizontal: 'left'
+    
+    # Visual styling
+    variant:
+      type: string
+      title: 'Menu variant'
+      description: 'Visual style variant'
+      enum: ['menu', 'selectedMenu']
+      default: 'menu'
+    
+    elevation:
+      type: integer
+      title: 'Menu elevation'
+      description: 'Shadow depth'
+      enum: [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+      default: 8
+    
+    dense:
+      type: boolean
+      title: 'Dense spacing'
+      description: 'Use compact spacing'
+      default: false
+    
+    # Menu content
+    title:
+      type: string
+      title: 'Menu title'
+      description: 'Optional header title'
+      default: ''
+    
+    items:
+      type: array
+      title: 'Menu items'
+      description: 'Array of menu item objects'
+      items:
+        type: object
+        properties:
+          # Core content
+          text:
+            type: string
+            title: 'Menu item text'
+          secondary_text:
+            type: string
+            title: 'Secondary text'
+          
+          # Actions
+          url:
+            type: string
+            title: 'Link URL'
+          target:
+            type: string
+            enum: ['_self', '_blank']
+            default: '_self'
+          click_handler:
+            type: string
+            title: 'JavaScript click handler'
+          
+          # Visual elements
+          icon:
+            type: string
+            title: 'Icon (SVG markup or CSS class)'
+          avatar_url:
+            type: string
+            title: 'Avatar image URL'
+          shortcut:
+            type: string
+            title: 'Keyboard shortcut text'
+          
+          # States
+          selected:
+            type: boolean
+            default: false
+          disabled:
+            type: boolean
+            default: false
+          divider:
+            type: boolean
+            default: false
+          
+          # Form controls
+          checkbox:
+            type: boolean
+            default: false
+          checkbox_checked:
+            type: boolean
+            default: false
+          radio:
+            type: boolean
+            default: false
+          radio_checked:
+            type: boolean
+            default: false
+          radio_group:
+            type: string
+            title: 'Radio button group name'
+          
+          # Submenu
+          submenu_items:
+            type: array
+            items:
+              type: object
+          submenu_align:
+            type: string
+            enum: ['left', 'right']
+            default: 'left'
+          
+          # Metadata
+          id:
+            type: string
+          css_classes:
+            type: array
+            items:
+              type: string
+          data_attributes:
+            type: object
+    
+    # Grouping
+    groups:
+      type: array
+      title: 'Menu groups'
+      description: 'Array of grouped menu sections'
+      items:
+        type: object
+        properties:
+          header:
+            type: string
+          items:
+            type: array
+            items:
+              type: object
+    
+    # Interactive features
+    searchable:
+      type: boolean
+      title: 'Enable search'
+      description: 'Add search functionality'
+      default: false
+    
+    search_placeholder:
+      type: string
+      title: 'Search placeholder'
+      description: 'Placeholder text for search input'
+      default: 'Search menu...'
+    
+    # Layout options
+    max_height:
+      type: string
+      title: 'Maximum height'
+      description: 'CSS max-height value'
+      default: 'calc(100vh - 96px)'
+    
+    min_width:
+      type: string
+      title: 'Minimum width'
+      description: 'CSS min-width value'
+      default: '112px'
+    
+    # Virtual scrolling
+    virtual_scrolling:
+      type: boolean
+      title: 'Virtual scrolling'
+      description: 'Enable virtual scrolling for large lists'
+      default: false
+    
+    # Advanced features
+    context_menu:
+      type: boolean
+      title: 'Context menu'
+      description: 'Behavior as context menu'
+      default: false
+    
+    auto_focus:
+      type: boolean
+      title: 'Auto focus'
+      description: 'Auto focus first item when opened'
+      default: true
+    
+    disable_auto_focus_item:
+      type: boolean
+      title: 'Disable auto focus item'
+      description: 'Disable focusing on items'
+      default: false
+    
+    # Custom content
+    header_content:
+      type: text
+      title: 'Header content'
+      description: 'Custom header content'
+      format: 'html'
+      default: ''
+    
+    footer_content:
+      type: text
+      title: 'Footer content'
+      description: 'Custom footer content'
+      format: 'html'
+      default: ''
+    
+    # Accessibility
+    menu_list_props:
+      type: object
+      title: 'MenuList props'
+      description: 'Additional props for the menu list'
+      default: {}
+    
+    # State management
+    open:
+      type: boolean
+      title: 'Open state'
+      description: 'Whether menu is open'
+      default: false
+    
+    # JavaScript integration
+    on_select:
+      type: string
+      title: 'Select handler'
+      description: 'JavaScript function for item selection'
+      default: ''
+    
+    on_close:
+      type: string
+      title: 'Close handler'
+      description: 'JavaScript function for menu close'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-menu

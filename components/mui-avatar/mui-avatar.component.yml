@@ -1,0 +1,143 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Avatar'
+description: 'Enhanced Material UI Avatar component with flexible content support'
+props:
+  type: object
+  properties:
+    # Avatar styling
+    variant:
+      type: string
+      title: 'Avatar variant'
+      description: 'The shape of the avatar'
+      enum: ['circular', 'rounded', 'square']
+      default: 'circular'
+    
+    size:
+      type: string
+      title: 'Avatar size'
+      description: 'The size of the avatar'
+      enum: ['small', 'medium', 'large', 'custom']
+      default: 'medium'
+    
+    custom_size:
+      type: integer
+      title: 'Custom size (px)'
+      description: 'Custom size in pixels when size is "custom"'
+      default: 40
+      minimum: 16
+      maximum: 200
+    
+    # Content types (prioritized in this order)
+    image:
+      type: entity_reference
+      title: 'Avatar image'
+      description: 'Media entity for avatar image (highest priority)'
+      target_type: 'media'
+      target_bundles: ['image']
+    
+    image_url:
+      type: string
+      title: 'Image URL'
+      description: 'Direct URL to avatar image (if no media entity)'
+      default: ''
+    
+    image_alt:
+      type: string
+      title: 'Image alt text'
+      description: 'Alternative text for the image (accessibility)'
+      default: ''
+    
+    # Initials (fallback if no image)
+    initials:
+      type: string
+      title: 'Initials'
+      description: 'Text initials to display (e.g., "JD" for John Doe)'
+      default: ''
+      maxLength: 4
+    
+    # Icon (fallback if no image or initials)
+    icon:
+      type: text
+      title: 'Icon'
+      description: 'SVG icon markup or icon class'
+      format: 'html'
+      default: ''
+    
+    # Link functionality
+    link_url:
+      type: string
+      title: 'Link URL'
+      description: 'If provided, makes avatar clickable'
+      default: ''
+    
+    link_title:
+      type: string
+      title: 'Link title'
+      description: 'Title attribute for the link (accessibility)'
+      default: ''
+    
+    link_target:
+      type: string
+      title: 'Link target'
+      description: 'Link target attribute'
+      enum: ['_self', '_blank', '_parent', '_top']
+      default: '_self'
+    
+    # Color customization
+    background_color:
+      type: string
+      title: 'Background color'
+      description: 'Custom background color (for initials/icons)'
+      enum: ['default', 'primary', 'secondary', 'error', 'warning', 'info', 'success', 'custom']
+      default: 'default'
+    
+    custom_background:
+      type: string
+      title: 'Custom background'
+      description: 'Hex color for custom background'
+      default: ''
+    
+    text_color:
+      type: string
+      title: 'Text color'
+      description: 'Color for initials/icons'
+      enum: ['default', 'primary', 'secondary', 'inherit', 'custom']
+      default: 'default'
+    
+    custom_text_color:
+      type: string
+      title: 'Custom text color'
+      description: 'Hex color for custom text'
+      default: ''
+    
+    # Advanced features
+    tooltip:
+      type: string
+      title: 'Tooltip text'
+      description: 'Tooltip text on hover'
+      default: ''
+    
+    badge:
+      type: object
+      title: 'Badge'
+      description: 'Optional badge overlay'
+      properties:
+        content:
+          type: string
+        color:
+          type: string
+          enum: ['primary', 'secondary', 'error', 'warning', 'info', 'success']
+        position:
+          type: string
+          enum: ['top-right', 'top-left', 'bottom-right', 'bottom-left']
+    
+    # Status indicators
+    online_status:
+      type: string
+      title: 'Online status'
+      description: 'Shows online status indicator'
+      enum: ['none', 'online', 'offline', 'away', 'busy']
+      default: 'none'
+
+libraryDependencies:
+  - mui_base/mui-avatar

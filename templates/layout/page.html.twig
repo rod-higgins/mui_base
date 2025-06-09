@@ -1,0 +1,422 @@
+{#
+/**
+ * @file
+ * web/themes/custom/mui_base/templates/layout/page.html.twig
+ * 
+ * Default theme implementation to display a single page with flexible layouts.
+ * Updated to support horizontal navigation for centered layout.
+ */
+#}
+
+{%
+  set layout_classes = [
+    'layout-container',
+    layout_class ? 'layout-' ~ layout_class : 'layout-centered',
+    sidebar_first ? 'has-sidebar-first' : '',
+    sidebar_second ? 'has-sidebar-second' : '',
+    sidebar_third ? 'has-sidebar-third' : '',
+    sidebar_fourth ? 'has-sidebar-fourth' : '',
+  ]
+%}
+
+<div{{ attributes.addClass(layout_classes) }}>
+  
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">{{ 'Skip to main content'|t }}</a>
+
+  {{ page.page_top }}
+
+  <!-- Header Top Region -->
+  {% if page.header_top %}
+    <div class="header-top-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--header-top">
+          {{ page.header_top }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Main Header with Mobile Menu Integration -->
+  <header class="header MuiPaper-root MuiPaper-elevation4" role="banner">
+    <div class="MuiContainer-root">
+      
+      <!-- Mobile Menu Component (includes logo and toggle) -->
+      {% if page.navigation %}
+        {# Include mobile menu component with fallback #}
+        <div class="MuiMobileMenu-root" data-breakpoint="{{ mobile_breakpoint }}">
+          <!-- Mobile Header -->
+          <div class="MuiMobileMenu-header">
+            <div class="MuiMobileMenu-logo">
+              {% if logo_data.type == 'svg' and logo_data.svg %}
+                {{ logo_data.svg|raw }}
+              {% elseif logo_data.url %}
+                <img src="{{ logo_data.url }}" alt="{{ logo_data.site_name }}" class="MuiMobileMenu-logoImage" style="max-width: {{ logo_data.max_width }}px; max-height: {{ logo_data.max_height }}px;" />
+              {% endif %}
+              {% if logo_data.site_name %}
+                <span class="MuiMobileMenu-siteName mui-typography-h6">{{ logo_data.site_name }}</span>
+              {% endif %}
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button 
+              class="MuiMobileMenu-toggle MuiIconButton-root"
+              aria-label="{{ 'Toggle navigation menu'|t }}"
+              aria-expanded="false"
+              aria-controls="mobile-menu-drawer"
+              type="button"
+            >
+              <span class="MuiMobileMenu-toggleIcon">
+                <span class="MuiMobileMenu-toggleLine"></span>
+                <span class="MuiMobileMenu-toggleLine"></span>
+                <span class="MuiMobileMenu-toggleLine"></span>
+              </span>
+            </button>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <nav class="MuiMobileMenu-desktopNav">
+            {{ page.navigation }}
+          </nav>
+
+          <!-- Mobile Drawer -->
+          <div class="MuiMobileMenu-drawer" id="mobile-menu-drawer" role="navigation" aria-label="{{ 'Mobile navigation'|t }}">
+            <div class="MuiMobileMenu-backdrop"></div>
+            <div class="MuiMobileMenu-drawerPaper MuiPaper-root MuiPaper-elevation16">
+              
+              <!-- Drawer Header -->
+              <div class="MuiMobileMenu-drawerHeader">
+                <div class="MuiMobileMenu-drawerLogo">
+                  {% if logo_data.type == 'svg' and logo_data.svg %}
+                    {{ logo_data.svg|raw }}
+                  {% elseif logo_data.url %}
+                    <img src="{{ logo_data.url }}" alt="{{ logo_data.site_name }}" class="MuiMobileMenu-logoImage" style="max-width: {{ logo_data.max_width }}px; max-height: {{ logo_data.max_height }}px;" />
+                  {% endif %}
+                  {% if logo_data.site_name %}
+                    <span class="MuiMobileMenu-siteName mui-typography-h6">{{ logo_data.site_name }}</span>
+                  {% endif %}
+                </div>
+                
+                <button 
+                  class="MuiMobileMenu-closeButton MuiIconButton-root"
+                  aria-label="{{ 'Close navigation menu'|t }}"
+                  type="button"
+                >
+                  <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Mobile Menu Items -->
+              <nav class="MuiMobileMenu-nav">
+                {{ page.navigation }}
+              </nav>
+
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <!-- Fallback header content if no navigation -->
+        <div class="header-content">
+          <div class="MuiMobileMenu-logo">
+            {% if logo_data.type == 'svg' and logo_data.svg %}
+              {{ logo_data.svg|raw }}
+            {% elseif logo_data.url %}
+              <img src="{{ logo_data.url }}" alt="{{ logo_data.site_name }}" class="MuiMobileMenu-logoImage" style="max-width: {{ logo_data.max_width }}px; max-height: {{ logo_data.max_height }}px;" />
+            {% endif %}
+            {% if logo_data.site_name %}
+              <span class="MuiMobileMenu-siteName mui-typography-h6">{{ logo_data.site_name }}</span>
+            {% endif %}
+          </div>
+          
+          {% if page.header %}
+            <div class="header-actions">
+              {{ page.header }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    </div>
+  </header>
+
+  <!-- Horizontal Navigation for Centered Layout (Desktop) -->
+  {% if layout_class == 'centered' and page.navigation %}
+    <div class="navigation-wrapper">
+      <div class="MuiContainer-root">
+        <nav class="horizontal-navigation" role="navigation" aria-label="{{ 'Main navigation'|t }}">
+          {{ page.navigation }}
+        </nav>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Highlighted Messages -->
+  {% if page.highlighted %}
+    <div class="highlighted-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--highlighted">
+          {{ page.highlighted }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Messages -->
+  {% if page.messages %}
+    <div class="messages-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--messages">
+          {{ page.messages }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Help -->
+  {% if page.help %}
+    <div class="help-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--help">
+          {{ page.help }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Breadcrumb -->
+  {% if page.breadcrumb %}
+    <div class="breadcrumb-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--breadcrumb">
+          {{ page.breadcrumb }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Page Title -->
+  {% if page.page_title %}
+    <div class="page-title-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--page-title">
+          {{ page.page_title }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Content Top Regions -->
+  {% if page.content_top or page.content_top_left or page.content_top_center or page.content_top_right %}
+    <div class="content-top-wrapper">
+      <div class="MuiContainer-root">
+        
+        {% if page.content_top %}
+          <div class="region region--content-top">
+            {{ page.content_top }}
+          </div>
+        {% endif %}
+
+        {% if page.content_top_left or page.content_top_center or page.content_top_right %}
+          <div class="content-top-regions MuiGrid-root">
+            {% if page.content_top_left %}
+              <div class="content-top-left MuiGrid-item">
+                <div class="region region--content-top-left">
+                  {{ page.content_top_left }}
+                </div>
+              </div>
+            {% endif %}
+            
+            {% if page.content_top_center %}
+              <div class="content-top-center MuiGrid-item">
+                <div class="region region--content-top-center">
+                  {{ page.content_top_center }}
+                </div>
+              </div>
+            {% endif %}
+            
+            {% if page.content_top_right %}
+              <div class="content-top-right MuiGrid-item">
+                <div class="region region--content-top-right">
+                  {{ page.content_top_right }}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Main Content Area with Dynamic Layout -->
+  <div class="main-wrapper" id="main-wrapper">
+    <div class="MuiContainer-root">
+      <div class="main-content-grid">
+
+        <!-- First Sidebar (Hidden in Centered Layout) -->
+        {% if page.sidebar_first and layout_class != 'centered' %}
+          <aside class="sidebar sidebar--first MuiPaper-root MuiPaper-elevation1" role="complementary" aria-label="{{ 'First sidebar'|t }}">
+            <div class="region region--sidebar-first">
+              {{ page.sidebar_first }}
+            </div>
+          </aside>
+        {% endif %}
+
+        <!-- Second Sidebar (for layouts that put it before content, Hidden in Centered Layout) -->
+        {% if page.sidebar_second and layout_class in ['3-col-left', '4-col'] and layout_class != 'centered' %}
+          <aside class="sidebar sidebar--second MuiPaper-root MuiPaper-elevation1" role="complementary" aria-label="{{ 'Second sidebar'|t }}">
+            <div class="region region--sidebar-second">
+              {{ page.sidebar_second }}
+            </div>
+          </aside>
+        {% endif %}
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content" tabindex="-1">
+          <div class="region region--content">
+            {{ page.content }}
+          </div>
+        </main>
+
+        <!-- Second Sidebar (for layouts that put it after content, Hidden in Centered Layout) -->
+        {% if page.sidebar_second and layout_class not in ['3-col-left', '4-col', 'centered'] %}
+          <aside class="sidebar sidebar--second MuiPaper-root MuiPaper-elevation1" role="complementary" aria-label="{{ 'Second sidebar'|t }}">
+            <div class="region region--sidebar-second">
+              {{ page.sidebar_second }}
+            </div>
+          </aside>
+        {% endif %}
+
+        <!-- Third Sidebar (Hidden in Centered Layout) -->
+        {% if page.sidebar_third and layout_class != 'centered' %}
+          <aside class="sidebar sidebar--third MuiPaper-root MuiPaper-elevation1" role="complementary" aria-label="{{ 'Third sidebar'|t }}">
+            <div class="region region--sidebar-third">
+              {{ page.sidebar_third }}
+            </div>
+          </aside>
+        {% endif %}
+
+        <!-- Fourth Sidebar (Hidden in Centered Layout) -->
+        {% if page.sidebar_fourth and layout_class != 'centered' %}
+          <aside class="sidebar sidebar--fourth MuiPaper-root MuiPaper-elevation1" role="complementary" aria-label="{{ 'Fourth sidebar'|t }}">
+            <div class="region region--sidebar-fourth">
+              {{ page.sidebar_fourth }}
+            </div>
+          </aside>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Bottom Regions -->
+  {% if page.content_bottom or page.content_bottom_left or page.content_bottom_center or page.content_bottom_right %}
+    <div class="content-bottom-wrapper">
+      <div class="MuiContainer-root">
+        
+        {% if page.content_bottom %}
+          <div class="region region--content-bottom">
+            {{ page.content_bottom }}
+          </div>
+        {% endif %}
+
+        {% if page.content_bottom_left or page.content_bottom_center or page.content_bottom_right %}
+          <div class="content-bottom-regions MuiGrid-root">
+            {% if page.content_bottom_left %}
+              <div class="content-bottom-left MuiGrid-item">
+                <div class="region region--content-bottom-left">
+                  {{ page.content_bottom_left }}
+                </div>
+              </div>
+            {% endif %}
+            
+            {% if page.content_bottom_center %}
+              <div class="content-bottom-center MuiGrid-item">
+                <div class="region region--content-bottom-center">
+                  {{ page.content_bottom_center }}
+                </div>
+              </div>
+            {% endif %}
+            
+            {% if page.content_bottom_right %}
+              <div class="content-bottom-right MuiGrid-item">
+                <div class="region region--content-bottom-right">
+                  {{ page.content_bottom_right }}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Footer Top -->
+  {% if page.footer_top %}
+    <div class="footer-top-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--footer-top">
+          {{ page.footer_top }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Main Footer -->
+  {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+    <footer class="footer MuiPaper-root MuiPaper-elevation2" role="contentinfo">
+      <div class="MuiContainer-root">
+        <div class="footer-regions MuiGrid-root">
+          {% if page.footer_first %}
+            <div class="footer-column MuiGrid-item">
+              <div class="region region--footer-first">
+                {{ page.footer_first }}
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if page.footer_second %}
+            <div class="footer-column MuiGrid-item">
+              <div class="region region--footer-second">
+                {{ page.footer_second }}
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if page.footer_third %}
+            <div class="footer-column MuiGrid-item">
+              <div class="region region--footer-third">
+                {{ page.footer_third }}
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if page.footer_fourth %}
+            <div class="footer-column MuiGrid-item">
+              <div class="region region--footer-fourth">
+                {{ page.footer_fourth }}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </footer>
+  {% endif %}
+
+  <!-- Footer Bottom -->
+  {% if page.footer_bottom %}
+    <div class="footer-bottom-wrapper">
+      <div class="MuiContainer-root">
+        <div class="region region--footer-bottom">
+          {{ page.footer_bottom }}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {{ page.page_bottom }}
+
+</div>

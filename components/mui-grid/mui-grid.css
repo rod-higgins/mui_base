@@ -1,0 +1,356 @@
+/* MUI Grid Component Styles */
+
+.MuiGrid-root {
+  box-sizing: border-box;
+}
+
+/* Grid container */
+.MuiGrid-container {
+  display: grid;
+  gap: var(--mui-spacing-2);
+  width: 100%;
+}
+
+/* Grid item */
+.MuiGrid-item {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Direction variants */
+.MuiGrid-direction-row {
+  grid-auto-flow: column;
+}
+
+.MuiGrid-direction-row-reverse {
+  grid-auto-flow: column;
+  direction: rtl;
+}
+
+.MuiGrid-direction-column {
+  grid-auto-flow: row;
+}
+
+.MuiGrid-direction-column-reverse {
+  grid-auto-flow: row;
+  transform: scaleY(-1);
+}
+
+.MuiGrid-direction-column-reverse > * {
+  transform: scaleY(-1);
+}
+
+/* Wrap variants */
+.MuiGrid-wrap-nowrap {
+  flex-wrap: nowrap;
+}
+
+.MuiGrid-wrap-wrap {
+  flex-wrap: wrap;
+}
+
+.MuiGrid-wrap-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+/* Justify content */
+.MuiGrid-justify-flex-start {
+  justify-content: flex-start;
+}
+
+.MuiGrid-justify-center {
+  justify-content: center;
+}
+
+.MuiGrid-justify-flex-end {
+  justify-content: flex-end;
+}
+
+.MuiGrid-justify-space-between {
+  justify-content: space-between;
+}
+
+.MuiGrid-justify-space-around {
+  justify-content: space-around;
+}
+
+.MuiGrid-justify-space-evenly {
+  justify-content: space-evenly;
+}
+
+/* Align items */
+.MuiGrid-align-flex-start {
+  align-items: flex-start;
+}
+
+.MuiGrid-align-center {
+  align-items: center;
+}
+
+.MuiGrid-align-flex-end {
+  align-items: flex-end;
+}
+
+.MuiGrid-align-stretch {
+  align-items: stretch;
+}
+
+.MuiGrid-align-baseline {
+  align-items: baseline;
+}
+
+/* Align content */
+.MuiGrid-align-content-stretch {
+  align-content: stretch;
+}
+
+.MuiGrid-align-content-center {
+  align-content: center;
+}
+
+.MuiGrid-align-content-flex-start {
+  align-content: flex-start;
+}
+
+.MuiGrid-align-content-flex-end {
+  align-content: flex-end;
+}
+
+.MuiGrid-align-content-space-between {
+  align-content: space-between;
+}
+
+.MuiGrid-align-content-space-around {
+  align-content: space-around;
+}
+
+/* Spacing variants */
+.MuiGrid-spacing-0 {
+  gap: 0;
+}
+
+.MuiGrid-spacing-1 {
+  gap: var(--mui-spacing-1);
+}
+
+.MuiGrid-spacing-2 {
+  gap: var(--mui-spacing-2);
+}
+
+.MuiGrid-spacing-3 {
+  gap: var(--mui-spacing-3);
+}
+
+.MuiGrid-spacing-4 {
+  gap: var(--mui-spacing-4);
+}
+
+.MuiGrid-spacing-5 {
+  gap: var(--mui-spacing-5);
+}
+
+.MuiGrid-spacing-6 {
+  gap: var(--mui-spacing-6);
+}
+
+/* Grid size variants for responsive design */
+.MuiGrid-xs-auto {
+  grid-column: auto;
+}
+
+.MuiGrid-xs-true {
+  flex-grow: 1;
+  flex-basis: 0;
+  max-width: 100%;
+}
+
+.MuiGrid-xs-1 { grid-column: span 1; }
+.MuiGrid-xs-2 { grid-column: span 2; }
+.MuiGrid-xs-3 { grid-column: span 3; }
+.MuiGrid-xs-4 { grid-column: span 4; }
+.MuiGrid-xs-5 { grid-column: span 5; }
+.MuiGrid-xs-6 { grid-column: span 6; }
+.MuiGrid-xs-7 { grid-column: span 7; }
+.MuiGrid-xs-8 { grid-column: span 8; }
+.MuiGrid-xs-9 { grid-column: span 9; }
+.MuiGrid-xs-10 { grid-column: span 10; }
+.MuiGrid-xs-11 { grid-column: span 11; }
+.MuiGrid-xs-12 { grid-column: span 12; }
+
+/* Small screens (600px and up) */
+@media (min-width: 600px) {
+  .MuiGrid-sm-auto {
+    grid-column: auto;
+  }
+
+  .MuiGrid-sm-true {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  }
+
+  .MuiGrid-sm-1 { grid-column: span 1; }
+  .MuiGrid-sm-2 { grid-column: span 2; }
+  .MuiGrid-sm-3 { grid-column: span 3; }
+  .MuiGrid-sm-4 { grid-column: span 4; }
+  .MuiGrid-sm-5 { grid-column: span 5; }
+  .MuiGrid-sm-6 { grid-column: span 6; }
+  .MuiGrid-sm-7 { grid-column: span 7; }
+  .MuiGrid-sm-8 { grid-column: span 8; }
+  .MuiGrid-sm-9 { grid-column: span 9; }
+  .MuiGrid-sm-10 { grid-column: span 10; }
+  .MuiGrid-sm-11 { grid-column: span 11; }
+  .MuiGrid-sm-12 { grid-column: span 12; }
+}
+
+/* Medium screens (900px and up) */
+@media (min-width: 900px) {
+  .MuiGrid-md-auto {
+    grid-column: auto;
+  }
+
+  .MuiGrid-md-true {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  }
+
+  .MuiGrid-md-1 { grid-column: span 1; }
+  .MuiGrid-md-2 { grid-column: span 2; }
+  .MuiGrid-md-3 { grid-column: span 3; }
+  .MuiGrid-md-4 { grid-column: span 4; }
+  .MuiGrid-md-5 { grid-column: span 5; }
+  .MuiGrid-md-6 { grid-column: span 6; }
+  .MuiGrid-md-7 { grid-column: span 7; }
+  .MuiGrid-md-8 { grid-column: span 8; }
+  .MuiGrid-md-9 { grid-column: span 9; }
+  .MuiGrid-md-10 { grid-column: span 10; }
+  .MuiGrid-md-11 { grid-column: span 11; }
+  .MuiGrid-md-12 { grid-column: span 12; }
+}
+
+/* Large screens (1200px and up) */
+@media (min-width: 1200px) {
+  .MuiGrid-lg-auto {
+    grid-column: auto;
+  }
+
+  .MuiGrid-lg-true {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  }
+
+  .MuiGrid-lg-1 { grid-column: span 1; }
+  .MuiGrid-lg-2 { grid-column: span 2; }
+  .MuiGrid-lg-3 { grid-column: span 3; }
+  .MuiGrid-lg-4 { grid-column: span 4; }
+  .MuiGrid-lg-5 { grid-column: span 5; }
+  .MuiGrid-lg-6 { grid-column: span 6; }
+  .MuiGrid-lg-7 { grid-column: span 7; }
+  .MuiGrid-lg-8 { grid-column: span 8; }
+  .MuiGrid-lg-9 { grid-column: span 9; }
+  .MuiGrid-lg-10 { grid-column: span 10; }
+  .MuiGrid-lg-11 { grid-column: span 11; }
+  .MuiGrid-lg-12 { grid-column: span 12; }
+}
+
+/* Extra large screens (1536px and up) */
+@media (min-width: 1536px) {
+  .MuiGrid-xl-auto {
+    grid-column: auto;
+  }
+
+  .MuiGrid-xl-true {
+    flex-grow: 1;
+    flex-basis: 0;
+    max-width: 100%;
+  }
+
+  .MuiGrid-xl-1 { grid-column: span 1; }
+  .MuiGrid-xl-2 { grid-column: span 2; }
+  .MuiGrid-xl-3 { grid-column: span 3; }
+  .MuiGrid-xl-4 { grid-column: span 4; }
+  .MuiGrid-xl-5 { grid-column: span 5; }
+  .MuiGrid-xl-6 { grid-column: span 6; }
+  .MuiGrid-xl-7 { grid-column: span 7; }
+  .MuiGrid-xl-8 { grid-column: span 8; }
+  .MuiGrid-xl-9 { grid-column: span 9; }
+  .MuiGrid-xl-10 { grid-column: span 10; }
+  .MuiGrid-xl-11 { grid-column: span 11; }
+  .MuiGrid-xl-12 { grid-column: span 12; }
+}
+
+/* Common grid patterns */
+.MuiGrid-equal-height {
+  display: grid;
+  grid-auto-rows: 1fr;
+}
+
+.MuiGrid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.MuiGrid-auto-fill {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+/* Nested grid handling */
+.MuiGrid-item.MuiGrid-container {
+  padding: 0;
+}
+
+/* Compact mode adjustments */
+body.mui-compact-mode .MuiGrid-container {
+  gap: var(--mui-spacing-1);
+}
+
+body.mui-compact-mode .MuiGrid-spacing-1 {
+  gap: 4px;
+}
+
+body.mui-compact-mode .MuiGrid-spacing-2 {
+  gap: var(--mui-spacing-1);
+}
+
+body.mui-compact-mode .MuiGrid-spacing-3 {
+  gap: var(--mui-spacing-2);
+}
+
+/* Print styles */
+@media print {
+  .MuiGrid-container {
+    display: block;
+  }
+  
+  .MuiGrid-item {
+    break-inside: avoid;
+    margin-bottom: var(--mui-spacing-2);
+  }
+}
+
+/* Accessibility improvements */
+.MuiGrid-container[role="grid"] {
+  outline: none;
+}
+
+.MuiGrid-container[role="grid"]:focus-within {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiGrid-item {
+    border: 1px solid transparent;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiGrid-root * {
+    transition: none !important;
+  }
+}

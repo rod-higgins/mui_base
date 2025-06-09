@@ -1,0 +1,176 @@
+{#
+/**
+ * @file
+ * Fixed MUI Paper component template with proper string value handling.
+ */
+#}
+
+{% set paper_classes = [
+  'MuiPaper-root',
+  variant == 'outlined' ? 'MuiPaper-outlined' : 'MuiPaper-elevation' ~ elevation,
+  square ? 'MuiPaper-square' : 'MuiPaper-rounded',
+  'MuiPaper-padding' ~ (padding|title),
+  background_color != 'default' ? 'MuiPaper-background' ~ (background_color|title) : '',
+  clickable or link_url ? 'MuiPaper-clickable' : '',
+  loading ? 'MuiPaper-loading' : '',
+  error_state ? 'MuiPaper-error' : '',
+  dividers ? 'MuiPaper-dividers' : '',
+  'mui-paper'
+] %}
+
+{# Determine wrapper element #}
+{% set wrapper_tag = link_url ? 'a' : (clickable ? 'button' : 'div') %}
+
+{# Set up link attributes #}
+{% set link_attributes = {} %}
+{% if link_url %}
+  {% set link_attributes = {
+    href: link_url,
+    target: link_target != '_self' ? link_target : null,
+    rel: link_target == '_blank' ? 'noopener noreferrer' : null
+  } %}
+{% elseif clickable %}
+  {% set link_attributes = {
+    type: 'button'
+  } %}
+{% endif %}
+
+<{{ wrapper_tag }}{{ attributes.addClass(paper_classes).addAttributes(link_attributes) }}>
+  
+  {# Loading overlay #}
+  {% if loading %}
+    <div class="MuiPaper-loadingOverlay">
+      <div class="MuiCircularProgress-root">
+        <svg class="MuiCircularProgress-svg" viewBox="22 22 44 44">
+          <circle class="MuiCircularProgress-circle" cx="44" cy="44" r="20.2" fill="none" stroke="currentColor" stroke-width="3.6"></circle>
+        </svg>
+      </div>
+    </div>
+  {% endif %}
+
+  {# Header section #}
+  {% if title or subtitle or header_actions %}
+    <div class="MuiPaper-header {{ dividers ? 'MuiPaper-headerDivider' : '' }}">
+      {% if title or subtitle %}
+        <div class="MuiPaper-headerContent">
+          {% if title %}
+            <h3 class="MuiPaper-title MuiTypography-h5">
+              {{ title }}
+            </h3>
+          {% endif %}
+          
+          {% if subtitle %}
+            <div class="MuiPaper-subtitle MuiTypography-body2">
+              {{ subtitle }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {% if header_actions %}
+        <div class="MuiPaper-headerActions">
+          {{ header_actions|raw }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {# Error state #}
+  {% if error_state %}
+    <div class="MuiPaper-errorBanner MuiAlert-root MuiAlert-error">
+      <div class="MuiAlert-icon">
+        <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+        </svg>
+      </div>
+      <div class="MuiAlert-message">
+        {{ error_message ?: 'An error occurred' }}
+      </div>
+    </div>
+  {% endif %}
+
+  {# Main content area #}
+  {% if content %}
+    <div class="MuiPaper-content">
+      {{ content|raw }}
+    </div>
+  {% endif %}
+
+  {# Content sections #}
+  {% if sections and sections is iterable %}
+    <div class="MuiPaper-sections">
+      {% for section in sections %}
+        {% if section.title or section.content %}
+          <div class="MuiPaper-section {{ dividers ? 'MuiPaper-sectionDivider' : '' }} {{ section.collapsible ? 'MuiPaper-sectionCollapsible' : '' }}">
+            
+            {% if section.title %}
+              <div class="MuiPaper-sectionHeader">
+                {% if section.collapsible %}
+                  <button 
+                    type="button" 
+                    class="MuiPaper-sectionToggle MuiIconButton-root"
+                    aria-expanded="{{ section.expanded|default(true) ? 'true' : 'false' }}"
+                    aria-controls="section-{{ loop.index }}"
+                  >
+                    <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+                    </svg>
+                  </button>
+                {% endif %}
+                
+                <h4 class="MuiPaper-sectionTitle MuiTypography-h6">{{ section.title }}</h4>
+              </div>
+            {% endif %}
+            
+            {% if section.content %}
+              <div 
+                class="MuiPaper-sectionContent {{ section.collapsible and not section.expanded|default(true) ? 'MuiPaper-sectionCollapsed' : '' }}"
+                id="section-{{ loop.index }}"
+              >
+                {{ section.content|raw }}
+              </div>
+            {% endif %}
+            
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {# Custom HTML content #}
+  {% if custom_html %}
+    <div class="MuiPaper-customContent">
+      {{ custom_html|raw }}
+    </div>
+  {% endif %}
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    <div class="MuiPaper-children">
+      {{ children }}
+    </div>
+  {% endif %}
+
+  {# Footer section #}
+  {% if footer_content or footer_actions %}
+    <div class="MuiPaper-footer {{ dividers ? 'MuiPaper-footerDivider' : '' }}">
+      {% if footer_content %}
+        <div class="MuiPaper-footerContent">
+          {{ footer_content|raw }}
+        </div>
+      {% endif %}
+      
+      {% if footer_actions %}
+        <div class="MuiPaper-footerActions">
+          {{ footer_actions|raw }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {# Touch ripple for clickable papers #}
+  {% if clickable or link_url %}
+    <span class="MuiTouchRipple-root"></span>
+  {% endif %}
+
+</{{ wrapper_tag }}>

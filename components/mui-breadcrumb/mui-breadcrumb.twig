@@ -1,0 +1,210 @@
+{#
+/**
+ * @file
+ * MUI Breadcrumb component template.
+ */
+#}
+
+{% set breadcrumb_classes = [
+  'MuiBreadcrumb-root',
+  'MuiBreadcrumb-' ~ variant,
+  'MuiBreadcrumb-size' ~ (size|title),
+  'MuiBreadcrumb-color' ~ (color|title),
+  expandable ? 'MuiBreadcrumb-expandable' : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  'mui-breadcrumb'
+] %}
+
+{# Process breadcrumb items #}
+{% set processed_items = [] %}
+
+{# Add home item if enabled #}
+{% if show_home %}
+  {% set home_item = {
+    'text': home_text,
+    'url': home_url,
+    'icon': home_icon,
+    'current': false,
+    'is_home': true
+  } %}
+  {% set processed_items = processed_items|merge([home_item]) %}
+{% endif %}
+
+{# Add provided items #}
+{% if items and items is iterable %}
+  {% set processed_items = processed_items|merge(items) %}
+{% endif %}
+
+{# Handle current page #}
+{% if show_current and current_text %}
+  {% set current_item = {
+    'text': current_text,
+    'url': '',
+    'current': true,
+    'is_current': true
+  } %}
+  {% set processed_items = processed_items|merge([current_item]) %}
+{% endif %}
+
+{# Handle max items and collapsing #}
+{% set display_items = processed_items %}
+{% set has_collapsed_items = false %}
+
+{% if max_items > 0 and processed_items|length > max_items %}
+  {% set has_collapsed_items = true %}
+  {% set before_items = processed_items|slice(0, items_before_collapse) %}
+  {% set after_items = processed_items|slice(-items_after_collapse) %}
+  {% set collapsed_count = processed_items|length - items_before_collapse - items_after_collapse %}
+  
+  {% set display_items = before_items %}
+  {% set display_items = display_items|merge([{
+    'text': '...',
+    'collapsed': true,
+    'collapsed_count': collapsed_count,
+    'collapsed_items': processed_items|slice(items_before_collapse, collapsed_count)
+  }]) %}
+  {% set display_items = display_items|merge(after_items) %}
+{% endif %}
+
+<nav{{ attributes.addClass(breadcrumb_classes) }} 
+     aria-label="{{ aria_label }}"
+     {% if click_handler %}data-click-handler="{{ click_handler }}"{% endif %}>
+  
+  <ol class="MuiBreadcrumb-list" role="list">
+    {% for item in display_items %}
+      <li class="MuiBreadcrumb-listItem {{ item.current ? 'MuiBreadcrumb-currentItem' : '' }} {{ item.collapsed ? 'MuiBreadcrumb-collapsedItem' : '' }}"
+          {% if item.collapsed %}data-collapsed-count="{{ item.collapsed_count }}"{% endif %}>
+        
+        {# Collapsed items indicator #}
+        {% if item.collapsed %}
+          {% if expandable %}
+            <button 
+              type="button"
+              class="MuiBreadcrumb-collapseButton MuiButton-root MuiButton-text"
+              aria-label="Show {{ item.collapsed_count }} hidden breadcrumb items"
+              aria-expanded="false"
+            >
+              <span class="MuiBreadcrumb-collapseText">{{ item.text }}</span>
+              <svg class="MuiBreadcrumb-expandIcon MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+              </svg>
+            </button>
+            
+            {# Hidden collapsed items #}
+            <div class="MuiBreadcrumb-collapsedItems" aria-hidden="true">
+              <ol class="MuiBreadcrumb-collapsedList">
+                {% for collapsed_item in item.collapsed_items %}
+                  <li class="MuiBreadcrumb-listItem">
+                    {{ _self.render_breadcrumb_link(collapsed_item, separator, separator_variant, truncate_length, loop.last and not show_current) }}
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+          {% else %}
+            <span class="MuiBreadcrumb-collapseText MuiTypography-body2">{{ item.text }}</span>
+          {% endif %}
+          
+        {# Regular breadcrumb item #}
+        {% else %}
+          {{ _self.render_breadcrumb_link(item, separator, separator_variant, truncate_length, loop.last) }}
+        {% endif %}
+        
+      </li>
+    {% endfor %}
+  </ol>
+  
+  {# Structured Data for SEO #}
+  {% if structured_data and processed_items|length > 0 %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {% for item in processed_items %}
+          {% if not item.collapsed %}
+            {
+              "@type": "ListItem",
+              "position": {{ loop.index }},
+              "name": "{{ item.text|e('js') }}",
+              {% if item.url and not item.current %}
+              "item": "{{ item.url|e('js') }}"
+              {% endif %}
+            }{% if not loop.last %},{% endif %}
+          {% endif %}
+        {% endfor %}
+      ]
+    }
+    </script>
+  {% endif %}
+  
+</nav>
+
+{# Macro to render individual breadcrumb links #}
+{% macro render_breadcrumb_link(item, separator, separator_variant, truncate_length, is_last) %}
+  {# Truncate text if needed #}
+  {% set display_text = truncate_length > 0 and item.text|length > truncate_length ? 
+    item.text|slice(0, truncate_length) ~ '...' : item.text %}
+  
+  {# Render the breadcrumb item #}
+  {% if item.url and not item.current %}
+    <a href="{{ item.url }}" 
+       class="MuiBreadcrumb-link MuiLink-root"
+       {% if item.title_attribute %}title="{{ item.title_attribute }}"{% endif %}
+       {% if item.data_attributes and item.data_attributes is iterable %}
+         {% for key, value in item.data_attributes %}data-{{ key }}="{{ value }}"{% endfor %}
+       {% endif %}>
+      
+      {# Home icon #}
+      {% if item.is_home and item.icon %}
+        <span class="MuiBreadcrumb-homeIcon">
+          {% if item.icon starts with '<' %}
+            {{ item.icon|raw }}
+          {% else %}
+            <i class="{{ item.icon }}" aria-hidden="true"></i>
+          {% endif %}
+        </span>
+      {% endif %}
+      
+      {# Item icon #}
+      {% if not item.is_home and item.icon %}
+        <span class="MuiBreadcrumb-itemIcon">
+          {% if item.icon starts with '<' %}
+            {{ item.icon|raw }}
+          {% else %}
+            <i class="{{ item.icon }}" aria-hidden="true"></i>
+          {% endif %}
+        </span>
+      {% endif %}
+      
+      <span class="MuiBreadcrumb-linkText MuiTypography-body2">{{ display_text }}</span>
+    </a>
+  {% else %}
+    <span class="MuiBreadcrumb-currentText MuiTypography-body2" aria-current="page">
+      {# Current page icon #}
+      {% if item.icon %}
+        <span class="MuiBreadcrumb-itemIcon">
+          {% if item.icon starts with '<' %}
+            {{ item.icon|raw }}
+          {% else %}
+            <i class="{{ item.icon }}" aria-hidden="true"></i>
+          {% endif %}
+        </span>
+      {% endif %}
+      
+      {{ display_text }}
+    </span>
+  {% endif %}
+  
+  {# Separator (not after last item) #}
+  {% if not is_last %}
+    <span class="MuiBreadcrumb-separator" aria-hidden="true">
+      {% if separator_variant == 'icon' and separator starts with '<' %}
+        {{ separator|raw }}
+      {% elseif separator_variant == 'custom' %}
+        {{ separator|raw }}
+      {% else %}
+        {{ separator }}
+      {% endif %}
+    </span>
+  {% endif %}
+{% endmacro %}

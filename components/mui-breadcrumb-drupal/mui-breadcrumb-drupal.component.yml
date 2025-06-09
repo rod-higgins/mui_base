@@ -1,0 +1,286 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Breadcrumb Drupal'
+description: 'Drupal integration wrapper for MUI Breadcrumb component with automatic breadcrumb generation'
+props:
+  type: object
+  properties:
+    # Breadcrumb source settings
+    breadcrumb_source:
+      type: string
+      title: 'Breadcrumb source'
+      description: 'How breadcrumbs should be generated'
+      enum: ['path', 'menu', 'taxonomy', 'book', 'custom']
+      default: 'path'
+    
+    menu_name:
+      type: string
+      title: 'Menu name'
+      description: 'Menu to use for menu-based breadcrumbs'
+      default: 'main'
+    
+    taxonomy_vocabulary:
+      type: string
+      title: 'Taxonomy vocabulary'
+      description: 'Vocabulary to use for taxonomy breadcrumbs'
+      default: ''
+    
+    book_outline_depth:
+      type: integer
+      title: 'Book outline depth'
+      description: 'Maximum depth for book outline breadcrumbs'
+      default: 0
+      minimum: 0
+      maximum: 10
+    
+    # Path-based settings
+    exclude_paths:
+      type: array
+      title: 'Excluded paths'
+      description: 'Paths to exclude from breadcrumb generation'
+      items:
+        type: string
+      default: []
+    
+    path_segments_limit:
+      type: integer
+      title: 'Path segments limit'
+      description: 'Maximum path segments to include'
+      default: 0
+      minimum: 0
+      maximum: 10
+    
+    # Title handling
+    title_source:
+      type: string
+      title: 'Title source'
+      description: 'Source for breadcrumb item titles'
+      enum: ['page_title', 'node_title', 'menu_title', 'custom']
+      default: 'page_title'
+    
+    title_field:
+      type: string
+      title: 'Custom title field'
+      description: 'Field machine name for custom titles'
+      default: ''
+    
+    title_max_length:
+      type: integer
+      title: 'Maximum title length'
+      description: 'Maximum length for breadcrumb titles'
+      default: 50
+      minimum: 10
+      maximum: 200
+    
+    show_entity_type:
+      type: boolean
+      title: 'Show entity type'
+      description: 'Include entity type in breadcrumb labels'
+      default: false
+    
+    # URL generation
+    language_aware:
+      type: boolean
+      title: 'Language aware'
+      description: 'Generate language-aware URLs'
+      default: true
+    
+    absolute_urls:
+      type: boolean
+      title: 'Absolute URLs'
+      description: 'Generate absolute URLs'
+      default: false
+    
+    # MUI Breadcrumb settings (inherited from base component)
+    variant:
+      type: string
+      title: 'Breadcrumb variant'
+      enum: ['standard', 'outlined', 'filled']
+      default: 'standard'
+    
+    size:
+      type: string
+      title: 'Breadcrumb size'
+      enum: ['small', 'medium', 'large']
+      default: 'medium'
+    
+    color:
+      type: string
+      title: 'Color theme'
+      enum: ['default', 'primary', 'secondary', 'inherit']
+      default: 'default'
+    
+    separator:
+      type: string
+      title: 'Separator character/icon'
+      default: '/'
+    
+    separator_variant:
+      type: string
+      title: 'Separator style'
+      enum: ['text', 'icon', 'custom']
+      default: 'text'
+    
+    max_items:
+      type: integer
+      title: 'Maximum items'
+      default: 8
+      minimum: 0
+      maximum: 20
+    
+    items_before_collapse:
+      type: integer
+      title: 'Items before collapse'
+      default: 1
+      minimum: 0
+      maximum: 5
+    
+    items_after_collapse:
+      type: integer
+      title: 'Items after collapse'
+      default: 2
+      minimum: 0
+      maximum: 5
+    
+    # Content options
+    show_home:
+      type: boolean
+      title: 'Show home link'
+      default: true
+    
+    home_text:
+      type: string
+      title: 'Home link text'
+      default: 'Home'
+    
+    home_url:
+      type: string
+      title: 'Home link URL'
+      default: '/'
+    
+    home_icon:
+      type: string
+      title: 'Home icon'
+      default: ''
+    
+    show_current:
+      type: boolean
+      title: 'Show current page'
+      default: true
+    
+    current_text:
+      type: string
+      title: 'Current page text override'
+      default: ''
+    
+    # Advanced features
+    expandable:
+      type: boolean
+      title: 'Expandable collapsed items'
+      default: true
+    
+    truncate_length:
+      type: integer
+      title: 'Text truncation length'
+      default: 0
+      minimum: 0
+      maximum: 100
+    
+    structured_data:
+      type: boolean
+      title: 'Include structured data'
+      default: true
+    
+    # Access control
+    check_access:
+      type: boolean
+      title: 'Check access'
+      default: true
+    
+    show_unpublished:
+      type: boolean
+      title: 'Show unpublished content'
+      default: false
+    
+    # Integration
+    pathauto_integration:
+      type: boolean
+      title: 'Pathauto integration'
+      default: true
+    
+    metatag_integration:
+      type: boolean
+      title: 'Metatag integration'
+      default: false
+    
+    # JavaScript settings
+    track_analytics:
+      type: boolean
+      title: 'Track analytics'
+      default: false
+    
+    click_handler:
+      type: string
+      title: 'Click handler'
+      default: ''
+    
+    # Custom styling
+    custom_classes:
+      type: array
+      title: 'Custom CSS classes'
+      items:
+        type: string
+      default: []
+    
+    # Data inputs
+    items:
+      type: array
+      title: 'Breadcrumb items'
+      description: 'Pre-generated breadcrumb items'
+      default: []
+    
+    custom_breadcrumbs:
+      type: array
+      title: 'Custom breadcrumbs'
+      description: 'Custom breadcrumb data from Drupal'
+      default: []
+    
+    current_page_title:
+      type: string
+      title: 'Current page title'
+      description: 'Resolved current page title'
+      default: ''
+    
+    # Cache settings
+    cache_breadcrumbs:
+      type: boolean
+      title: 'Cache breadcrumbs'
+      default: true
+    
+    cache_max_age:
+      type: integer
+      title: 'Cache max age'
+      default: 3600
+    
+    cache_contexts:
+      type: array
+      title: 'Cache contexts'
+      items:
+        type: string
+      default: ['url.path', 'user.roles']
+    
+    cache_tags:
+      type: array
+      title: 'Cache tags'
+      items:
+        type: string
+      default: []
+    
+    # Preprocessing callback
+    preprocess_callback:
+      type: string
+      title: 'Preprocessing callback'
+      description: 'Function to preprocess breadcrumb data'
+      default: ''
+
+libraryDependencies:
+  - mui_base/mui-breadcrumb

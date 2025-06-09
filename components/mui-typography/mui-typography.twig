@@ -1,0 +1,81 @@
+{#
+/**
+ * @file
+ * Fixed MUI Typography component template with proper string value handling.
+ */
+#}
+
+{% set typography_classes = [
+  'MuiTypography-root',
+  'MuiTypography-' ~ variant,
+  color != 'inherit' ? 'MuiTypography-color' ~ (color|title),
+  align != 'inherit' ? 'MuiTypography-align' ~ (align|title),
+  gutterBottom ? 'MuiTypography-gutterBottom',
+  noWrap ? 'MuiTypography-noWrap',
+  'mui-typography-' ~ variant,
+  link_url ? 'MuiTypography-link' : ''
+] %}
+
+{# Determine final component tag #}
+{% set final_component = link_url ? 'a' : component %}
+
+{# Process content with truncation if needed #}
+{% set processed_content = content %}
+{% if truncate_length > 0 and processed_content|length > truncate_length %}
+  {% set processed_content = processed_content|slice(0, truncate_length) ~ '...' %}
+{% endif %}
+
+{# Process highlight terms if provided #}
+{% if highlight_terms and highlight_terms is iterable %}
+  {% for term in highlight_terms %}
+    {% set processed_content = processed_content|replace(term, '<mark>' ~ term ~ '</mark>') %}
+  {% endfor %}
+{% endif %}
+
+{# Set up link attributes if needed #}
+{% set link_attributes = {} %}
+{% if link_url %}
+  {% set link_attributes = {
+    href: link_url,
+    title: link_title,
+    target: link_target != '_self' ? link_target : null,
+    rel: link_target == '_blank' ? 'noopener noreferrer' : null
+  } %}
+{% endif %}
+
+<{{ final_component }}{{ attributes.addClass(typography_classes).addAttributes(link_attributes) }}>
+  
+  {# Prefix content #}
+  {% if prefix_content %}
+    <span class="MuiTypography-prefix">
+      {{ prefix_content|raw }}
+    </span>
+  {% endif %}
+
+  {# Main content #}
+  {% if processed_content %}
+    <span class="MuiTypography-content">
+      {{ processed_content|raw }}
+    </span>
+  {% endif %}
+
+  {# Custom HTML content #}
+  {% if custom_html %}
+    <span class="MuiTypography-custom">
+      {{ custom_html|raw }}
+    </span>
+  {% endif %}
+
+  {# Children content (for nested components) #}
+  {% if children %}
+    {{ children }}
+  {% endif %}
+
+  {# Suffix content #}
+  {% if suffix_content %}
+    <span class="MuiTypography-suffix">
+      {{ suffix_content|raw }}
+    </span>
+  {% endif %}
+
+</{{ final_component }}>

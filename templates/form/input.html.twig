@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' element.
+ */
+#}
+{% set input_classes = [
+  'MuiInputBase-input',
+  'MuiInput-input',
+  type == 'file' ? 'MuiInputBase-inputTypeFile'
+] %}
+
+<input{{ attributes.addClass(input_classes) }} />

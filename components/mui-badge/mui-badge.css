@@ -1,0 +1,489 @@
+/* MUI Badge Component Styles */
+
+.MuiBadge-root {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+/* Badge positioning */
+.MuiBadge-badge {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  font-size: 0.75rem;
+  min-width: 20px;
+  line-height: 1;
+  padding: 0 6px;
+  height: 20px;
+  border-radius: 10px;
+  z-index: 1;
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+  background-color: var(--badge-bg-color, var(--mui-error-main));
+  color: var(--badge-text-color, var(--mui-error-contrast-text));
+}
+
+/* Anchor positions */
+.MuiBadge-anchorTopRight .MuiBadge-badge {
+  top: 0;
+  right: 0;
+  transform: scale(1) translate(50%, -50%);
+  transform-origin: 100% 0%;
+}
+
+.MuiBadge-anchorTopLeft .MuiBadge-badge {
+  top: 0;
+  left: 0;
+  transform: scale(1) translate(-50%, -50%);
+  transform-origin: 0% 0%;
+}
+
+.MuiBadge-anchorBottomRight .MuiBadge-badge {
+  bottom: 0;
+  right: 0;
+  transform: scale(1) translate(50%, 50%);
+  transform-origin: 100% 100%;
+}
+
+.MuiBadge-anchorBottomLeft .MuiBadge-badge {
+  bottom: 0;
+  left: 0;
+  transform: scale(1) translate(-50%, 50%);
+  transform-origin: 0% 100%;
+}
+
+/* Overlap adjustments */
+.MuiBadge-overlapCircular.MuiBadge-anchorTopRight .MuiBadge-badge {
+  transform: scale(1) translate(50%, -50%);
+}
+
+.MuiBadge-overlapCircular.MuiBadge-anchorTopLeft .MuiBadge-badge {
+  transform: scale(1) translate(-50%, -50%);
+}
+
+.MuiBadge-overlapCircular.MuiBadge-anchorBottomRight .MuiBadge-badge {
+  transform: scale(1) translate(50%, 50%);
+}
+
+.MuiBadge-overlapCircular.MuiBadge-anchorBottomLeft .MuiBadge-badge {
+  transform: scale(1) translate(-50%, 50%);
+}
+
+.MuiBadge-overlapRectangular.MuiBadge-anchorTopRight .MuiBadge-badge {
+  transform: scale(1) translate(50%, -50%);
+}
+
+.MuiBadge-overlapRectangular.MuiBadge-anchorTopLeft .MuiBadge-badge {
+  transform: scale(1) translate(-50%, -50%);
+}
+
+.MuiBadge-overlapRectangular.MuiBadge-anchorBottomRight .MuiBadge-badge {
+  transform: scale(1) translate(50%, 50%);
+}
+
+.MuiBadge-overlapRectangular.MuiBadge-anchorBottomLeft .MuiBadge-badge {
+  transform: scale(1) translate(-50%, 50%);
+}
+
+/* Variants */
+.MuiBadge-dot .MuiBadge-badge {
+  border-radius: 4px;
+  height: 8px;
+  min-width: 8px;
+  padding: 0;
+}
+
+.MuiBadge-standard .MuiBadge-badge {
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+/* Sizes */
+.MuiBadge-sizeSmall .MuiBadge-badge {
+  font-size: 0.625rem;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  padding: 0 4px;
+}
+
+.MuiBadge-sizeSmall.MuiBadge-dot .MuiBadge-badge {
+  height: 6px;
+  min-width: 6px;
+  border-radius: 3px;
+}
+
+.MuiBadge-sizeMedium .MuiBadge-badge {
+  font-size: 0.75rem;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  padding: 0 6px;
+}
+
+.MuiBadge-sizeMedium.MuiBadge-dot .MuiBadge-badge {
+  height: 8px;
+  min-width: 8px;
+  border-radius: 4px;
+}
+
+.MuiBadge-sizeLarge .MuiBadge-badge {
+  font-size: 0.875rem;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  padding: 0 8px;
+}
+
+.MuiBadge-sizeLarge.MuiBadge-dot .MuiBadge-badge {
+  height: 10px;
+  min-width: 10px;
+  border-radius: 5px;
+}
+
+/* Color variants */
+.MuiBadge-default .MuiBadge-badge {
+  background-color: var(--mui-grey-500);
+  color: white;
+}
+
+.MuiBadge-primary .MuiBadge-badge {
+  background-color: var(--mui-primary-main);
+  color: var(--mui-primary-contrast-text);
+}
+
+.MuiBadge-secondary .MuiBadge-badge {
+  background-color: var(--mui-secondary-main);
+  color: var(--mui-secondary-contrast-text);
+}
+
+.MuiBadge-error .MuiBadge-badge {
+  background-color: var(--mui-error-main);
+  color: var(--mui-error-contrast-text);
+}
+
+.MuiBadge-warning .MuiBadge-badge {
+  background-color: var(--mui-warning-main);
+  color: var(--mui-warning-contrast-text);
+}
+
+.MuiBadge-info .MuiBadge-badge {
+  background-color: var(--mui-info-main);
+  color: var(--mui-info-contrast-text);
+}
+
+.MuiBadge-success .MuiBadge-badge {
+  background-color: var(--mui-success-main);
+  color: var(--mui-success-contrast-text);
+}
+
+/* Icon within badge */
+.MuiBadge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  margin-right: 2px;
+}
+
+.MuiBadge-icon svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+
+.MuiBadge-sizeSmall .MuiBadge-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.MuiBadge-sizeSmall .MuiBadge-icon svg {
+  width: 10px;
+  height: 10px;
+}
+
+.MuiBadge-sizeLarge .MuiBadge-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.MuiBadge-sizeLarge .MuiBadge-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Content styling */
+.MuiBadge-content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Interactive states */
+.MuiBadge-clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.MuiBadge-clickable:hover .MuiBadge-badge {
+  transform: scale(1.1) translate(50%, -50%);
+}
+
+.MuiBadge-clickable.MuiBadge-anchorTopLeft:hover .MuiBadge-badge {
+  transform: scale(1.1) translate(-50%, -50%);
+}
+
+.MuiBadge-clickable.MuiBadge-anchorBottomRight:hover .MuiBadge-badge {
+  transform: scale(1.1) translate(50%, 50%);
+}
+
+.MuiBadge-clickable.MuiBadge-anchorBottomLeft:hover .MuiBadge-badge {
+  transform: scale(1.1) translate(-50%, 50%);
+}
+
+.MuiBadge-clickable:focus-visible {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+  border-radius: var(--mui-border-radius);
+}
+
+/* Invisible state */
+.MuiBadge-invisible .MuiBadge-badge {
+  visibility: hidden;
+  transform: scale(0);
+}
+
+/* Animation */
+.MuiBadge-animate .MuiBadge-badge {
+  transition: transform var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out),
+              visibility var(--mui-transition-duration-shorter) var(--mui-transition-easing-ease-in-out);
+}
+
+/* Pulse animation */
+@keyframes mui-badge-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.MuiBadge-pulse .MuiBadge-badge {
+  animation: mui-badge-pulse 2s infinite;
+}
+
+.MuiBadge-pulse.MuiBadge-anchorTopRight .MuiBadge-badge {
+  animation: mui-badge-pulse 2s infinite;
+  transform-origin: 100% 0%;
+}
+
+.MuiBadge-pulse.MuiBadge-anchorTopLeft .MuiBadge-badge {
+  animation: mui-badge-pulse 2s infinite;
+  transform-origin: 0% 0%;
+}
+
+.MuiBadge-pulse.MuiBadge-anchorBottomRight .MuiBadge-badge {
+  animation: mui-badge-pulse 2s infinite;
+  transform-origin: 100% 100%;
+}
+
+.MuiBadge-pulse.MuiBadge-anchorBottomLeft .MuiBadge-badge {
+  animation: mui-badge-pulse 2s infinite;
+  transform-origin: 0% 100%;
+}
+
+/* Blink animation */
+@keyframes mui-badge-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+.MuiBadge-blink .MuiBadge-badge {
+  animation: mui-badge-blink 1s infinite;
+}
+
+/* Status indicators */
+.MuiBadge-statusOnline .MuiBadge-badge {
+  background-color: #4caf50;
+}
+
+.MuiBadge-statusOffline .MuiBadge-badge {
+  background-color: #757575;
+}
+
+.MuiBadge-statusAway .MuiBadge-badge {
+  background-color: #ff9800;
+}
+
+.MuiBadge-statusBusy .MuiBadge-badge {
+  background-color: #f44336;
+}
+
+.MuiBadge-statusNew .MuiBadge-badge {
+  background-color: var(--mui-primary-main);
+}
+
+.MuiBadge-statusUpdated .MuiBadge-badge {
+  background-color: var(--mui-info-main);
+}
+
+.MuiBadge-statusUrgent .MuiBadge-badge {
+  background-color: var(--mui-error-main);
+}
+
+/* Sub-badge */
+.MuiBadge-subBadge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  font-size: 0.5rem;
+  font-weight: 600;
+  background-color: var(--mui-error-main);
+  color: white;
+  z-index: 2;
+}
+
+.MuiBadge-subBadgeTopright {
+  top: -2px;
+  right: -2px;
+}
+
+.MuiBadge-subBadgeTopleft {
+  top: -2px;
+  left: -2px;
+}
+
+.MuiBadge-subBadgeBottomright {
+  bottom: -2px;
+  right: -2px;
+}
+
+.MuiBadge-subBadgeBottomleft {
+  bottom: -2px;
+  left: -2px;
+}
+
+/* Sub-badge colors */
+.MuiBadge-subBadge.MuiBadge-primary {
+  background-color: var(--mui-primary-main);
+}
+
+.MuiBadge-subBadge.MuiBadge-secondary {
+  background-color: var(--mui-secondary-main);
+}
+
+.MuiBadge-subBadge.MuiBadge-success {
+  background-color: var(--mui-success-main);
+}
+
+.MuiBadge-subBadge.MuiBadge-warning {
+  background-color: var(--mui-warning-main);
+}
+
+.MuiBadge-subBadge.MuiBadge-info {
+  background-color: var(--mui-info-main);
+}
+
+/* Touch ripple for interactive badges */
+.MuiTouchRipple-root {
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+}
+
+/* Standalone badge (not overlaying content) */
+.MuiBadge-root:not(.MuiBadge-hasChildren) {
+  position: static;
+}
+
+.MuiBadge-root:not(.MuiBadge-hasChildren) .MuiBadge-badge {
+  position: static;
+  transform: none;
+}
+
+/* Children wrapper */
+.MuiBadge-children {
+  display: contents;
+}
+
+/* Accessibility improvements */
+.MuiBadge-root[aria-label] .MuiBadge-badge {
+  /* Screen reader accessible */
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiBadge-badge {
+    border: 1px solid currentColor;
+  }
+  
+  .MuiBadge-clickable:focus {
+    outline: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiBadge-badge {
+    transition: none;
+  }
+  
+  .MuiBadge-pulse .MuiBadge-badge,
+  .MuiBadge-blink .MuiBadge-badge {
+    animation: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .MuiBadge-pulse .MuiBadge-badge,
+  .MuiBadge-blink .MuiBadge-badge {
+    animation: none;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .MuiBadge-sizeLarge .MuiBadge-badge {
+    font-size: 0.75rem;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    padding: 0 6px;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .MuiBadge-default .MuiBadge-badge {
+    background-color: var(--mui-grey-700);
+    color: var(--mui-grey-50);
+  }
+}

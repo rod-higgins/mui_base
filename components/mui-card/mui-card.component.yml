@@ -1,0 +1,77 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Card'
+description: 'Material UI styled card component with rich content support'
+props:
+  type: object
+  properties:
+    # Style props (existing)
+    elevation:
+      type: integer
+      title: 'Card elevation'
+      description: 'Shadow depth, corresponds to dp in Material Design'
+      enum: [0, 1, 2, 3, 4, 6, 8, 12, 16, 24]
+      default: 1
+    variant:
+      type: string
+      title: 'Card variant'
+      description: 'The variant to use'
+      enum: ['elevation', 'outlined']
+      default: 'elevation'
+    square:
+      type: boolean
+      title: 'Square corners'
+      description: 'If true, rounded corners are disabled'
+      default: false
+    
+    # Content props (new)
+    title:
+      type: string
+      title: 'Card title'
+      description: 'The title text for the card header'
+      default: ''
+    subtitle:
+      type: string
+      title: 'Card subtitle'
+      description: 'The subtitle text for the card header'
+      default: ''
+    content:
+      type: text
+      title: 'Card content'
+      description: 'The main content for the card body (supports HTML)'
+      format: 'html'
+      default: ''
+    
+    # Media support
+    image:
+      type: entity_reference
+      title: 'Card image'
+      description: 'Media entity for card image'
+      target_type: 'media'
+      target_bundles: ['image']
+    
+    # Action buttons
+    actions:
+      type: array
+      title: 'Card actions'
+      description: 'JSON array of action buttons'
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          url:
+            type: string
+          variant:
+            type: string
+            enum: ['text', 'outlined', 'contained']
+            default: 'text'
+    
+    # Advanced content
+    custom_html:
+      type: text
+      title: 'Custom HTML'
+      description: 'Advanced users can add custom HTML content'
+      format: 'raw_html'
+
+libraryDependencies:
+  - mui_base/mui-card

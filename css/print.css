@@ -1,0 +1,266 @@
+/* Print Styles for MUI Base Theme */
+
+/* Hide non-essential elements when printing */
+@media print {
+  /* Hide navigation and interactive elements */
+  .header,
+  .navigation-wrapper,
+  .skip-link,
+  .sidebar,
+  .breadcrumb-wrapper,
+  .messages-wrapper,
+  .highlighted-wrapper,
+  .help-wrapper,
+  .footer-top-wrapper,
+  .footer-bottom-wrapper,
+  .MuiMobileMenu-root,
+  .MuiSidebarMenu-root,
+  .MuiButton-root,
+  .pager,
+  .tabs,
+  .form-actions,
+  .contextual-links-wrapper,
+  .local-tasks,
+  .local-actions {
+    display: none !important;
+  }
+
+  /* Reset page layout for print */
+  .layout-container {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .main-content-grid {
+    display: block !important;
+    grid-template-columns: none !important;
+    grid-template-areas: none !important;
+    gap: 0 !important;
+  }
+
+  .main-content {
+    grid-area: auto !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+  }
+
+  .MuiContainer-root {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Typography adjustments for print */
+  body {
+    font-family: serif !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    color: black !important;
+    background: white !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: serif !important;
+    color: black !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h1 { font-size: 18pt !important; }
+  h2 { font-size: 16pt !important; }
+  h3 { font-size: 14pt !important; }
+  h4 { font-size: 13pt !important; }
+  h5 { font-size: 12pt !important; }
+  h6 { font-size: 11pt !important; }
+
+  /* Paragraph and text formatting */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+
+  blockquote {
+    border-left: 3px solid #ccc !important;
+    padding-left: 10pt !important;
+    margin: 10pt 0 !important;
+    font-style: italic;
+  }
+
+  /* Link handling */
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+
+  /* Show URLs for external links */
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #666;
+  }
+
+  /* Don't show URLs for internal links */
+  a[href^="/"]:after,
+  a[href^="#"]:after,
+  a[href*="localhost"]:after {
+    content: "";
+  }
+
+  /* Lists */
+  ul, ol {
+    margin: 10pt 0;
+    padding-left: 20pt;
+  }
+
+  li {
+    margin-bottom: 5pt;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse !important;
+    width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    border: 1px solid #ccc !important;
+    padding: 5pt !important;
+    text-align: left !important;
+  }
+
+  th {
+    background-color: #f0f0f0 !important;
+    font-weight: bold !important;
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+    page-break-inside: avoid;
+  }
+
+  /* Remove shadows and borders */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Page breaks */
+  .page-break {
+    page-break-before: always;
+  }
+
+  .no-break {
+    page-break-inside: avoid;
+  }
+
+  /* Node content */
+  .node {
+    page-break-inside: avoid;
+    margin-bottom: 20pt;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10pt;
+  }
+
+  .node:last-child {
+    border-bottom: none;
+  }
+
+  /* Field styling */
+  .field {
+    margin-bottom: 10pt;
+  }
+
+  .field__label {
+    font-weight: bold;
+    margin-bottom: 5pt;
+  }
+
+  /* Date and author info */
+  .node__meta {
+    font-size: 10pt;
+    color: #666;
+    margin-bottom: 10pt;
+  }
+
+  /* Comments */
+  .comment {
+    border-top: 1px solid #ccc;
+    padding-top: 10pt;
+    margin-top: 10pt;
+    page-break-inside: avoid;
+  }
+
+  /* Forms - hide most form elements */
+  input, 
+  textarea, 
+  select, 
+  button {
+    display: none !important;
+  }
+
+  /* Show important form labels */
+  label {
+    display: inline !important;
+    font-weight: bold;
+  }
+
+  /* Header info for print */
+  @page {
+    margin: 1in;
+    
+    @top-center {
+      content: attr(title);
+      font-size: 10pt;
+    }
+    
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+      font-size: 9pt;
+    }
+  }
+
+  /* Print utilities */
+  .print-only {
+    display: block !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure content flows properly */
+  .region {
+    break-inside: avoid;
+    margin-bottom: 15pt;
+  }
+
+  /* Clean up MUI components for print */
+  .MuiCard-root,
+  .MuiPaper-root {
+    background: white !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    border-radius: 0 !important;
+    padding: 10pt !important;
+    margin-bottom: 10pt !important;
+  }
+
+  .MuiTypography-root {
+    color: black !important;
+  }
+
+  /* Remove any animations or transitions */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

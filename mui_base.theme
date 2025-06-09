@@ -1,0 +1,641 @@
+<?php
+
+/**
+ * @file
+ * Theme functions for MUI Base theme - improved for Drupal best practices.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_preprocess_HOOK() for HTML document templates.
+ */
+function mui_base_preprocess_html(&$variables) {
+  $theme_settings = \Drupal::config('mui_base.settings');
+  
+  // Add core MUI classes with proper sanitization
+  $variables['attributes']['class'][] = 'mui-theme';
+  
+  // Add optional brand class from theme settings
+  $brand_class = $theme_settings->get('brand_class');
+  if (!empty($brand_class)) {
+    // Sanitize brand class name
+    $brand_class = preg_replace('/[^a-zA-Z0-9\-_]/', '', $brand_class);
+    if (!empty($brand_class)) {
+      $variables['attributes']['class'][] = $brand_class;
+    }
+  }
+  
+  // Add layout class with validation
+  $allowed_layouts = [
+    'centered', '1-col', '2-col-left', '2-col-right', 
+    '3-col-left', '3-col-right', '3-col-center', 
+    '4-col', '4-col-equal'
+  ];
+  $layout = $theme_settings->get('default_layout') ?: 'centered';
+  if (in_array($layout, $allowed_layouts, TRUE)) {
+    $variables['attributes']['class'][] = 'layout-' . $layout;
+  }
+  
+  // Add theme option classes with proper validation
+  if ($theme_settings->get('enable_dark_mode')) {
+    $variables['attributes']['class'][] = 'mui-dark-mode-enabled';
+  }
+  if ($theme_settings->get('compact_mode')) {
+    $variables['attributes']['class'][] = 'mui-compact-mode';
+  }
+  if (!$theme_settings->get('enable_animations')) {
+    $variables['attributes']['class'][] = 'mui-no-animations';
+  }
+  
+  // Add dynamic CSS variables with proper escaping
+  $css_variables = _mui_base_generate_css_variables();
+  if ($css_variables) {
+    $variables['page']['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => ":root { {$css_variables} }",
+        '#weight' => -100,
+        '#attributes' => ['data-no-aggregate' => TRUE],
+      ],
+      'mui_css_variables'
+    ];
+  }
+  
+  // Add custom CSS with proper sanitization
+  $custom_css = $theme_settings->get('custom_css_code');
+  if (!empty($custom_css)) {
+    // Basic CSS sanitization - remove dangerous content
+    $custom_css = preg_replace('/javascript\s*:/i', '', $custom_css);
+    $custom_css = preg_replace('/expression\s*\(/i', '', $custom_css);
+    $custom_css = preg_replace('/import\s+/i', '', $custom_css);
+    
+    $variables['page']['#attached']['html_head'][] = [
+      [
+        '#tag' => 'style',
+        '#value' => $custom_css,
+        '#weight' => 100,
+        '#attributes' => ['data-no-aggregate' => TRUE],
+      ],
+      'mui_custom_css'
+    ];
+  }
+  
+  // Add theme color meta tag with validation
+  $primary_color = $theme_settings->get('primary_main') ?: '#00303c';
+  if (preg_match('/^#[0-9a-fA-F]{6}$/', $primary_color)) {
+    $variables['page']['#attached']['html_head'][] = [
+      [
+        '#tag' => 'meta',
+        '#attributes' => ['name' => 'theme-color', 'content' => $primary_color],
+      ],
+      'theme_color'
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function mui_base_preprocess_page(&$variables) {
+  $theme_settings = \Drupal::config('mui_base.settings');
+  
+  // Determine layout with proper fallback
+  $layout_class = $theme_settings->get('default_layout') ?: 'centered';
+  $layout_class = _mui_base_auto_detect_layout($layout_class, $variables);
+  
+  $variables['layout_class'] = $layout_class;
+  $variables['mobile_breakpoint'] = $theme_settings->get('mobile_breakpoint') ?: 'md';
+  $variables['logo_data'] = _mui_base_prepare_logo_data();
+  
+  // Prepare navigation menu for mobile component
+  if (!empty($variables['page']['navigation'])) {
+    $variables['navigation_menu'] = _mui_base_prepare_navigation_menu();
+  }
+  
+  // Add conditional classes
+  if ($theme_settings->get('sticky_header')) {
+    $variables['attributes']['class'][] = 'has-sticky-header';
+  }
+  
+  // Add accessibility attributes
+  $variables['page']['content']['#attributes']['role'] = 'main';
+  $variables['page']['content']['#attributes']['id'] = 'main-content';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu templates.
+ */
+function mui_base_preprocess_menu(&$variables) {
+  $menu_name = $variables['menu_name'] ?? '';
+  
+  // Initialize attributes if not set
+  if (!isset($variables['attributes'])) {
+    $variables['attributes'] = new Attribute();
+  }
+  
+  $variables['attributes']['class'][] = 'MuiList-root';
+  
+  // Determine menu context with caching
+  $cache_key = "mui_menu_context:{$menu_name}";
+  $cache = \Drupal::cache()->get($cache_key);
+  
+  if ($cache) {
+    [$is_sidebar, $is_horizontal] = $cache->data;
+  } else {
+    $is_sidebar = _mui_base_is_sidebar_context($variables, $menu_name);
+    $is_horizontal = _mui_base_is_horizontal_context($variables, $menu_name);
+    
+    // Cache for 1 hour
+    \Drupal::cache()->set($cache_key, [$is_sidebar, $is_horizontal], 
+      \Drupal::time()->getRequestTime() + 3600);
+  }
+  
+  if ($is_sidebar) {
+    $variables['attributes']['class'][] = 'MuiSidebarMenu-root';
+    $variables['attributes']['class'][] = 'MuiSidebarMenu-collapsible';
+    $variables['#attached']['library'][] = 'mui_base/sidebar-menu';
+  } elseif ($is_horizontal) {
+    $variables['attributes']['class'][] = 'MuiSidebarMenu-root';
+    $variables['attributes']['class'][] = 'mui-horizontal-menu';
+    $variables['#attached']['library'][] = 'mui_base/mobile-menu';
+  }
+  
+  // Process menu items with error handling
+  try {
+    foreach ($variables['items'] as &$item) {
+      _mui_base_process_menu_item($item, 0, $is_sidebar);
+    }
+  } catch (\Exception $e) {
+    \Drupal::logger('mui_base')->error('Error processing menu items: @message', [
+      '@message' => $e->getMessage()
+    ]);
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function mui_base_preprocess_block(&$variables) {
+  $region = $variables['configuration']['region'] ?? '';
+  $plugin_id = $variables['plugin_id'] ?? '';
+  
+  // Initialize attributes if not set
+  if (!isset($variables['attributes'])) {
+    $variables['attributes'] = new Attribute();
+  }
+  
+  // Handle sidebar blocks
+  $sidebar_regions = ['sidebar_first', 'sidebar_second', 'sidebar_third', 'sidebar_fourth'];
+  if (in_array($region, $sidebar_regions, TRUE)) {
+    $variables['attributes']['class'][] = 'mui-sidebar-block';
+    
+    if (str_starts_with($plugin_id, 'system_menu_block:') || 
+        str_starts_with($plugin_id, 'menu_block:')) {
+      \Drupal::request()->attributes->set('mui_sidebar_context', TRUE);
+    }
+  }
+  
+  // Handle menu blocks
+  if (str_starts_with($plugin_id, 'system_menu_block:') || 
+      str_starts_with($plugin_id, 'menu_block:')) {
+    $variables['attributes']['class'][] = 'mui-menu-block';
+    
+    if ($region === 'navigation') {
+      \Drupal::request()->attributes->set('mui_horizontal_context', TRUE);
+    }
+  }
+  
+  // Add region class if available
+  if (!empty($region)) {
+    $variables['attributes']['class'][] = 'block--region-' . str_replace('_', '-', $region);
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function mui_base_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add MUI classes to forms with validation
+  if (is_array($form)) {
+    _mui_base_add_form_classes($form);
+  }
+  
+  // Handle search forms specifically
+  if (strpos($form_id, 'search') !== FALSE) {
+    if (!isset($form['#attributes'])) {
+      $form['#attributes'] = [];
+    }
+    if (!isset($form['#attributes']['class'])) {
+      $form['#attributes']['class'] = [];
+    }
+    $form['#attributes']['class'][] = 'MuiFormControl-root';
+    $form['#attributes']['class'][] = 'search-form';
+  }
+}
+
+/**
+ * Auto-detect layout based on active sidebars.
+ */
+function _mui_base_auto_detect_layout($layout_class, $variables) {
+  // Don't auto-detect for centered layout
+  if ($layout_class === 'centered') {
+    return $layout_class;
+  }
+  
+  // Only auto-detect if layout is set to 'auto'
+  if ($layout_class !== 'auto') {
+    return $layout_class;
+  }
+  
+  $active_sidebars = [];
+  $sidebar_regions = ['sidebar_first', 'sidebar_second', 'sidebar_third', 'sidebar_fourth'];
+  
+  foreach ($sidebar_regions as $region) {
+    if (!empty($variables['page'][$region])) {
+      $active_sidebars[] = $region;
+    }
+  }
+  
+  $sidebar_count = count($active_sidebars);
+  
+  switch ($sidebar_count) {
+    case 0:
+      return 'centered';
+    case 1:
+      return in_array('sidebar_first', $active_sidebars, TRUE) ? '2-col-left' : '2-col-right';
+    case 2:
+      return '3-col-center';
+    default:
+      return '4-col';
+  }
+}
+
+/**
+ * Generate CSS variables from theme settings with proper validation.
+ */
+function _mui_base_generate_css_variables() {
+  $theme_settings = \Drupal::config('mui_base.settings');
+  $variables = [];
+  
+  // Color validation pattern
+  $color_pattern = '/^#[0-9a-fA-F]{6}$/';
+  
+  // Brand color variables with validation
+  $color_settings = [
+    'primary_main' => '#00303c',
+    'primary_light' => '#335963', 
+    'primary_dark' => '#00212A',
+    'secondary_main' => '#76BD22',
+    'secondary_light' => '#91CA4E',
+    'secondary_dark' => '#528417',
+    'tertiary_main' => '#E7ECEB',
+    'tertiary_light' => '#EBEFEF',
+    'tertiary_dark' => '#A1A5A4',
+    'error_main' => '#f44336',
+    'warning_main' => '#ff9800',
+    'info_main' => '#2196f3',
+    'background_default' => '#fafafa',
+    'background_paper' => '#ffffff',
+  ];
+  
+  foreach ($color_settings as $key => $default) {
+    $value = $theme_settings->get($key);
+    if (!empty($value) && $value !== $default && preg_match($color_pattern, $value)) {
+      $css_var = '--mui-' . str_replace('_', '-', $key);
+      $variables[] = "{$css_var}: " . htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
+  }
+  
+  // Typography settings with validation
+  $font_family = $theme_settings->get('font_family') ?: 'roboto';
+  if ($font_family === 'custom') {
+    $custom_font = $theme_settings->get('custom_font_family');
+    if (!empty($custom_font)) {
+      // Basic sanitization for font family
+      $custom_font = preg_replace('/[^a-zA-Z0-9\s\-_,\'"()]/', '', $custom_font);
+      $variables[] = "--mui-font-family: " . htmlspecialchars($custom_font, ENT_QUOTES, 'UTF-8');
+    }
+  } elseif ($font_family === 'system') {
+    $variables[] = '--mui-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif';
+  }
+  
+  // Font size with validation
+  $font_size = $theme_settings->get('font_size_base');
+  if (is_numeric($font_size) && $font_size >= 0.75 && $font_size <= 1.5 && $font_size != 1.0) {
+    $variables[] = "--mui-font-size-base: {$font_size}rem";
+  }
+  
+  // Compact mode spacing
+  if ($theme_settings->get('compact_mode')) {
+    $variables[] = '--mui-spacing-1: 6px';
+    $variables[] = '--mui-spacing-2: 12px';
+    $variables[] = '--mui-spacing-3: 18px';
+  }
+  
+  return implode('; ', $variables);
+}
+
+/**
+ * Prepare logo data for templates with proper sanitization.
+ */
+function _mui_base_prepare_logo_data() {
+  $theme_settings = \Drupal::config('mui_base.settings');
+  
+  // Validate logo type
+  $logo_type = $theme_settings->get('logo_type') ?: 'image';
+  if (!in_array($logo_type, ['image', 'svg'], TRUE)) {
+    $logo_type = 'image';
+  }
+  
+  // Validate and sanitize SVG
+  $svg_logo = $theme_settings->get('svg_logo') ?: '';
+  if (!empty($svg_logo) && $logo_type === 'svg') {
+    // Basic SVG sanitization - ensure it starts with <svg
+    if (!preg_match('/^\s*<svg/i', $svg_logo)) {
+      $svg_logo = '';
+    }
+    // Remove potentially dangerous elements
+    $svg_logo = preg_replace('/<script[^>]*>.*?<\/script>/is', '', $svg_logo);
+    $svg_logo = preg_replace('/on\w+\s*=/i', '', $svg_logo);
+  }
+  
+  // Validate dimensions
+  $max_width = $theme_settings->get('logo_max_width') ?: 120;
+  $max_height = $theme_settings->get('logo_max_height') ?: 40;
+  
+  if (!is_numeric($max_width) || $max_width < 10 || $max_width > 500) {
+    $max_width = 120;
+  }
+  if (!is_numeric($max_height) || $max_height < 10 || $max_height > 200) {
+    $max_height = 40;
+  }
+  
+  return [
+    'type' => $logo_type,
+    'svg' => $svg_logo,
+    'url' => theme_get_setting('logo.url'),
+    'max_width' => (int) $max_width,
+    'max_height' => (int) $max_height,
+    'site_name' => \Drupal::config('system.site')->get('name'),
+  ];
+}
+
+/**
+ * Prepare navigation menu data for mobile component with caching.
+ */
+function _mui_base_prepare_navigation_menu() {
+  $cache_key = 'mui_base:navigation_menu';
+  $cache = \Drupal::cache()->get($cache_key);
+  
+  if ($cache) {
+    return $cache->data;
+  }
+  
+  try {
+    $menu_tree = \Drupal::service('menu.link_tree');
+    $parameters = $menu_tree->getCurrentRouteMenuTreeParameters('main');
+    $parameters->setMinDepth(1)->setMaxDepth(3);
+    
+    $tree = $menu_tree->load('main', $parameters);
+    $tree = $menu_tree->transform($tree, [
+      ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+      ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+    ]);
+    
+    $menu_items = [];
+    foreach ($tree as $element) {
+      $menu_items[] = _mui_base_extract_menu_item($element);
+    }
+    
+    // Cache for 1 hour
+    \Drupal::cache()->set($cache_key, $menu_items, 
+      \Drupal::time()->getRequestTime() + 3600, ['config:system.menu.main']);
+    
+    return $menu_items;
+  } catch (\Exception $e) {
+    \Drupal::logger('mui_base')->error('Error preparing navigation menu: @message', [
+      '@message' => $e->getMessage()
+    ]);
+    return [];
+  }
+}
+
+/**
+ * Extract menu item data recursively with error handling.
+ */
+function _mui_base_extract_menu_item($element) {
+  if (!$element || !$element->link) {
+    return NULL;
+  }
+  
+  try {
+    $item = [
+      'title' => $element->link->getTitle(),
+      'url' => $element->link->getUrlObject()->toString(),
+      'below' => [],
+    ];
+    
+    if ($element->subtree) {
+      foreach ($element->subtree as $sub_element) {
+        $sub_item = _mui_base_extract_menu_item($sub_element);
+        if ($sub_item) {
+          $item['below'][] = $sub_item;
+        }
+      }
+    }
+    
+    return $item;
+  } catch (\Exception $e) {
+    \Drupal::logger('mui_base')->error('Error extracting menu item: @message', [
+      '@message' => $e->getMessage()
+    ]);
+    return NULL;
+  }
+}
+
+/**
+ * Determine if menu is in sidebar context with caching.
+ */
+function _mui_base_is_sidebar_context($variables, $menu_name) {
+  // Check request attribute set by block preprocessing
+  if (\Drupal::request()->attributes->get('mui_sidebar_context')) {
+    return TRUE;
+  }
+  
+  // Check menu name patterns
+  $sidebar_menus = ['sidebar', 'secondary', 'footer'];
+  $main_menus = ['main', 'primary', 'account'];
+  
+  return in_array($menu_name, $sidebar_menus, TRUE) || 
+         !in_array($menu_name, $main_menus, TRUE);
+}
+
+/**
+ * Determine if menu is in horizontal context.
+ */
+function _mui_base_is_horizontal_context($variables, $menu_name) {
+  // Check request attribute
+  if (\Drupal::request()->attributes->get('mui_horizontal_context')) {
+    return TRUE;
+  }
+  
+  // Check if main menu in centered layout
+  if ($menu_name === 'main') {
+    $layout = \Drupal::config('mui_base.settings')->get('default_layout') ?: 'centered';
+    return $layout === 'centered';
+  }
+  
+  return FALSE;
+}
+
+/**
+ * Process menu items recursively to add MUI classes with error handling.
+ */
+function _mui_base_process_menu_item(&$item, $level = 0, $is_sidebar = FALSE) {
+  if (!isset($item['attributes'])) {
+    $item['attributes'] = new Attribute();
+  }
+  
+  $item['attributes']->addClass('MuiListItem-root');
+  
+  if ($is_sidebar) {
+    $item['attributes']->addClass('MuiSidebarMenu-item');
+    if ($level > 0) {
+      $item['attributes']->addClass('MuiSidebarMenu-subitem');
+    }
+  }
+  
+  // Add link classes with proper error handling
+  if (isset($item['url']) && $item['url']) {
+    try {
+      $link_classes = ['MuiListItemButton-root', 'MuiButtonBase-root'];
+      
+      if ($is_sidebar) {
+        $link_classes[] = 'MuiSidebarMenu-link';
+        if ($level > 0) {
+          $link_classes[] = 'MuiSidebarMenu-sublevelLink';
+        }
+      } else {
+        $link_classes[] = 'MuiSidebarMenu-link';
+      }
+      
+      $existing = $item['url']->getOption('attributes') ?: [];
+      $existing['class'] = array_merge($existing['class'] ?? [], $link_classes);
+      $item['url']->setOption('attributes', $existing);
+    } catch (\Exception $e) {
+      \Drupal::logger('mui_base')->error('Error processing menu item URL: @message', [
+        '@message' => $e->getMessage()
+      ]);
+    }
+  }
+  
+  // Handle children
+  if (!empty($item['below']) && is_array($item['below'])) {
+    $item['attributes']->addClass('MuiSidebarMenu-hasChildren');
+    foreach ($item['below'] as &$subitem) {
+      _mui_base_process_menu_item($subitem, $level + 1, $is_sidebar);
+    }
+  }
+}
+
+/**
+ * Recursively add MUI classes to form elements with validation.
+ */
+function _mui_base_add_form_classes(&$element) {
+  if (!is_array($element)) {
+    return;
+  }
+  
+  if (isset($element['#type'])) {
+    if (!isset($element['#attributes'])) {
+      $element['#attributes'] = [];
+    }
+    if (!isset($element['#attributes']['class'])) {
+      $element['#attributes']['class'] = [];
+    }
+    
+    $classes = &$element['#attributes']['class'];
+    
+    switch ($element['#type']) {
+      case 'textfield':
+      case 'email':
+      case 'password':
+      case 'search':
+      case 'tel':
+      case 'url':
+      case 'number':
+      case 'textarea':
+        $classes[] = 'MuiInputBase-input';
+        break;
+        
+      case 'select':
+        $classes[] = 'MuiSelect-select';
+        $classes[] = 'MuiInputBase-input';
+        break;
+        
+      case 'submit':
+        $classes[] = 'MuiButton-root';
+        $classes[] = 'MuiButton-contained';
+        $classes[] = 'MuiButton-containedPrimary';
+        break;
+        
+      case 'button':
+        $classes[] = 'MuiButton-root';
+        $classes[] = 'MuiButton-outlined';
+        break;
+        
+      case 'checkbox':
+      case 'radio':
+        $classes[] = 'MuiCheckbox-root';
+        break;
+    }
+  }
+  
+  // Process child elements safely
+  foreach (\Drupal\Core\Render\Element::children($element) as $key) {
+    if (isset($element[$key]) && is_array($element[$key])) {
+      _mui_base_add_form_classes($element[$key]);
+    }
+  }
+}
+
+/**
+ * Helper function to add menu item transformations.
+ */
+function mui_base_add_menu_item_transform($menu_name, $callback) {
+  $transforms = &drupal_static(__FUNCTION__, []);
+  $transforms[$menu_name][] = $callback;
+}
+
+/**
+ * Get menu item transformations for a menu.
+ */
+function mui_base_get_menu_item_transforms($menu_name) {
+  $transforms = &drupal_static('mui_base_add_menu_item_transform', []);
+  return $transforms[$menu_name] ?? [];
+}
+
+/**
+ * Helper function to add breadcrumb preprocessing.
+ */
+function mui_base_add_breadcrumb_preprocess($callback) {
+  $preprocessors = &drupal_static(__FUNCTION__, []);
+  $preprocessors[] = $callback;
+}
+
+/**
+ * Get breadcrumb preprocessors.
+ */
+function mui_base_get_breadcrumb_preprocessors() {
+  $preprocessors = &drupal_static('mui_base_add_breadcrumb_preprocess', []);
+  return $preprocessors;
+}

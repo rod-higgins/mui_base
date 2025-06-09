@@ -1,0 +1,233 @@
+/* MUI Container Component Styles */
+
+.MuiContainer-root {
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: block;
+  padding-left: var(--mui-spacing-2);
+  padding-right: var(--mui-spacing-2);
+}
+
+/* Breakpoint-based max-widths */
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding-left: var(--mui-spacing-3);
+    padding-right: var(--mui-spacing-3);
+  }
+}
+
+@media (min-width: 900px) {
+  .MuiContainer-root {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .MuiContainer-root {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .MuiContainer-root {
+    max-width: 1400px;
+  }
+}
+
+/* Container variants */
+.MuiContainer-fixed {
+  max-width: 1200px;
+}
+
+.MuiContainer-maxWidthXs {
+  max-width: 444px;
+}
+
+.MuiContainer-maxWidthSm {
+  max-width: 600px;
+}
+
+.MuiContainer-maxWidthMd {
+  max-width: 900px;
+}
+
+.MuiContainer-maxWidthLg {
+  max-width: 1200px;
+}
+
+.MuiContainer-maxWidthXl {
+  max-width: 1536px;
+}
+
+/* Disable gutters */
+.MuiContainer-disableGutters {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Responsive containers */
+.MuiContainer-root.MuiContainer-xs {
+  max-width: 100%;
+}
+
+@media (min-width: 600px) {
+  .MuiContainer-root.MuiContainer-sm {
+    max-width: 600px;
+  }
+}
+
+@media (min-width: 900px) {
+  .MuiContainer-root.MuiContainer-md {
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .MuiContainer-root.MuiContainer-lg {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .MuiContainer-root.MuiContainer-xl {
+    max-width: 1536px;
+  }
+}
+
+/* Fluid container */
+.MuiContainer-fluid {
+  max-width: none;
+}
+
+/* Compact mode adjustments */
+body.mui-compact-mode .MuiContainer-root {
+  padding-left: var(--mui-spacing-1);
+  padding-right: var(--mui-spacing-1);
+}
+
+@media (min-width: 600px) {
+  body.mui-compact-mode .MuiContainer-root {
+    padding-left: var(--mui-spacing-2);
+    padding-right: var(--mui-spacing-2);
+  }
+}
+
+/* Print styles */
+@media print {
+  .MuiContainer-root {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* Utility classes for container content */
+.MuiContainer-content {
+  position: relative;
+  z-index: 1;
+}
+
+.MuiContainer-background {
+  position: relative;
+}
+
+.MuiContainer-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--mui-background-paper);
+  z-index: -1;
+  border-radius: var(--mui-border-radius);
+}
+
+/* Nested container adjustments */
+.MuiContainer-root .MuiContainer-root {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+}
+
+/* Alignment utilities */
+.MuiContainer-centerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.MuiContainer-fullHeight {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Spacing utilities */
+.MuiContainer-spaceTop {
+  margin-top: var(--mui-spacing-4);
+}
+
+.MuiContainer-spaceBottom {
+  margin-bottom: var(--mui-spacing-4);
+}
+
+.MuiContainer-spaceVertical {
+  margin-top: var(--mui-spacing-4);
+  margin-bottom: var(--mui-spacing-4);
+}
+
+/* Grid container integration */
+.MuiContainer-root.MuiGrid-container {
+  width: 100%;
+}
+
+/* Section containers */
+.MuiContainer-section {
+  padding-top: var(--mui-spacing-6);
+  padding-bottom: var(--mui-spacing-6);
+}
+
+@media (max-width: 600px) {
+  .MuiContainer-section {
+    padding-top: var(--mui-spacing-4);
+    padding-bottom: var(--mui-spacing-4);
+  }
+}
+
+/* Header container adjustments */
+.header .MuiContainer-root {
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+}
+
+/* Footer container adjustments */
+.footer .MuiContainer-root {
+  padding-top: var(--mui-spacing-3);
+  padding-bottom: var(--mui-spacing-3);
+}
+
+/* Accessibility improvements */
+.MuiContainer-root:focus {
+  outline: 2px solid var(--mui-primary-main);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .MuiContainer-background::before {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .MuiContainer-root * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

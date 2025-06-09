@@ -1,0 +1,166 @@
+{#
+/**
+ * @file
+ * MUI Alert component template with comprehensive messaging and feedback.
+ */
+#}
+
+{% set effective_severity = color != 'inherit' ? color : severity %}
+
+{% set alert_classes = [
+  'MuiAlert-root',
+  'MuiAlert-' ~ variant,
+  'MuiAlert-' ~ variant ~ (effective_severity|title),
+  color != 'inherit' ? 'MuiAlert-color' ~ (color|title) : '',
+  full_width ? 'MuiAlert-fullWidth' : '',
+  slide_in ? 'MuiAlert-slide' ~ (slide_direction|title) : '',
+  custom_classes ? custom_classes|join(' ') : '',
+  'mui-alert'
+] %}
+
+{% set unique_id = 'mui-alert-' ~ random() %}
+
+<div{{ attributes.addClass(alert_classes) }} 
+     role="{{ severity == 'error' ? 'alert' : 'status' }}"
+     aria-live="{{ severity == 'error' ? 'assertive' : 'polite' }}"
+     {% if auto_dismiss %}data-auto-dismiss="{{ dismiss_timeout }}"{% endif %}
+     {% if on_close %}data-on-close="{{ on_close }}"{% endif %}
+     {% if on_action %}data-on-action="{{ on_action }}"{% endif %}
+     data-severity="{{ severity }}"
+     id="{{ unique_id }}">
+  
+  {# Alert content wrapper #}
+  <div class="MuiAlert-content">
+    
+    {# Alert icon #}
+    {% if show_icon %}
+      <div class="MuiAlert-icon">
+        {% if icon %}
+          {% if icon starts with '<' %}
+            {{ icon|raw }}
+          {% else %}
+            <i class="{{ icon }}" aria-hidden="true"></i>
+          {% endif %}
+        {% else %}
+          {# Default severity icons #}
+          {% if severity == 'error' %}
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+            </svg>
+          {% elseif severity == 'warning' %}
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path>
+            </svg>
+          {% elseif severity == 'info' %}
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+            </svg>
+          {% elseif severity == 'success' %}
+            <svg class="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
+            </svg>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    {# Message content #}
+    <div class="MuiAlert-messageContent">
+      
+      {# Alert title #}
+      {% if title %}
+        <div class="MuiAlert-title MuiTypography-subtitle1">
+          {{ title }}
+        </div>
+      {% endif %}
+      
+      {# Alert message #}
+      {% if message %}
+        <div class="MuiAlert-message MuiTypography-body2">
+          {% if allow_html %}
+            {% set processed_message = message %}
+            
+            {# Process link URLs if provided #}
+            {% if link_urls and link_urls is iterable %}
+              {% for link in link_urls %}
+                {% set link_html = '<a href="' ~ link.url ~ '"' ~ (link.target == '_blank' ? ' target="_blank" rel="noopener noreferrer"' : '') ~ '>' ~ link.text ~ '</a>' %}
+                {% set processed_message = processed_message|replace(link.text, link_html) %}
+              {% endfor %}
+            {% endif %}
+            
+            {{ processed_message|raw }}
+          {% else %}
+            {{ message }}
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {# Action buttons #}
+      {% if actions and actions is iterable and actions|length > 0 %}
+        <div class="MuiAlert-actions">
+          {% for action in actions %}
+            {% set button_classes = [
+              'MuiButton-root',
+              'MuiButtonBase-root',
+              'MuiButton-' ~ (action.variant ?: 'text'),
+              'MuiButton-' ~ (action.variant ?: 'text') ~ (action.color ?: 'inherit')|title,
+              'MuiButton-size' ~ (action.size ?: 'small')|title
+            ] %}
+            
+            {% if action.url %}
+              <a 
+                href="{{ action.url }}" 
+                class="{{ button_classes|join(' ') }}"
+                {% if action.click_handler %}data-click="{{ action.click_handler }}"{% endif %}
+              >
+                <span class="MuiButton-label">{{ action.label }}</span>
+              </a>
+            {% else %}
+              <button 
+                type="button" 
+                class="{{ button_classes|join(' ') }}"
+                {% if action.click_handler %}data-click="{{ action.click_handler }}"{% endif %}
+              >
+                <span class="MuiButton-label">{{ action.label }}</span>
+                <span class="MuiTouchRipple-root"></span>
+              </button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+    </div>
+    
+    {# Close button #}
+    {% if closable %}
+      <div class="MuiAlert-action">
+        <button 
+          type="button" 
+          class="MuiAlert-closeButton MuiIconButton-root MuiIconButton-sizeSmall"
+          aria-label="{{ close_text }}"
+          data-action="close"
+        >
+          <svg class="MuiAlert-closeIcon MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+    
+  </div>
+  
+  {# Progress bar for auto-dismiss #}
+  {% if auto_dismiss and progress_bar %}
+    <div class="MuiAlert-progress">
+      <div class="MuiAlert-progressBar" style="width: 100%; transition-duration: {{ dismiss_timeout }}ms;"></div>
+    </div>
+  {% endif %}
+  
+  {# Children content (for additional custom content) #}
+  {% if children %}
+    <div class="MuiAlert-children">
+      {{ children }}
+    </div>
+  {% endif %}
+  
+</div>

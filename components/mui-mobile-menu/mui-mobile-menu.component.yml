@@ -1,0 +1,28 @@
+$schema: 'https://git.drupalcode.org/project/drupal/-/raw/10.1.x/core/modules/sdc/src/metadata.schema.json'
+name: 'MUI Mobile Menu'
+description: 'Material UI styled mobile navigation menu'
+props:
+  type: object
+  properties:
+    menu_items:
+      type: array
+      title: 'Menu items'
+      description: 'Array of menu items with submenu support'
+      default: []
+    logo:
+      type: string
+      title: 'Logo'
+      description: 'Site logo URL or SVG markup'
+    site_name:
+      type: string
+      title: 'Site name'
+      description: 'Site name for accessibility'
+      default: ''
+    breakpoint:
+      type: string
+      title: 'Mobile breakpoint'
+      description: 'Breakpoint at which mobile menu activates'
+      enum: ['sm', 'md', 'lg', 'xl']
+      default: 'md'
+libraryDependencies:
+  - mui_base/mui-mobile-menu
